@@ -1,0 +1,4 @@
+.header {
+    background-color: blueviolet;
+    box-shadow: 1px 1px 5px 0px var(--gray);
+}
