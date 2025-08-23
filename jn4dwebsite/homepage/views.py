@@ -12,5 +12,5 @@ def homepage(request):
 
 
 def display_header_logo(request):
-    logo = Header.objects.all()
-    return render(request, 'base.html', {'logo': logo})
+    headers = Header.objects.all()
+    return render(request, 'base.html', {'header_objects': headers})

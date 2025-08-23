@@ -14,12 +14,16 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      {% for item in header_objects %}
       <div class="container">
-        <a class="navbar-brand" href="#">JN4D Interior Services</a>
+        <a class="navbar-brand" href="#"
+          ><img src="{{ item.logo.url }}" alt=""
+        /></a>
       </div>
       <nav>
         <a href="#">Log in</a>
       </nav>
+      {% endfor %}
     </nav>
     {% block content %} {% endblock %}
   </body>
