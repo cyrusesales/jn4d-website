@@ -1,14 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Manage Header</title>
-  </head>
-  <body>
-    <form method="POST" enctype="multipart/form-data">
-      {% csrf_token %} {{ form.as_p }}
-      <button type="submit">Save</button>
-    </form>
-  </body>
-</html>
+{% extends "admin_base.html" %} {% block content %}
+<section class="section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="fw-bold">Manage Header</h2>
+          </div>
+          <div class="card-body">
+            {% for header in headers %}
+            <form action="" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="" class="form-label">Logo</label>
+                <input type="file" name="logo" class="form-control" />
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Menu Item 1</label>
+                <input type="text" name="menu_item1" class="form-control" />
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Menu Item 2</label>
+                <input type="text" name="menu_item2" class="form-control" />
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Menu Item 3</label>
+                <input type="text" name="menu_item3" class="form-control" />
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Menu Item 4</label>
+                <input type="text" name="menu_item4" class="form-control" />
+              </div>
+              <button type="submit" class="btn btn-primary">Save</button>
+              <a href="{% url "edit-header" header.id %}" class="btn btn-success">Edit</a>
+            </form>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

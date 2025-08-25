@@ -3,5 +3,6 @@ from . import views
 
 urlpatterns = [
     path('', views.adminhome, name="adminpage"),
-    path('manage-header/', views.manage_header, name="manage-header")
+    path('manage-header/', views.manage_header, name="manage-header"),
+    path('edit_header/<str:pk>', views.edit_header, name="edit-header"),
 ]
