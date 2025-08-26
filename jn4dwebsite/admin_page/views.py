@@ -7,12 +7,12 @@ from django.contrib import messages
 import os
 
 
-def adminbase(request):
-    headers = Header.objects.all()
-    context = {
-        'headers': headers
-    }
-    return render(request, 'admin_base.html', context)
+# def adminbase(request):
+#     headers = Header.objects.all()
+#     context = {
+#         'headers': headers
+#     }
+#     return render(request, 'admin_base.html', context)
 
 
 def adminhome(request):
@@ -35,6 +35,7 @@ def manage_header(request):
         header.save()
         messages.success(
             request, "Header's logo and menu items are added successfully!")
+        return redirect('/')
     context = {'headers': headers}
     return render(request, 'header_page.html', context)
 
@@ -53,9 +54,18 @@ def edit_header(request, pk):
         headers.menu_item4 = request.POST.get('menu_item4')
         headers.save()
         messages.success(request, "Header Updated Successfully")
-
+        return redirect('/')
     context = {'headers': headers}
     return render(request, 'edit_header.html', context)
+
+
+def delete_header(request, pk):
+    headers = Header.objects.get(id=pk)
+    if len(headers.logo) > 0:
+        os.remove(headers.logo.path)
+    headers.delete()
+    messages.success(request, "Header Deleted Successfully ")
+    return redirect('/')
 
 
 def display_header_logo(request):

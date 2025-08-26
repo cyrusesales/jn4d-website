@@ -14,16 +14,21 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      {% for header in headers %}
+      {% if headers %} {% for header in headers %}
       <div class="container">
         <a class="navbar-brand" href="#"
           ><img src="{{ header.logo.url }}" alt="" width="200" height="50"
         /></a>
       </div>
       <nav>
-        <a href="#">Log in</a>
+        <a href="{% url "homepage" %}" class="btn text-white">View Website</a>
       </nav>
-      {% endfor %}
+      <nav>
+        <a href="#" class="btn text-white">Log in</a>
+      </nav>
+      {% endfor %} {% else %}
+      <p>No Logo Uploaded</p>
+      {% endif %}
     </nav>
     {% block content %} {% endblock %}
   </body>
