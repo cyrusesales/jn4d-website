@@ -54,7 +54,6 @@ def edit_header(request, pk):
         headers.menu_item4 = request.POST.get('menu_item4')
         headers.save()
         messages.success(request, "Header Updated Successfully")
-        return redirect('/')
     context = {'headers': headers}
     return render(request, 'edit_header.html', context)
 
@@ -65,7 +64,6 @@ def delete_header(request, pk):
         os.remove(headers.logo.path)
     headers.delete()
     messages.success(request, "Header Deleted Successfully ")
-    return redirect('/')
 
 
 def display_header_logo(request):
