@@ -7,12 +7,12 @@ from django.contrib import messages
 import os
 
 
-# def adminbase(request):
-#     headers = Header.objects.all()
-#     context = {
-#         'headers': headers
-#     }
-#     return render(request, 'admin_base.html', context)
+def adminbase(request):
+    headers = Header.objects.all()
+    context = {
+        'headers': headers
+    }
+    return render(request, 'admin_base.html', context)
 
 
 def adminhome(request):
