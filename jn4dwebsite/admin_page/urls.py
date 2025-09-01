@@ -2,8 +2,11 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.adminhome and views.adminbase, name="adminpage"),
-    path('manage-header/', views.manage_header, name="manage-header"),
-    path('edit_header/<str:pk>', views.edit_header, name="edit-header"),
-    path('delete_header/<str:pk>', views.delete_header, name="delete-header"),
+    path('', views.adminHome and views.adminBase, name="adminpage"),
+    path('manage-header/', views.manageHeader, name="manage-header"),
+    path('edit-header/<str:pk>', views.editHeader, name="edit-header"),
+    path('delete-header/<str:pk>', views.deleteHeader, name="delete-header"),
+    path('manage-carousel/', views.manageCarousel, name="manage-carousel"),
+    path('edit-carousel/<str:pk>', views.editCarousel, name='edit-carousel'),
+    path('add-carousel/', views.addCarousel, name="add-carousel"),
 ]

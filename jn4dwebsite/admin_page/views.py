@@ -2,12 +2,12 @@ from django.template import loader
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from homepage.forms import HeaderForm
-from homepage.models import Header
+from homepage.models import Header, Carousel
 from django.contrib import messages
 import os
 
 
-def adminbase(request):
+def adminBase(request):
     headers = Header.objects.all()
     context = {
         'headers': headers
@@ -15,12 +15,12 @@ def adminbase(request):
     return render(request, 'admin_base.html', context)
 
 
-def adminhome(request):
+def adminHome(request):
     template = loader.get_template('admin_home.html')
     return HttpResponse(template.render())
 
 
-def manage_header(request):
+def manageHeader(request):
     headers = Header.objects.all()
     if request.method == 'POST':
         header = Header()
@@ -40,7 +40,7 @@ def manage_header(request):
     return render(request, 'header_page.html', context)
 
 
-def edit_header(request, pk):
+def editHeader(request, pk):
     headers = Header.objects.get(id=pk)
 
     if request.method == "POST":
@@ -58,7 +58,7 @@ def edit_header(request, pk):
     return render(request, 'edit_header.html', context)
 
 
-def delete_header(request, pk):
+def deleteHeader(request, pk):
     headers = Header.objects.get(id=pk)
     if len(headers.logo) > 0:
         os.remove(headers.logo.path)
@@ -69,3 +69,52 @@ def delete_header(request, pk):
 def display_header_logo(request):
     header = Header.objects.all()
     return render(request, 'base.html', {'header_objects': header})
+
+
+def manageCarousel(request):
+    headers = Header.objects.all()
+    carousels = Carousel.objects.all()
+    context = {
+        'carousels': carousels,
+        'headers': headers
+    }
+    return render(request, 'manage_carousel.html', context)
+
+
+def editCarousel(request, pk):
+    carousels = Carousel.objects.get(id=pk)
+
+    if request.method == "POST":
+        if len(request.FILES) != 0:
+            if len(carousels.image) > 0:
+                os.remove(carousels.image.path)
+        carousels.label = request.POST.get('label')
+        carousels.caption = request.POST.get('caption')
+        carousels.save()
+        messages.success(request, "Carousel Updated Successfully")
+
+    context = {
+        'carousels': carousels
+    }
+    return redirect(request, 'edit_carousel.html', context)
+
+
+def addCarousel(request):
+    carousels = Carousel.objects.all()
+
+    if request.method == "POST":
+        carousel = Carousel()
+        carousel.label = request.POST.get('label')
+        carousel.caption = request.POST.get('caption')
+
+        if len(request.FILES) != 0:
+            carousel.image = request.FILES['image']
+
+        carousel.save()
+        messages.success(request, "New Slide Photo Saved Successfully")
+        return redirect('manage-carousel')
+
+    context = {
+        'carousels': carousels
+    }
+    return render(request, 'add_carousel.html', context)

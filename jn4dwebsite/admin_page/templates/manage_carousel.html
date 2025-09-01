@@ -1,0 +1,64 @@
+{% extends "admin_base.html" %} {% block title %}Manage Carousel{%endblock %}
+{%block content %}
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+  crossorigin="anonymous"
+></script>
+<section class="section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="fw-bold">Manage Carousel</h2>
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Label</th>
+                  <th>Caption</th>
+                  <th>Image</th>
+                  <th>Buttons</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for carousel in carousels %}
+                <tr>
+                  <td>{{ carousel.label }}</td>
+                  <td>{{ carousel.caption }}</td>
+                  {% if carousel.image %}
+                  <td>
+                    <img
+                      src="{{ carousel.image.url }}"
+                      alt=""
+                      width="200"
+                      height="50"
+                    />
+                  </td>
+                  {% else %}
+                  <td>
+                    <p>No Image available</p>
+                  </td>
+                  {% endif %}
+                  <td>
+                    <a href="{% url 'edit-carousel' carousel.id %}" class="btn btn-success">Edit</a>
+                    <a href="" class="btn btn-danger">Delete</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <a href="{% url "add-carousel" %}" class="btn btn-success">Add</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

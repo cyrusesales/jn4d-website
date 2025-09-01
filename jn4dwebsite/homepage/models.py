@@ -10,3 +10,12 @@ class Header(models.Model):
 
     def __str__(self):
         return self.id
+
+
+class Carousel(models.Model):
+    image = models.ImageField(upload_to='images/')
+    label = models.CharField(max_length=100, blank=True, null=True)
+    caption = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return self.id
