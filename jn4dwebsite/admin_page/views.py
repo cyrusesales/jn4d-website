@@ -96,7 +96,7 @@ def editCarousel(request, pk):
     context = {
         'carousels': carousels
     }
-    return redirect(request, 'edit_carousel.html', context)
+    return render(request, 'edit_carousel.html', context)
 
 
 def addCarousel(request):
