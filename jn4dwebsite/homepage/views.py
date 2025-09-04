@@ -15,13 +15,22 @@ def base(request):
 
 
 def homepage(request):
-    template = loader.get_template('index.html')
-    return HttpResponse(template.render())
+    # template = loader.get_template('index.html')
+    # return HttpResponse(template.render())
+    headers = Header.objects.all()
+    carousels = Carousel.objects.all()
+    context = {
+        'carousels': carousels,
+        'headers': headers,
+    }
+    return render(request, 'index.html', context)
 
 
 def carousel(request):
     carousel = Carousel.objects.all()
+    headers = Header.objects.all()
     context = {
-        'carousel': carousel
+        'carousel': carousel,
+        'headers': headers,
     }
     return render(request, 'carousel_section.html', context)

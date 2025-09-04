@@ -1,3 +1,5 @@
+{% extends "admin_base.html" %} {% block title %}Edit Header{%endblock %}
+{%block content %}
 <link
   href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
   rel="stylesheet"
@@ -25,7 +27,7 @@
       <div class="col-md-8">
         {% for msg in messages %}
         <div
-          class="alert alert-success d-flex align-items-center fade show"
+          class="alert alert-success alert-dismissible d-flex align-items-center fade show"
           role="alert"
         >
           <svg
@@ -38,6 +40,12 @@
             <use xlink:href="#check-circle-fill" />
           </svg>
           <div>{{ msg }}</div>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
         </div>
         {% endfor %}
         <div class="card">
@@ -48,9 +56,9 @@
             <form method="POST" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="mb-3">
-                {% if headers.logo %}
+                {% if header.logo %}
                 <img
-                  src="{{ headers.logo.url }}"
+                  src="{{ header.logo.url }}"
                   alt="Logo Here"
                   class=""
                   width="200"
@@ -65,7 +73,7 @@
                 <input
                   type="text"
                   name="menu_item1"
-                  value="{{ headers.menu_item1 }}"
+                  value="{{ header.menu_item1 }}"
                   class="form-control"
                 />
               </div>
@@ -74,7 +82,7 @@
                 <input
                   type="text"
                   name="menu_item2"
-                  value="{{ headers.menu_item2 }}"
+                  value="{{ header.menu_item2 }}"
                   class="form-control"
                 />
               </div>
@@ -83,7 +91,7 @@
                 <input
                   type="text"
                   name="menu_item3"
-                  value="{{ headers.menu_item3 }}"
+                  value="{{ header.menu_item3 }}"
                   class="form-control"
                 />
               </div>
@@ -92,13 +100,13 @@
                 <input
                   type="text"
                   name="menu_item4"
-                  value="{{ headers.menu_item4 }}"
+                  value="{{ header.menu_item4 }}"
                   class="form-control"
                 />
               </div>
               <button type="submit" class="btn btn-warning">Update</button>
 
-              <a href="{% url 'manage-header' %}" class="btn btn-success"
+              <a href="{% url 'manage-header' %}" class="btn btn-secondary"
                 >Back</a
               >
             </form>
@@ -108,3 +116,4 @@
     </div>
   </div>
 </section>
+{% endblock %}

@@ -16,8 +16,15 @@ def adminBase(request):
 
 
 def adminHome(request):
-    template = loader.get_template('admin_home.html')
-    return HttpResponse(template.render())
+    # template = loader.get_template('admin_home.html')
+    # return HttpResponse(template.render())
+    headers = Header.objects.all()
+    carousels = Carousel.objects.all()
+    context = {
+        'carousels': carousels,
+        'headers': headers,
+    }
+    return render(request, 'admin_home.html', context)
 
 
 def manageHeader(request):
@@ -41,20 +48,21 @@ def manageHeader(request):
 
 
 def editHeader(request, pk):
-    headers = Header.objects.get(id=pk)
+    headers = Header.objects.all()
+    header = Header.objects.get(id=pk)
 
     if request.method == "POST":
         if len(request.FILES) != 0:
-            if len(headers.logo) > 0:
-                os.remove(headers.logo.path)
-            headers.logo = request.FILES['logo']
-        headers.menu_item1 = request.POST.get('menu_item1')
-        headers.menu_item2 = request.POST.get('menu_item2')
-        headers.menu_item3 = request.POST.get('menu_item3')
-        headers.menu_item4 = request.POST.get('menu_item4')
-        headers.save()
+            if len(header.logo) > 0:
+                os.remove(header.logo.path)
+            header.logo = request.FILES['logo']
+        header.menu_item1 = request.POST.get('menu_item1')
+        header.menu_item2 = request.POST.get('menu_item2')
+        header.menu_item3 = request.POST.get('menu_item3')
+        header.menu_item4 = request.POST.get('menu_item4')
+        header.save()
         messages.success(request, "Header Updated Successfully")
-    context = {'headers': headers}
+    context = {'header': header, 'headers': headers}
     return render(request, 'edit_header.html', context)
 
 
@@ -118,3 +126,12 @@ def addCarousel(request):
         'carousels': carousels
     }
     return render(request, 'add_carousel.html', context)
+
+
+def deleteCarousel(request, pk):
+    carousels = Carousel.objects.get(id=pk)
+    if len(carousels.image) > 0:
+        os.remove(carousels.image.path)
+    carousels.delete()
+    messages.success(request, "Slide Photo deleted successfully.")
+    return redirect('manage-carousel')
