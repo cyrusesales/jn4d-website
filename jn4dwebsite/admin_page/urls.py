@@ -10,4 +10,6 @@ urlpatterns = [
     path('edit-carousel/<str:pk>', views.editCarousel, name='edit-carousel'),
     path('add-carousel/', views.addCarousel, name="add-carousel"),
     path('delete-carousel/<str:pk>', views.deleteCarousel, name="delete-carousel"),
+    path('manage-categories/', views.manageCategories, name='manage-categories'),
+    path('edit-categories/<str:pk>', views.editCategories, name='edit-categories'),
 ]

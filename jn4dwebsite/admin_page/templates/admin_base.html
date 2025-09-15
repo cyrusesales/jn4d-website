@@ -29,6 +29,10 @@
         <path d="m14.12 10.163 1.715.858c.22.11.22.424 0 .534L8.267 15.34a.6.6 0 0 1-.534 0L.165 11.555a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0l5.317-2.66zM7.733.063a.6.6 0 0 1 .534 0l7.568 3.784a.3.3 0 0 1 0 .535L8.267 8.165a.6.6 0 0 1-.534 0L.165 4.382a.299.299 0 0 1 0-.535z"/>
         <path d="m14.12 6.576 1.715.858c.22.11.22.424 0 .534l-7.568 3.784a.6.6 0 0 1-.534 0L.165 7.968a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0z"/>
       </symbol>
+      <symbol id="category" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M3 2v4.586l7 7L14.586 9l-7-7zM2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586z"/>
+        <path d="M5.5 5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m0 1a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3M1 7.086a1 1 0 0 0 .293.707L8.75 15.25l-.043.043a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 0 7.586V3a1 1 0 0 1 1-1z"/>
+      </symbol>
     </svg>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       {% if headers %} {% for header in headers %}
@@ -51,11 +55,11 @@
     <div class="container" style="margin-left: 0px; margin-right: unset;">
       <div class="row">
         <!--Sidebar-->
-        <div class="col-4 d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px; position: fixed; height: 100%;">
+        <div class="col-4 d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px; position: absolute; height: 100%;">
           <hr>
           <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item">
-              <a href="{% url "adminpage" %}" class="nav-link text-white active" aria-current="page">
+              <a href="{% url "adminpage" %}" class="nav-link text-white" aria-current="page">
                 <svg class="bi me-2" width="16" height="16">
                   <use xlink:href="#dashboard"></use>
                 </svg>
@@ -79,11 +83,11 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link text-white" aria-current="page">
+              <a href="{% url "manage-categories" %}" class="nav-link text-white" aria-current="page">
                 <svg class="bi me-2" width="16" height="16">
-                  <use xlink:href="#dashboard"></use>
+                  <use xlink:href="#category"></use>
                 </svg>
-                Products
+                Product Categories
               </a>
             </li>
             <li class="nav-item">

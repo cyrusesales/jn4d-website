@@ -2,7 +2,7 @@ from django.template import loader
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from homepage.forms import HeaderForm
-from homepage.models import Header, Carousel
+from homepage.models import Header, Carousel, Category
 from django.contrib import messages
 import os
 
@@ -90,19 +90,22 @@ def manageCarousel(request):
 
 
 def editCarousel(request, pk):
+    headers = Header.objects.all()
     carousels = Carousel.objects.get(id=pk)
 
     if request.method == "POST":
         if len(request.FILES) != 0:
             if len(carousels.image) > 0:
                 os.remove(carousels.image.path)
+            carousels.image = request.FILES['image']
         carousels.label = request.POST.get('label')
         carousels.caption = request.POST.get('caption')
         carousels.save()
         messages.success(request, "Carousel Updated Successfully")
 
     context = {
-        'carousels': carousels
+        'carousels': carousels,
+        'headers': headers,
     }
     return render(request, 'edit_carousel.html', context)
 
@@ -135,3 +138,22 @@ def deleteCarousel(request, pk):
     carousels.delete()
     messages.success(request, "Slide Photo deleted successfully.")
     return redirect('manage-carousel')
+
+
+def manageCategories(request):
+    categories = Category.objects.all()
+    headers = Header.objects.all()
+    context = {
+        'categories': categories,
+        'headers': headers,
+    }
+    return render(request, 'manage_categories.html', context)
+
+
+def editCategories(request, pk):
+    categories = Category.objects.get(id=pk)
+
+    context = {
+        'categories': categories
+    }
+    return render(request, 'edit_categories.html', context)

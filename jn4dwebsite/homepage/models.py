@@ -19,3 +19,12 @@ class Carousel(models.Model):
 
     def __str__(self):
         return self.id
+
+
+class Category(models.Model):
+    image = models.ImageField(upload_to='images/')
+    name = models.CharField(max_length=100, blank=True, null=True)
+    description = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return self.id

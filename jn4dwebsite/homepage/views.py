@@ -27,10 +27,10 @@ def homepage(request):
 
 
 def carousel(request):
-    carousel = Carousel.objects.all()
+    carousels = Carousel.objects.all()
     headers = Header.objects.all()
     context = {
-        'carousel': carousel,
+        'carousels': carousels,
         'headers': headers,
     }
-    return render(request, 'carousel_section.html', context)
+    return render(request, 'slider_section.html', context)
