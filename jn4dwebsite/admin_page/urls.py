@@ -12,4 +12,6 @@ urlpatterns = [
     path('delete-carousel/<str:pk>', views.deleteCarousel, name="delete-carousel"),
     path('manage-categories/', views.manageCategories, name='manage-categories'),
     path('edit-categories/<str:pk>', views.editCategories, name='edit-categories'),
+    path('add-categories/', views.addCategories, name='add-categories'),
+    path('delete-categories/<str:pk>', views.deleteCategories, name="delete-categories"),
 ]

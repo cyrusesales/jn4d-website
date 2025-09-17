@@ -12,8 +12,32 @@ Categories{%endblock %} {% block content %}
 <section class="section">
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div></div>
+      <div class="col-md-8 mt-4">
+        <div>
+          {% for msg in messages %}
+          <div
+            class="alert alert-success alert-dismissible d-flex align-items-center fade show"
+            role="alert"
+          >
+            <svg
+              class="bi flex-shrink-0 me-2"
+              role="img"
+              aria-label="Success:"
+              width="20"
+              height="20"
+            >
+              <use xlink:href="#check-circle-fill" />
+            </svg>
+            <div>{{ msg }}</div>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+          {% endfor %}
+        </div>
         <div class="card" style="width: 1000px">
           <div class="card-header">
             <h2 class="fw-bold">Manage Product Categories</h2>
@@ -47,7 +71,7 @@ Categories{%endblock %} {% block content %}
                   </td>
                   {% endif %}
                   <td>
-                    <a href="" class="btn btn-success">Edit</a>
+                    <a href="{% url 'edit-categories' category.id %}" class="btn btn-success">Edit</a>
                     <button
                       type="button"
                       class="btn btn-danger"
@@ -93,7 +117,7 @@ Categories{%endblock %} {% block content %}
                             >
                               Close
                             </button>
-                            <a href="" class="btn btn-danger">Delete</a>
+                            <a href="{% url 'delete-categories' category.id %}" class="btn btn-danger">Delete</a>
                           </div>
                         </div>
                       </div>
@@ -103,7 +127,7 @@ Categories{%endblock %} {% block content %}
                 {% endfor %}
               </tbody>
             </table>
-            <a href="" class="btn btn-primary">Add</a>
+            <a href="{% url 'add-categories' %}" class="btn btn-primary">Add</a>
           </div>
         </div>
       </div>

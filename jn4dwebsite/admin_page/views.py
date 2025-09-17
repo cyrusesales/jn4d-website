@@ -112,6 +112,7 @@ def editCarousel(request, pk):
 
 def addCarousel(request):
     carousels = Carousel.objects.all()
+    headers = Header.objects.all()
 
     if request.method == "POST":
         carousel = Carousel()
@@ -126,7 +127,8 @@ def addCarousel(request):
         return redirect('manage-carousel')
 
     context = {
-        'carousels': carousels
+        'carousels': carousels,
+        'headers': headers,
     }
     return render(request, 'add_carousel.html', context)
 
@@ -151,9 +153,53 @@ def manageCategories(request):
 
 
 def editCategories(request, pk):
+    headers = Header.objects.all()
     categories = Category.objects.get(id=pk)
 
+    if request.method == "POST":
+        if len(request.FILES) != 0:
+            if len(categories.image) > 0:
+                os.remove(categories.image.path)
+            categories.image = request.FILES['image']
+        categories.name = request.POST.get('name')
+        categories.description = request.POST.get('description')
+        categories.save()
+        messages.success(request, "Product Category updated successfully!")
+
     context = {
-        'categories': categories
+        'categories': categories,
+        'headers': headers,
     }
     return render(request, 'edit_categories.html', context)
+
+
+def addCategories(request):
+    categories = Category.objects.all()
+    headers = Header.objects.all()
+
+    if request.method == "POST":
+        category = Category()
+        category.name = request.POST.get('name')
+        category.description = request.POST.get('description')
+
+        if len(request.FILES) != 0:
+            category.image = request.FILES['image']
+
+        category.save()
+        messages.success(request, "Product Category added successfully!")
+        return redirect('manage-categories')
+
+    context = {
+        'categories': categories,
+        'headers': headers,
+    }
+    return render(request, 'add_categories.html', context)
+
+
+def deleteCategories(request, pk):
+    categories = Category.objects.get(id=pk)
+    if len(categories.image) > 0:
+        os.remove(categories.image.path)
+    categories.delete()
+    messages.success(request, "Product Category deleted successfully!")
+    return redirect('manage-categories')

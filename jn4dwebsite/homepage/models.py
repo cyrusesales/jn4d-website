@@ -22,7 +22,7 @@ class Carousel(models.Model):
 
 
 class Category(models.Model):
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to='categories/')
     name = models.CharField(max_length=100, blank=True, null=True)
     description = models.CharField(max_length=100, blank=True, null=True)
 
