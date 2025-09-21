@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
-from .models import Header, Carousel
+from .models import Header, Carousel, Category
 
 # Create your views here.
 
@@ -19,9 +19,12 @@ def homepage(request):
     # return HttpResponse(template.render())
     headers = Header.objects.all()
     carousels = Carousel.objects.all()
+    categories = Category.objects.all()
+
     context = {
         'carousels': carousels,
         'headers': headers,
+        'categories': categories,
     }
     return render(request, 'index.html', context)
 
@@ -34,3 +37,13 @@ def carousel(request):
         'headers': headers,
     }
     return render(request, 'slider_section.html', context)
+
+def category(request):
+    categories = Category.objects.all()
+    headers = Header.objects.all()
+
+    context = {
+        'categories': categories,
+        'headers': headers,
+    }
+    return render(request, 'category_section.html', context)

@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Collections</h1>
+            <div class="row">
+                {% for item in categories %}
+                    <div class="col-md-4">
+                        <div class="card mb-3">
+                            <div class="card-body" >
+                                <div class="category-image">
+                                    <img src="{{ item.image.url }}" alt="Category image" class="w-100" style="height: 200px;"/>
+                                </div>
+                                <h4>{{ item.name }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
