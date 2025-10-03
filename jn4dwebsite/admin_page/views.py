@@ -2,7 +2,7 @@ from django.template import loader
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from homepage.forms import HeaderForm
-from homepage.models import Header, Carousel, Category
+from homepage.models import Header, Carousel, Category, Product
 from django.contrib import messages
 import os
 
@@ -203,3 +203,17 @@ def deleteCategories(request, pk):
     categories.delete()
     messages.success(request, "Product Category deleted successfully!")
     return redirect('manage-categories')
+
+
+def addProducts(request, pk):
+    headers = Header.objects.all()
+    categories = Category.objects.get(id=pk)
+    products = Product.objects.all()
+
+    context = {
+        'headers': headers,
+        'categories': categories,
+        'products': products,
+    }
+
+    return render(request, 'add_products.html', context)
