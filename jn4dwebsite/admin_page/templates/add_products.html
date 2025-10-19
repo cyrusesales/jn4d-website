@@ -23,22 +23,38 @@
       <div class="col-md-8 mt-4">
         <div class="card">
           <div class="card-header">
-            <h2 class="fw-bold">Add Product in {{ categories.name }}</h2>
+            <h2 class="fw-bold">Add Product in {{ category.name }}</h2>
           </div>
           <div class="card-body">
             <form action="" method="POST" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="mb-3">
                 <label for="" class="form-label">Image</label>
-                <input type="file" name="product_image" class="form-control" />
+                <input type="file" name="image" class="form-control" />
               </div>
               <div class="mb-3">
                 <label for="" class="form-label">Name</label>
-                <input type="text" name="product_name" class="form-control" />
+                <input type="text" name="name" class="form-control" />
               </div>
               <div class="mb-3">
                 <label for="" class="form-label">Description</label>
-                <input type="text" name="product_description" class="form-control" />
+                <input type="text" name="description" class="form-control" />
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Original Price</label>
+                <input type="text" name="original_price" class="form-control" />
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Selling Price</label>
+                <input type="text" name="selling_price" class="form-control" />
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Quantity</label>
+                <input type="text" name="quantity" class="form-control" />
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Sold</label>
+                <input type="text" name="sold" class="form-control" />
               </div>
 
               <!--Buttons Below-->

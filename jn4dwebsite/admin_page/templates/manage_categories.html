@@ -89,9 +89,9 @@ Categories{%endblock %} {% block content %}
                   </td>
                   {% endif %}
                   <td>
-                    <a href="" class="btn btn-outline-secondary px-0 py-0">
+                    <a href="{% url "manage-products" category.id %}" class="btn btn-outline-secondary px-0 py-0">
                       <svg class="bi m-2" width="16" height="16">
-                        <use xlink:href="#view"><!--Add--></use>
+                        <use xlink:href="#view"><!--View--></use>
                       </svg>
                     </a>
                     <a href="{% url "add-products" category.id %}" class="btn btn-outline-primary px-0 py-0">

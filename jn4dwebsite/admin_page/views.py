@@ -154,7 +154,7 @@ def manageCategories(request):
 
 def editCategories(request, pk):
     headers = Header.objects.all()
-    categories = Category.objects.get(id=pk)
+    categories = Category.objects.filter(id=pk)
 
     if request.method == "POST":
         if len(request.FILES) != 0:
@@ -207,13 +207,85 @@ def deleteCategories(request, pk):
 
 def addProducts(request, pk):
     headers = Header.objects.all()
-    categories = Category.objects.get(id=pk)
+    category = Category.objects.get(id=pk)
     products = Product.objects.all()
+
+    if request.method == 'POST':
+        product = Product()
+        product.category = category
+        product.name = request.POST.get('name')
+        product.description = request.POST.get('description')
+        product.original_price = request.POST.get('original_price')
+        product.selling_price = request.POST.get('selling_price')
+        product.quantity = request.POST.get('quantity')
+        product.sold = request.POST.get('sold')
+
+        if len(request.FILES) != 0:
+            product.image = request.FILES['image']
+
+        product.save()
+        messages.success(request, f"{product.name} successfully added to {category.name} category")
+        return redirect('manage-categories')
 
     context = {
         'headers': headers,
-        'categories': categories,
+        'category': category,
         'products': products,
     }
 
     return render(request, 'add_products.html', context)
+
+
+def manageProducts(request, pk):
+    if (Category.objects.filter(id=pk)):
+        headers = Header.objects.all()
+        products = Product.objects.all()
+        category = Category.objects.get(id=pk)
+        context = {
+            'headers': headers,
+            'products': products,
+            'category': category,
+        }
+        return render(request, 'manage_products.html', context)
+    else:
+        messages.warning(request, "No products found.")
+        return redirect('manage-categories')
+
+    
+
+
+def editProducts(request, pk):
+    headers = Header.objects.all()
+    category = Category.objects.get(id=pk)
+    product = Product.objects.get(id=pk)
+
+    if request.method == 'POST':
+        if len(request.FILES) != 0:
+            if len(product.image) > 0:
+                os.remove(product.image.path)
+            product.image = request.FILES['image']
+        product.name = request.POST.get('name')
+        product.description = request.POST.get('description')
+        product.quantity = request.POST.get('quantity')
+        product.sold = request.POST.get('sold')
+        product.original_price = request.POST.get('original_price')
+        product.selling_price = request.POST.get('selling_price')
+        product.save()
+        messages.success(request, f"{product.name} successfully updated")
+
+    context = {
+        'headers': headers,
+        'category': category,
+        'product': product,
+    }
+
+    return render(request, "edit_products.html", context)
+
+
+def deleteProducts(request, pk):
+    product = Product.objects.get(id=pk)
+    if len(product.image) > 0:
+        os.remove(product.image.path)
+    product.delete()
+    messages.success(request, f"{product.name} successfully deleted.")    
+    return redirect('manage-products')
