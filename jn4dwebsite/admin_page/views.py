@@ -239,7 +239,7 @@ def addProducts(request, pk):
 def manageProducts(request, pk):
     if (Category.objects.filter(id=pk)):
         headers = Header.objects.all()
-        products = Product.objects.all()
+        products = Product.objects.filter(category__id=pk)
         category = Category.objects.get(id=pk)
         context = {
             'headers': headers,
@@ -256,7 +256,7 @@ def manageProducts(request, pk):
 
 def editProducts(request, pk):
     headers = Header.objects.all()
-    category = Category.objects.get(id=pk)
+    #category = Category.objects.get(id=pk)
     product = Product.objects.get(id=pk)
 
     if request.method == 'POST':
@@ -272,10 +272,10 @@ def editProducts(request, pk):
         product.selling_price = request.POST.get('selling_price')
         product.save()
         messages.success(request, f"{product.name} successfully updated")
-
+        return redirect('manage-categories')
     context = {
         'headers': headers,
-        'category': category,
+        #'category': category,
         'product': product,
     }
 
@@ -288,4 +288,4 @@ def deleteProducts(request, pk):
         os.remove(product.image.path)
     product.delete()
     messages.success(request, f"{product.name} successfully deleted.")    
-    return redirect('manage-products')
+    return redirect('manage-categories')
