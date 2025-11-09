@@ -1,4 +1,4 @@
-<div class="container">
+{% comment %} <div class="container">
     <div class="row">
         <div class="col-md-12">
             <h1>Categories</h1>
@@ -21,4 +21,117 @@
             </div>
         </div>
     </div>
+</div> {% endcomment %}
+
+<style>
+    .logo-slider {
+    background-color: #f8f9fa;
+    overflow: hidden;
+    padding: 40px 0;
+    position: relative;
+    white-space: nowrap;
+}
+
+.logo-track {
+    display: inline-flex;
+    animation: scroll 30s linear infinite;
+}
+
+/* Pause animation on hover */
+.logo-slider:hover .logo-track {
+    animation-play-state: paused;
+}
+
+.logo-item {
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 auto;
+    width: 180px;
+    margin: 0 30px;
+    text-align: center;
+}
+
+.logo-item img {
+    display: block; 
+    margin: 0 auto;
+    max-width: 100%;
+    max-height: 100px;
+    object-fit: contain;
+    filter: grayscale(100%);
+    opacity: 0.8;
+    transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
+}
+
+.logo-item p {
+    margin-top: 10px; 
+}
+
+.logo-item img:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* Optional gradient fade on sides */
+.logo-slider::before,
+.logo-slider::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 100px;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+.logo-slider::before {
+    left: 0;
+    background: linear-gradient(to right, #f8f9fa 0%, transparent 100%);
+}
+.logo-slider::after {
+    right: 0;
+    background: linear-gradient(to left, #f8f9fa 0%, transparent 100%);
+}
+
+@media (max-width: 768px) {
+    .logo-item {
+    width: 120px;
+    margin: 0 15px;
+    }
+    .logo-item img {
+    max-height: 60px;
+    }
+}
+
+/* ================================================*/
+</style>
+
+
+<div class="logo-slider">
+    <div class="logo-track">
+        {% for logo in categories %}
+        <div class="logo-item">
+            <a href="{% url "view-products" logo.id %}">
+            <img src="{{ logo.image.url }}" alt="{{ logo.name }}">
+            </a>
+            <p>{{ logo.name }}</p>
+        </div>
+        {% endfor %}
+        {# Duplicate logos to make the scroll seamless #}
+        {% for logo in categories %}
+        <div class="logo-item">
+            <a href="{% url "view-products" logo.id %}">
+            <img src="{{ logo.image.url }}" alt="{{ logo.name }}">
+            </a>
+            <p>{{ logo.name }}</p>
+        </div>
+        {% endfor %}
+    </div>
 </div>
+
+
