@@ -58,7 +58,7 @@
                   <th>Sold</th>
                   <th>Original Price</th>
                   <th>Selling Price</th>
-                  <th>Buttons</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -82,8 +82,8 @@
                   {% endif %}
                   <td>{{ product.quantity }}</td>
                   <td>{{ product.sold }}</td>
-                  <td>{{ product.original_price }}</td>
-                  <td>{{ product.selling_price }}</td>
+                  <td>{{ product.original_price |floatformat:2 }}</td>
+                  <td>{{ product.selling_price |floatformat:2 }}</td>
                   <td>
                     <a href=" {% url 'edit-products' product.id %}" class="btn btn-outline-success px-0 py-0">
                       <svg class="bi m-2" width="16" height="16">

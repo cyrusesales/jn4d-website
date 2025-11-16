@@ -86,11 +86,11 @@
               </div>
               <div class="mb-3">
                 <label for="" class="form-label">Original Price</label>
-                <input type="text" name="original_price" value="{{ product.original_price }}" class="form-control" />
+                <input type="text" name="original_price" value="{{ product.original_price |floatformat:2  }}" class="form-control" />
               </div>
               <div class="mb-3">
                 <label for="" class="form-label">Selling Price</label>
-                <input type="text" name="selling_price" value="{{ product.selling_price }}" class="form-control" />
+                <input type="text" name="selling_price" value="{{ product.selling_price |floatformat:2  }}" class="form-control" />
               </div>
               <!--Bottons Below-->
               <button type="submit" class="btn btn-success px-0 py-0">

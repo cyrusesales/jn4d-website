@@ -56,9 +56,9 @@
     display: block; 
     margin: 0 auto;
     max-width: 100%;
-    max-height: 100px;
+    max-height: 125px;
     object-fit: contain;
-    filter: grayscale(100%);
+    filter: grayscale(10%);
     opacity: 0.8;
     transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
 }
@@ -113,6 +113,7 @@
 
 
 <div class="logo-slider">
+    <h4 class="text-center m-5">Products and Services</h4>
     <div class="logo-track">
         {% for logo in categories %}
         <div class="logo-item">

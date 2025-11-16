@@ -33,26 +33,12 @@ Categories{%endblock %} {% block content %}
       <div class="col-md-8 mt-4">
         <div>
           {% for msg in messages %}
-          <div
-            class="alert alert-success alert-dismissible d-flex align-items-center fade show"
-            role="alert"
-          >
-            <svg
-              class="bi flex-shrink-0 me-2"
-              role="img"
-              aria-label="Success:"
-              width="20"
-              height="20"
-            >
+          <div class="alert alert-success alert-dismissible d-flex align-items-center fade show" role="alert" >
+            <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:" width="20" height="20" >
               <use xlink:href="#check-circle-fill" />
             </svg>
             <div>{{ msg }}</div>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="alert"
-              aria-label="Close"
-            ></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
           </div>
           {% endfor %}
         </div>
@@ -67,6 +53,7 @@ Categories{%endblock %} {% block content %}
                   <th>Name</th>
                   <th>Description</th>
                   <th>Image</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -104,11 +91,7 @@ Categories{%endblock %} {% block content %}
                         <use xlink:href="#edit"><!--Edit--></use>
                       </svg>
                     </a>
-                    <button
-                      type="button"
-                      class="btn btn-outline-danger px-0 py-0"
-                      data-bs-toggle="modal"
-                      data-bs-target="#staticBackdrop-{{ category.id }}"
+                    <button type="button" class="btn btn-outline-danger px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ category.id }}"
                     >
                       <svg class="bi m-2" width="16" height="16">
                         <use xlink:href="#delete"></use>
@@ -116,40 +99,20 @@ Categories{%endblock %} {% block content %}
                       <!--Delete-->
                     </button>
                     <!--Modal-->
-                    <div
-                      class="modal fade"
-                      id="staticBackdrop-{{ category.id }}"
-                      data-bs-backdrop="static"
-                      data-bs-keyboard="false"
-                      tabindex="-1"
-                      aria-labelledby="staticBackdropLabel-{{ category.id }}"
-                      aria-hidden="true"
-                    >
+                    <div class="modal fade" id="staticBackdrop-{{ category.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel-{{ category.id }}" aria-hidden="true" >
                       <div class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h1
-                              class="modal-title fs-5"
-                              id="staticBackdropLabel-{{ category.id }}"
-                            >
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel-{{ category.id }}" >
                               Delete
                             </h1>
-                            <button
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
                           </div>
                           <div class="modal-body">
                             <p>Are you sure you want to delete?</p>
                           </div>
                           <div class="modal-footer">
-                            <button
-                              type="button"
-                              class="btn btn-secondary"
-                              data-bs-dismiss="modal"
-                            >
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
                               Close
                             </button>
                             <a href="{% url 'delete-categories' category.id %}" class="btn btn-danger">Delete</a>
