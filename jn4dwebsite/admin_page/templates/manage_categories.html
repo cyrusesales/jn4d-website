@@ -76,22 +76,22 @@ Categories{%endblock %} {% block content %}
                   </td>
                   {% endif %}
                   <td>
-                    <a href="{% url "manage-products" category.id %}" class="btn btn-outline-secondary px-0 py-0">
+                    <a href="{% url "manage-products" category.id %}" class="btn btn-secondary px-0 py-0">
                       <svg class="bi m-2" width="16" height="16">
                         <use xlink:href="#view"><!--View--></use>
                       </svg>
                     </a>
-                    <a href="{% url "add-products" category.id %}" class="btn btn-outline-primary px-0 py-0">
+                    <a href="{% url "add-products" category.id %}" class="btn btn-primary px-0 py-0">
                       <svg class="bi m-2" width="16" height="16">
                         <use xlink:href="#add"><!--Add--></use>
                       </svg>
                     </a>
-                    <a href="{% url 'edit-categories' category.id %}" class="btn btn-outline-success px-0 py-0">
+                    <a href="{% url 'edit-categories' category.id %}" class="btn btn-success px-0 py-0">
                       <svg class="bi m-2" width="16" height="16">
                         <use xlink:href="#edit"><!--Edit--></use>
                       </svg>
                     </a>
-                    <button type="button" class="btn btn-outline-danger px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ category.id }}"
+                    <button type="button" class="btn btn-danger px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ category.id }}"
                     >
                       <svg class="bi m-2" width="16" height="16">
                         <use xlink:href="#delete"></use>

@@ -56,15 +56,26 @@
                 <label for="" class="form-label">Sold</label>
                 <input type="text" name="sold" class="form-control" />
               </div>
+              <div class="mb-3">
+                <label for="yes_no_dropdown" class="form-label">One Size</label>
+                {% comment %} <input type="text" name="sold" class="form-control" /> {% endcomment %}
+                <select name="yes_no_dropdown" id="yes_no_dropdown">
+                  {% for value, label in yes_no_choices %}
+                    <option value="{{ value }}" {% if value == product.one_size %}selected{% endif %} >
+                      {{ label }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
 
               <!--Buttons Below-->
-              <button type="submit" class="btn btn-outline-success px-0 py-0">
+              <button type="submit" class="btn btn-success px-0 py-0">
                 <svg class="bi m-2" width="18" height="18">
                   <use xlink:href="#save"><!--Save--></use>
                 </svg>
               </button>
 
-              <a href="{% url "manage-products" category.id %}" class="btn btn-outline-secondary px-0 py-0">
+              <a href="{% url "manage-products" category.id %}" class="btn btn-secondary px-0 py-0">
                 <svg class="bi m-2" width="18" height="18">
                   <use xlink:href="#back"><!--Back--></use>
                 </svg>

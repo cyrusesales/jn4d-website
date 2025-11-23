@@ -210,6 +210,11 @@ def addProducts(request, pk):
     category = Category.objects.get(id=pk)
     products = Product.objects.all()
 
+    yes_no_choices = [
+        ('yes', 'Yes'),
+        ('no', 'No'),
+    ]
+
     if request.method == 'POST':
         product = Product()
         product.category = category
@@ -219,6 +224,7 @@ def addProducts(request, pk):
         product.selling_price = request.POST.get('selling_price')
         product.quantity = request.POST.get('quantity')
         product.sold = request.POST.get('sold')
+        product.one_Size = request.POST.get('yes_no_dropdown')
 
         if len(request.FILES) != 0:
             product.image = request.FILES['image']
@@ -231,6 +237,7 @@ def addProducts(request, pk):
         'headers': headers,
         'category': category,
         'products': products,
+        'yes_no_choices': yes_no_choices,
     }
 
     return render(request, 'add_products.html', context)
@@ -259,6 +266,11 @@ def editProducts(request, pk):
     #category = Category.objects.get(id=pk)
     product = Product.objects.get(id=pk)
 
+    yes_no_choices = [
+        ('yes', 'Yes'),
+        ('no', 'No'),
+    ]
+
     if request.method == 'POST':
         if len(request.FILES) != 0:
             if len(product.image) > 0:
@@ -270,6 +282,7 @@ def editProducts(request, pk):
         product.sold = request.POST.get('sold')
         product.original_price = request.POST.get('original_price')
         product.selling_price = request.POST.get('selling_price')
+        product.one_size = request.POST.get('yes_no_dropdown')
         product.save()
         messages.success(request, f"{product.name} successfully updated")
         return redirect('manage-categories')
@@ -277,6 +290,7 @@ def editProducts(request, pk):
         'headers': headers,
         #'category': category,
         'product': product,
+        'yes_no_choices': yes_no_choices,
     }
 
     return render(request, "edit_products.html", context)

@@ -58,6 +58,7 @@
                   <th>Sold</th>
                   <th>Original Price</th>
                   <th>Selling Price</th>
+                  <th>One Size</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -84,14 +85,15 @@
                   <td>{{ product.sold }}</td>
                   <td>{{ product.original_price |floatformat:2 }}</td>
                   <td>{{ product.selling_price |floatformat:2 }}</td>
+                  <td>{{ product.one_size }}</td>
                   <td>
-                    <a href=" {% url 'edit-products' product.id %}" class="btn btn-outline-success px-0 py-0">
+                    <a href=" {% url 'edit-products' product.id %}" class="btn btn-success px-0 py-0">
                       <svg class="bi m-2" width="16" height="16">
                         <use xlink:href="#edit"><!--Edit--></use>
                       </svg>
                     </a>   
                     
-                    <button type="button" class="btn btn-outline-danger px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ product.id }}" >
+                    <button type="button" class="btn btn-danger px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ product.id }}" >
                       <svg class="bi m-2" width="16" height="16">
                         <use xlink:href="#delete"></use>
                       </svg>
