@@ -48,3 +48,10 @@ class Product(models.Model):
 
     def __str__(self):
         return str(self.name or self.id)
+    
+class ColorProduct(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    colorName = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.colorName)

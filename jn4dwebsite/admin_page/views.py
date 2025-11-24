@@ -2,7 +2,7 @@ from django.template import loader
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from homepage.forms import HeaderForm
-from homepage.models import Header, Carousel, Category, Product
+from homepage.models import Header, Carousel, Category, Product, ColorProduct
 from django.contrib import messages
 import os
 
@@ -224,7 +224,7 @@ def addProducts(request, pk):
         product.selling_price = request.POST.get('selling_price')
         product.quantity = request.POST.get('quantity')
         product.sold = request.POST.get('sold')
-        product.one_Size = request.POST.get('yes_no_dropdown')
+        product.one_size = request.POST.get('yes_no_dropdown')
 
         if len(request.FILES) != 0:
             product.image = request.FILES['image']
@@ -303,3 +303,43 @@ def deleteProducts(request, pk):
     product.delete()
     messages.success(request, f"{product.name} successfully deleted.")    
     return redirect('manage-categories')
+
+def manageColorProduct(request, pk):
+    if (Product.objects.filter(id=pk)):
+        headers = Header.objects.all()
+        colorProducts = ColorProduct.objects.filter(product__id=pk)
+        product = Product.objects.get(id=pk)
+
+        context = {
+            'headers': headers,
+            'colorProducts': colorProducts,
+            'product': product,
+        }
+
+        return render(request, "manage_color_product.html", context)
+    else:
+        messages.warning(request, "No Color Product Found")
+        return render(request, "manage_color_product.html")
+    
+
+def addColorProduct(request, pk):
+    headers = Header.objects.all()
+    product = Product.objects.get(id=pk)
+    colorProduct = ColorProduct.objects.all()
+
+    if request.method == 'POST':
+        colorProduct = ColorProduct()
+        colorProduct.product = product
+        colorProduct.colorName = request.POST.get("colorName")
+
+        colorProduct.save()
+        messages.success(request, f"{colorProduct.colorName} successfully added to {product.name}")
+        return redirect('manage-categories')
+    
+    context = {
+        'headers': headers,
+        'product': product,
+        'colorProduct': colorProduct,
+    }
+
+    return render(request, "add_color_product.html", context)

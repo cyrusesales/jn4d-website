@@ -1,4 +1,4 @@
-{% extends "admin_base.html" %} {% block title %}Manage Products{%endblock %}
+{% extends "admin_base.html" %} {% block title %}Manage Color Product{%endblock %}
 {%block content %}
 <link
   href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
@@ -49,67 +49,41 @@
         {% endfor %}
         <div class="card" style="width: 1100px;">
           <div class="card-header">
-            <h2 class="fw-bold">Manage Products of {{ category.name }}</h2>
+            <h2 class="fw-bold">Manage Color Products of {{ product.name }}</h2>
           </div>
           <div class="card-body">
             <table class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Description</th>
-                  <th>Image</th>
-                  <th>Quantity</th>
-                  <th>Sold</th>
-                  <th>Original Price</th>
-                  <th>Selling Price</th>
-                  <th>One Size</th>
+                  <th>Color Name</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {% for product in products %}
+                {% for color in colorProducts %}
                 <tr>
-                  <td>{{ product.name }}</td>
-                  <td>{{ product.description }}</td>
-                  {% if product.image %}
-                  <td>
-                    <img
-                      src="{{ product.image.url }}"
-                      alt=""
-                      width="100"
-                      height="50"
-                    />
-                  </td>
-                  {% else %}
-                  <td>
-                    <p>No Image available</p>
-                  </td>
-                  {% endif %}
-                  <td>{{ product.quantity }}</td>
-                  <td>{{ product.sold }}</td>
-                  <td>{{ product.original_price |floatformat:2 }}</td>
-                  <td>{{ product.selling_price |floatformat:2 }}</td>
-                  <td>{{ product.one_size }}</td>
+                  <td>{{ color.colorName }}</td>
+                  
                   <td>
                     <!-- Action Buttons -->
-                    <a href=" {% url 'edit-products' product.id %}" class="btn btn-success px-0 py-0">
+                    <a href="" class="btn btn-success px-0 py-0">
                       <svg class="bi m-2" width="16" height="16">
                         <use xlink:href="#edit"><!--Edit--></use>
                       </svg>
                     </a>   
                     
-                    <button type="button" class="btn btn-danger px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ product.id }}" >
+                    <button type="button" class="btn btn-danger px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ color.id }}" >
                       <svg class="bi m-2" width="16" height="16">
                         <use xlink:href="#delete"></use>
                       </svg>
                       <!--Delete-->
                     </button>
                     <!--Modal-->
-                    <div class="modal fade" id="staticBackdrop-{{ product.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel-{{ product.id }}" aria-hidden="true" >
+                    <div class="modal fade" id="staticBackdrop-{{ color.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel-{{ color.id }}" aria-hidden="true" >
                       <div class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="staticBackdropLabel-{{ product.id }}" >
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel-{{ color.id }}" >
                               Delete
                             </h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
@@ -121,13 +95,14 @@
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
                               Close
                             </button>
-                            <a href="{% url 'delete-products' product.id %}" class="btn btn-danger">Delete</a>
+                            {% comment %} <a href="{% url 'delete-products' color.id %}" class="btn btn-danger">Delete</a> {% endcomment %}
+                            <a href="" class="btn btn-danger">Delete</a>
                           </div>
                         </div>
                       </div>
                     </div>
                     <!--Color Button-->
-                    <a href="{% url 'manage-color-product' product.id %}" class="btn btn-primary px-0 py-0">
+                    <a href="" class="btn btn-primary px-0 py-0">
                       <svg class="bi m-2" width="16" height="16">
                         <use xlink:href="#color"><!--Edit--></use>
                       </svg>
@@ -137,15 +112,15 @@
                 {% endfor %}
               </tbody>
             </table>
-            <a href="{% url "add-products" category.id %}" class="btn btn-primary px-0 py-0">
+            <a href="{% url 'add-color-product' product.id %}" class="btn btn-primary px-0 py-0">
               <svg class="bi m-2" width="18" height="18">
                 <use xlink:href="#add"><!--Add--></use>
               </svg>
-            </a>
+            </a> 
             <a href="{% url "manage-categories" %}" class="btn btn-secondary px-0 py-0">
               <svg class="bi m-2" width="18" height="18">
                 <use xlink:href="#back"><!--Back--></use>
-              </svg>
+              </svg> 
               <!--Back-->
             </a>
           </div>
