@@ -304,6 +304,8 @@ def deleteProducts(request, pk):
     messages.success(request, f"{product.name} successfully deleted.")    
     return redirect('manage-categories')
 
+
+
 def manageColorProduct(request, pk):
     if (Product.objects.filter(id=pk)):
         headers = Header.objects.all()
@@ -343,3 +345,27 @@ def addColorProduct(request, pk):
     }
 
     return render(request, "add_color_product.html", context)
+
+
+def editColorProduct(request, pk):
+    headers = Header.objects.all()
+    colorProduct = ColorProduct.objects.get(id=pk)
+
+    if request.method == 'POST':
+        colorProduct.colorName = request.POST.get('colorName')
+        colorProduct.save()
+        messages.success(request, f"{colorProduct} is edited successfully!")
+        return redirect('manage-categories')
+    
+    context = {
+        'headers': headers,
+        'colorProduct': colorProduct,
+    }
+
+    return render(request, 'edit_color_product.html', context)
+
+def deleteColorProduct(request, pk):
+    colorProduct = ColorProduct.objects.get(id=pk)
+    colorProduct.delete()
+    messages.success(request, f"{colorProduct.colorName} has been deleted!")
+    return redirect('manage-categories')

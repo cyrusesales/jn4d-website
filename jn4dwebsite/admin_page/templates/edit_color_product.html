@@ -1,4 +1,4 @@
-{% extends "admin_base.html" %} {% block title %}Edit Product Categories{%endblock %} {% block content %}
+{% extends "admin_base.html" %} {% block title %}Edit Color Product {%endblock %} {% block content %}
 <link
   href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
   rel="stylesheet"
@@ -55,54 +55,12 @@
           <div class="card-body">
             <form method="POST" enctype="multipart/form-data">
               {% csrf_token %}
+
               <div class="mb-3">
-                {% if product.image %}
-                <img
-                  src="{{ product.image.url }}"
-                  alt="Image Here"
-                  class=""
-                  width="200"
-                  height="50"
-                />
-                {% endif %}
-                <label for="" class="form-label">Image</label>
-                <input type="file" name="image" class="form-control" />
+                <label for="" class="form-label">Color Name</label>
+                <input type="text" name="colorName" value="{{ colorProduct.colorName }}" class="form-control"/>
               </div>
-              <div class="mb-3">
-                <label for="" class="form-label">Name</label>
-                <input type="text" name="name" value="{{ product.name }}" class="form-control"/>
-              </div>
-              <div class="mb-3">
-                <label for="" class="form-label">Description</label>
-                <input type="text" name="description" value="{{ product.description }}" class="form-control" />
-              </div>
-              <div class="mb-3">
-                <label for="" class="form-label">Quantity</label>
-                <input type="text" name="quantity" value="{{ product.quantity }}" class="form-control" />
-              </div>
-              <div class="mb-3">
-                <label for="" class="form-label">Sold</label>
-                <input type="text" name="sold" value="{{ product.sold }}" class="form-control" />
-              </div>
-              <div class="mb-3">
-                <label for="" class="form-label">Original Price</label>
-                <input type="text" name="original_price" value="{{ product.original_price |floatformat:2  }}" class="form-control" />
-              </div>
-              <div class="mb-3">
-                <label for="" class="form-label">Selling Price</label>
-                <input type="text" name="selling_price" value="{{ product.selling_price |floatformat:2  }}" class="form-control" />
-              </div>
-              <div class="mb-3">
-                <label for="yes_no_dropdown" class="form-label">One Size?</label>
-                {% comment %} <input type="text" name="one_size" value="{{ product.one_size }}" class="form-control" /> {% endcomment %}
-                <select name="yes_no_dropdown" id="yes_no_dropdown">
-                  {% for value, label in yes_no_choices %}
-                    <option value="{{ value }}" {% if value == product.one_size %}selected{% endif %}>
-                      {{ label }}
-                    </option>
-                  {% endfor %}
-                </select>
-              </div>
+              
               <!--Bottons Below-->
               <button type="submit" class="btn btn-success px-0 py-0">
                 <svg class="bi m-2" width="18" height="18">

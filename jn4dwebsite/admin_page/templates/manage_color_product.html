@@ -66,7 +66,7 @@
                   
                   <td>
                     <!-- Action Buttons -->
-                    <a href="" class="btn btn-success px-0 py-0">
+                    <a href="{% url "edit-color-product" color.id %}" class="btn btn-success px-0 py-0">
                       <svg class="bi m-2" width="16" height="16">
                         <use xlink:href="#edit"><!--Edit--></use>
                       </svg>
@@ -96,17 +96,12 @@
                               Close
                             </button>
                             {% comment %} <a href="{% url 'delete-products' color.id %}" class="btn btn-danger">Delete</a> {% endcomment %}
-                            <a href="" class="btn btn-danger">Delete</a>
+                            <a href="{% url 'delete-color-product' color.id %}" class="btn btn-danger">Delete</a>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <!--Color Button-->
-                    <a href="" class="btn btn-primary px-0 py-0">
-                      <svg class="bi m-2" width="16" height="16">
-                        <use xlink:href="#color"><!--Edit--></use>
-                      </svg>
-                    </a>  
+ 
                   </td>
                 </tr>
                 {% endfor %}
