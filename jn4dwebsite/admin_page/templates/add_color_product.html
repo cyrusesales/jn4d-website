@@ -23,11 +23,15 @@
       <div class="col-md-8 mt-4">
         <div class="card">
           <div class="card-header">
-            <h2 class="fw-bold">Add Color Product in {{ product.name }}</h2>
+            <h2 class="fw">{{ product.name }}</h2>
           </div>
           <div class="card-body">
             <form action="" method="POST" enctype="multipart/form-data">
               {% csrf_token %}
+              <div class="mb-3">
+                <label for="" class="form-label">Image</label>
+                <input type="file" name="image" class="form-control" />
+              </div>
               <div class="mb-3">
                 <label for="" class="form-label">Color Name</label>
                 <input type="text" name="colorName" class="form-control" />

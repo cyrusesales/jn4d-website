@@ -50,17 +50,37 @@
         {% endfor %}
         <div class="card">
           <div class="card-header">
-            <h2 class="fw-bold">Edit Product</h2>
+            <h2 class="fw">Edit Color Product</h2>
           </div>
           <div class="card-body">
             <form method="POST" enctype="multipart/form-data">
               {% csrf_token %}
-
+              <div class="mb-3">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="Image Here" class="" width="200" height="50" />
+                {% endif %}
+                <label for="" class="form-label">Image</label>
+                <input type="file" name="image" class="form-control" />
+              </div>
               <div class="mb-3">
                 <label for="" class="form-label">Color Name</label>
                 <input type="text" name="colorName" value="{{ colorProduct.colorName }}" class="form-control"/>
               </div>
-              
+              <div class="mb-3">
+                <label for="" class="form-label">Description</label>
+                <input type="text" name="description" value="{{ colorProduct.description }}" class="form-control" />
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Original Price</label>
+                <input type="text" name="original_price" value="{{ colorProduct.original_price |floatformat:2  }}" class="form-control" />
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Selling Price</label>
+                <input type="text" name="selling_price" value="{{ colorProduct.selling_price |floatformat:2  }}" class="form-control" />
+              </div>
+
+
+
               <!--Bottons Below-->
               <button type="submit" class="btn btn-success px-0 py-0">
                 <svg class="bi m-2" width="18" height="18">
@@ -68,7 +88,7 @@
                 </svg>
               </button>
 
-              <a href="{% url "manage-categories" %}" class="btn btn-secondary px-0 py-0">
+              <a href="{% url "manage-color-product" colorProduct.product_id %}" class="btn btn-secondary px-0 py-0">
                 <svg class="bi m-2" width="18" height="18">
                   <use xlink:href="#back"><!--Back--></use>
                 </svg>

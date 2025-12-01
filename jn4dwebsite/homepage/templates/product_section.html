@@ -22,11 +22,11 @@
             <h2 class="mb-5">{{ category.name }}</h2>
             <div class="row">
                 {% for item in products %}
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card mb-3">
                             <div class="card-body" >
                                 <div class="category-image">
-                                    <img src="{{ item.image.url }}" alt="Product image" class="w-100 mb-5" style="height: 200px;"/>
+                                    <img src="{{ item.image.url }}" alt="Product image" class="w-75 mb-5" style="height: 150px;"/>
                                 </div>
                                 <h5 class="text-start" style="font-weight: bold;">{{ item.name }}</h5>
                                 <h5 class="text-start" style="font-size: 15px;">{{ item.description }}</h5>
@@ -48,6 +48,8 @@
                                         <use xlink:href="#cart"><!--Add--></use>
                                     </svg>
                                 </button>  
+
+                                
                                 <!--Modal-->
                                 <div class="modal fade" id="staticBackdrop-{{ item.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel-{{ product.id }}" aria-hidden="true" >
                                     <div class="modal-dialog modal-lg">
@@ -63,7 +65,7 @@
                                                     <div class="row align-items-start">
                                                         <div class="col">
                                                             <div class="category-image">
-                                                                <img src="{{ item.image.url }}" alt="Product image" class="w-100 mb-5" style="height: 200px;"/>
+                                                                <img src="{{ item.image.url }}" alt="Product image" class="w-50 mb-5" style="height: 200px;"/>
                                                             </div>
                                                         </div>
                                                         <div class="col">

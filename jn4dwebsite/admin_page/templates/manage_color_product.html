@@ -49,13 +49,17 @@
         {% endfor %}
         <div class="card" style="width: 1100px;">
           <div class="card-header">
-            <h2 class="fw-bold">Manage Color Products of {{ product.name }}</h2>
+            <h2 class="fw">{{ product.name }}</h2>
           </div>
           <div class="card-body">
             <table class="table table-bordered table-striped">
               <thead>
                 <tr>
                   <th>Color Name</th>
+                  <th>Description</th>
+                  <th>Image</th>
+                  <th>Original Price</th>
+                  <th>Selling Price</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -63,6 +67,23 @@
                 {% for color in colorProducts %}
                 <tr>
                   <td>{{ color.colorName }}</td>
+                  <td>{{ color.description }}</td>
+                  {% if color.image %}
+                  <td>
+                    <img
+                      src="{{ color.image.url }}"
+                      alt=""
+                      width="100"
+                      height="50"
+                    />
+                  </td>
+                  {% else %}
+                  <td>
+                    <p>No Image available</p>
+                  </td>
+                  {% endif %}
+                  <td>{{ color.original_price }}</td>
+                  <td>{{ color.selling_price }}</td>
                   
                   <td>
                     <!-- Action Buttons -->
@@ -112,7 +133,7 @@
                 <use xlink:href="#add"><!--Add--></use>
               </svg>
             </a> 
-            <a href="{% url "manage-categories" %}" class="btn btn-secondary px-0 py-0">
+            <a href="{% url "manage-products" product.category_id%}" class="btn btn-secondary px-0 py-0">
               <svg class="bi m-2" width="18" height="18">
                 <use xlink:href="#back"><!--Back--></use>
               </svg> 

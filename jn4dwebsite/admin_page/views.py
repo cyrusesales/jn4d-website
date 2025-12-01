@@ -39,10 +39,12 @@ def manageHeader(request):
         if len(request.FILES) != 0:
             header.logo = request.FILES['logo']
 
-        header.save()
-        messages.success(
-            request, "Header's logo and menu items are added successfully!")
-        return redirect('/')
+            header.save()
+            messages.success(request, "Header's logo and menu items are added successfully!")
+            return redirect('/')
+        else:
+            messages.success(request, f"No Image Found. Please upload!")
+            
     context = {'headers': headers}
     return render(request, 'header_page.html', context)
 
@@ -122,9 +124,12 @@ def addCarousel(request):
         if len(request.FILES) != 0:
             carousel.image = request.FILES['image']
 
-        carousel.save()
-        messages.success(request, "New Slide Photo Saved Successfully")
-        return redirect('manage-carousel')
+            carousel.save()
+            messages.success(request, "New Slide Photo Saved Successfully")
+            return redirect('manage-carousel')
+    
+        else:
+            messages.success(request, f"No Image Found. Please upload!")
 
     context = {
         'carousels': carousels,
@@ -185,9 +190,12 @@ def addCategories(request):
         if len(request.FILES) != 0:
             category.image = request.FILES['image']
 
-        category.save()
-        messages.success(request, "Product Category added successfully!")
-        return redirect('manage-categories')
+            category.save()
+            messages.success(request, "Product Category added successfully!")
+            return redirect('manage-categories')
+    
+        else:
+            messages.success(request, f"No Image Found. Please upload!")
 
     context = {
         'categories': categories,
@@ -229,9 +237,12 @@ def addProducts(request, pk):
         if len(request.FILES) != 0:
             product.image = request.FILES['image']
 
-        product.save()
-        messages.success(request, f"{product.name} successfully added to {category.name} category")
-        return redirect('manage-categories')
+            product.save()
+            messages.success(request, f"{product.name} successfully added to {category.name} category {product.category_id}")
+            return redirect('manage-products', product.category_id)
+    
+        else:
+            messages.success(request, f"No Image Found. Please upload!")
 
     context = {
         'headers': headers,
@@ -263,7 +274,7 @@ def manageProducts(request, pk):
 
 def editProducts(request, pk):
     headers = Header.objects.all()
-    #category = Category.objects.get(id=pk)
+    #category = Category.objects.all()
     product = Product.objects.get(id=pk)
 
     yes_no_choices = [
@@ -284,8 +295,8 @@ def editProducts(request, pk):
         product.selling_price = request.POST.get('selling_price')
         product.one_size = request.POST.get('yes_no_dropdown')
         product.save()
-        messages.success(request, f"{product.name} successfully updated")
-        return redirect('manage-categories')
+        messages.success(request, f"{product.name} successfully updated {product.category_id}")
+        return redirect('manage-products', product.category_id)
     context = {
         'headers': headers,
         #'category': category,
@@ -336,7 +347,7 @@ def addColorProduct(request, pk):
 
         colorProduct.save()
         messages.success(request, f"{colorProduct.colorName} successfully added to {product.name}")
-        return redirect('manage-categories')
+        return redirect('manage-color-product', pk)
     
     context = {
         'headers': headers,
@@ -355,7 +366,7 @@ def editColorProduct(request, pk):
         colorProduct.colorName = request.POST.get('colorName')
         colorProduct.save()
         messages.success(request, f"{colorProduct} is edited successfully!")
-        return redirect('manage-categories')
+        return redirect('manage-color-product', colorProduct.product_id)
     
     context = {
         'headers': headers,
@@ -368,4 +379,4 @@ def deleteColorProduct(request, pk):
     colorProduct = ColorProduct.objects.get(id=pk)
     colorProduct.delete()
     messages.success(request, f"{colorProduct.colorName} has been deleted!")
-    return redirect('manage-categories')
+    return redirect('manage-color-product', colorProduct.product_id)
