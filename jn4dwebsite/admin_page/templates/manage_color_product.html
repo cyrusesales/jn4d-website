@@ -82,8 +82,8 @@
                     <p>No Image available</p>
                   </td>
                   {% endif %}
-                  <td>{{ color.original_price }}</td>
-                  <td>{{ color.selling_price }}</td>
+                  <td>{{ color.original_price |floatformat:2  }}</td>
+                  <td>{{ color.selling_price |floatformat:2  }}</td>
                   
                   <td>
                     <!-- Action Buttons -->

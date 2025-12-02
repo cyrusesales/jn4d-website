@@ -344,10 +344,16 @@ def addColorProduct(request, pk):
         colorProduct = ColorProduct()
         colorProduct.product = product
         colorProduct.colorName = request.POST.get("colorName")
+        colorProduct.description = request.POST.get("description")
+        colorProduct.original_price = request.POST.get("original_price")
+        colorProduct.selling_price = request.POST.get("selling_price")
 
-        colorProduct.save()
-        messages.success(request, f"{colorProduct.colorName} successfully added to {product.name}")
-        return redirect('manage-color-product', pk)
+        if len(request.FILES) != 0:
+            colorProduct.image = request.FILES['image']
+        
+            colorProduct.save()
+            messages.success(request, f"{colorProduct.colorName} successfully added to {product.name}")
+            return redirect('manage-color-product', pk)
     
     context = {
         'headers': headers,
@@ -363,7 +369,15 @@ def editColorProduct(request, pk):
     colorProduct = ColorProduct.objects.get(id=pk)
 
     if request.method == 'POST':
+        if len(request.FILES) != 0:
+            if len(colorProduct.image) > 0:
+                os.remove(colorProduct.image.path)
+            colorProduct.image = request.FILES["image"]
         colorProduct.colorName = request.POST.get('colorName')
+        colorProduct.description = request.POST.get('description')
+        colorProduct.original_price = request.POST.get('original_price')
+        colorProduct.selling_price = request.POST.get('selling_price')
+
         colorProduct.save()
         messages.success(request, f"{colorProduct} is edited successfully!")
         return redirect('manage-color-product', colorProduct.product_id)
@@ -377,6 +391,8 @@ def editColorProduct(request, pk):
 
 def deleteColorProduct(request, pk):
     colorProduct = ColorProduct.objects.get(id=pk)
+    if len(colorProduct.image) > 0:
+        os.remove(colorProduct.image.path)
     colorProduct.delete()
     messages.success(request, f"{colorProduct.colorName} has been deleted!")
     return redirect('manage-color-product', colorProduct.product_id)
