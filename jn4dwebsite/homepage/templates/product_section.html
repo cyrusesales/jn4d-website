@@ -19,18 +19,20 @@
 <div class="container" style="margin-top: 100px;">
     <div class="row">
         <div class="col-md-12">
-            <h2 class="mb-5">{{ category.name }}</h2>
+            <h2 class="mb-4">{{ category.name }}</h2>
             <div class="row">
                 {% for item in products %}
                     <div class="col-md-3">
                         <div class="card mb-3">
+                            <a href="" style="text-decoration: none; color: inherit; font-weight: normal;">
                             <div class="card-body" >
                                 <div class="category-image">
                                     <img src="{{ item.image.url }}" alt="Product image" class="w-75 mb-5" style="height: 150px;"/>
                                 </div>
                                 <h5 class="text-start" style="font-weight: bold;">{{ item.name }}</h5>
                                 <h5 class="text-start" style="font-size: 15px;">{{ item.description }}</h5>
-                                <h5 class="text-start" style="color: red; font-weight: bold;">
+                                
+                                {% comment %} <h5 class="text-start" style="color: red; font-weight: bold;">
                                     <svg class="bi m-2" width="18" height="18">
                                         <use xlink:href="#price"><!--Add--></use>
                                     </svg>
@@ -47,7 +49,7 @@
                                     <svg class="bi m-2" width="16" height="16">
                                         <use xlink:href="#cart"><!--Add--></use>
                                     </svg>
-                                </button>  
+                                </button>   {% endcomment %}
 
                                 
                                 <!--Modal-->
@@ -111,6 +113,7 @@
 
 
                             </div>
+                            </a>
                         </div>
                     </div>
                 {% endfor %}
