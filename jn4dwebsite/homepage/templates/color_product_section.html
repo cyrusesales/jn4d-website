@@ -14,6 +14,9 @@
   <symbol id="cart" viewBox="0 0 16 16" fill="currentColor">
     <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l.5 2H5V5zM6 5v2h2V5zm3 0v2h2V5zm3 0v2h1.36l.5-2zm1.11 3H12v2h.61zM11 8H9v2h2zM8 8H6v2h2zM5 8H3.89l.5 2H5zm0 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0"/>
   </symbol>
+  <symbol id="favorite" viewBox="0 0 16 16" fill="currentColor">
+    <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1"/>
+  </symbol>
 </svg>
 
 <div class="container" style="margin-top: 100px;">
@@ -21,6 +24,7 @@
         
         <div class="col-md-12">
             <h2 class="mb-4">{{ product.name }}</h2>
+            <p>{{ product.description}}</p>
             {% for msg in messages %}
                 <div class="alert alert-success alert-dismissible d-flex align-items-center fade show" role="alert" >
                     <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:" width="20" height="20" >
@@ -34,15 +38,39 @@
                 {% for item in colorProducts %}
                     <div class="col-md-3">
                         <div class="card mb-3">
-                            <a href="" style="text-decoration: none; color: inherit; font-weight: normal;">
+                            
                                 <div class="card-body" >
+                                    <a href="" style="text-decoration: none; color: inherit; font-weight: normal;">
                                     <div class="category-image">
                                         <img src="{{ item.image.url }}" alt="Product image" class="w-75 mb-5" style="height: 150px;"/>
                                     </div>
                                     <h5 class="text-start" style="font-weight: bold;">{{ item.colorName }}</h5>
-                                    <h5 class="text-start" style="font-size: 15px;">{{ item.description }}</h5>
+                                    <h5 class="text-start" style="font-size: 15px; font-weight: normal;">{{ item.description }}</h5>
+                                    <h5 class="text-start" style="color: blue; font-weight: bold;">
+                                        <svg class="bi m-2" width="18" height="18">
+                                            <use xlink:href="#price"><!--Add--></use>
+                                        </svg>
+                                        &#x20B1;{{ item.selling_price |floatformat:2}}
+                                    </h5>
+                                    <h5 class="text-start" style="text-decoration: line-through; font-size: 15px;">
+                                        <svg class="bi m-2" width="18" height="18">
+                                            <use xlink:href="#price"><!--Add--></use>
+                                        </svg>
+                                        &#x20B1;{{ item.original_price |floatformat:2}}
+                                    </h5>
+                                    </a>
+                                    <button type="button" class="btn">
+                                        <svg class="bi m-1" width="20" height="20">
+                                            <use xlink:href="#cart"></use>
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="btn">
+                                        <svg class="bi m-1" width="20" height="20">
+                                            <use xlink:href="#favorite"></use>
+                                        </svg>
+                                    </button>
                                 </div>
-                            </a>
+                            
                         </div>
                     </div>
                 {% endfor %}
