@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
-from .models import Header, Carousel, Category, Product
+from .models import Header, Carousel, Category, Product, ColorProduct
 from django.contrib import messages
 
 # Create your views here.
@@ -64,3 +64,19 @@ def viewProducts(request, pk):
     else:
         messages.warning(request, 'No Products Available.')
         return render('view-products')
+    
+
+def viewColorProducts(request, pk):
+    if (Product.objects.filter(id=pk)):
+        headers = Header.objects.all()
+        colorProducts = ColorProduct.objects.filter(product__id=pk)
+        product = Product.objects.get(id=pk)
+        context = {
+            'headers': headers,
+            'colorProducts': colorProducts,
+            'product': product,
+        }
+        return render(request, 'color_product_section.html', context)
+    else:
+        messages.warning(request, 'No Product Color Available.')
+        return render('view-color-products')
