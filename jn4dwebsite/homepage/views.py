@@ -71,10 +71,12 @@ def viewColorProducts(request, pk):
         headers = Header.objects.all()
         colorProducts = ColorProduct.objects.filter(product__id=pk)
         product = Product.objects.get(id=pk)
+        category = Category.objects.get(id=product.category.id)
         context = {
             'headers': headers,
             'colorProducts': colorProducts,
             'product': product,
+            'category': category,
         }
         return render(request, 'color_product_section.html', context)
     else:

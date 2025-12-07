@@ -338,11 +338,13 @@ def manageColorProduct(request, pk):
 def addColorProduct(request, pk):
     headers = Header.objects.all()
     product = Product.objects.get(id=pk)
+    category = Category.objects.get(id=product.category.id)
     colorProduct = ColorProduct.objects.all()
 
     if request.method == 'POST':
         colorProduct = ColorProduct()
         colorProduct.product = product
+        colorProduct.category = category
         colorProduct.colorName = request.POST.get("colorName")
         colorProduct.description = request.POST.get("description")
         colorProduct.original_price = request.POST.get("original_price")
