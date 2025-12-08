@@ -56,13 +56,13 @@
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Description</th>
+                  <th style="width: 500px;">Description</th>
                   <th>Image</th>
-                  <th>Quantity</th>
-                  <th>Sold</th>
-                  <th>Original Price</th>
-                  <th>Selling Price</th>
-                  <th>One Size</th>
+                  {% comment %} <th>Quantity</th> {% endcomment %}
+                  {% comment %} <th>Sold</th> {% endcomment %}
+                  {% comment %} <th>Original Price</th> {% endcomment %}
+                  {% comment %} <th>Selling Price</th> {% endcomment %}
+                  {% comment %} <th>One Size</th> {% endcomment %}
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -85,11 +85,11 @@
                     <p>No Image available</p>
                   </td>
                   {% endif %}
-                  <td>{{ product.quantity }}</td>
-                  <td>{{ product.sold }}</td>
-                  <td>{{ product.original_price |floatformat:2 }}</td>
-                  <td>{{ product.selling_price |floatformat:2 }}</td>
-                  <td>{{ product.one_size }}</td>
+                  {% comment %} <td>{{ product.quantity }}</td> {% endcomment %}
+                  {% comment %} <td>{{ product.sold }}</td> {% endcomment %}
+                  {% comment %} <td>{{ product.original_price |floatformat:2 }}</td> {% endcomment %}
+                  {% comment %} <td>{{ product.selling_price |floatformat:2 }}</td> {% endcomment %}
+                  {% comment %} <td>{{ product.one_size }}</td> {% endcomment %}
                   <td>
                     <!-- Action Buttons -->
                     <a href=" {% url 'edit-products' product.id %}" class="btn btn-success px-0 py-0">

@@ -159,7 +159,7 @@ def manageCategories(request):
 
 def editCategories(request, pk):
     headers = Header.objects.all()
-    categories = Category.objects.filter(id=pk)
+    categories = Category.objects.get(id=pk)
 
     if request.method == "POST":
         if len(request.FILES) != 0:
@@ -170,6 +170,7 @@ def editCategories(request, pk):
         categories.description = request.POST.get('description')
         categories.save()
         messages.success(request, "Product Category updated successfully!")
+        return redirect('manage-categories')
 
     context = {
         'categories': categories,
@@ -352,6 +353,10 @@ def addColorProduct(request, pk):
 
         if len(request.FILES) != 0:
             colorProduct.image = request.FILES['image']
+            colorProduct.image1 = request.FILES['image1']
+            colorProduct.image2 = request.FILES['image2']
+            colorProduct.image3 = request.FILES['image3']
+            colorProduct.image4 = request.FILES['image4']
         
             colorProduct.save()
             messages.success(request, f"{colorProduct.colorName} successfully added to {product.name}")
@@ -371,10 +376,39 @@ def editColorProduct(request, pk):
     colorProduct = ColorProduct.objects.get(id=pk)
 
     if request.method == 'POST':
-        if len(request.FILES) != 0:
-            if len(colorProduct.image) > 0:
-                os.remove(colorProduct.image.path)
-            colorProduct.image = request.FILES["image"]
+        # if len(request.FILES) != 0:
+        #     if len(colorProduct.image) > 0:
+        #         os.remove(colorProduct.image.path)
+        #     colorProduct.image = request.FILES['image']
+        #     if len(colorProduct.image1) > 0:
+        #         os.remove(colorProduct.image1.path)
+        #     colorProduct.image1 = request.FILES['image1']
+        #     if len(colorProduct.image2) > 0:
+        #         os.remove(colorProduct.image2.path)
+        #     colorProduct.image2 = request.FILES['image2']
+        #     if len(colorProduct.image3) > 0:
+        #         os.remove(colorProduct.image3.path)
+        #     colorProduct.image3 = request.FILES['image3']
+        #     if len(colorProduct.image4) > 0:
+        #         os.remove(colorProduct.image4.path)
+        #     colorProduct.image4 = request.FILES['image4'] 
+
+        # list all image fields in your model
+        image_fields = ['image', 'image1', 'image2', 'image3', 'image4']
+
+        for field in image_fields:
+            new_image = request.FILES.get(field)
+
+            if new_image:
+                # delete old file if exist
+                old_image = getattr(colorProduct, field)
+                if old_image and old_image.name:
+                    if os.path.exists(old_image.path):
+                        os.remove(old_image.path)
+
+                #assign new image
+                setattr(colorProduct, field, new_image)
+
         colorProduct.colorName = request.POST.get('colorName')
         colorProduct.description = request.POST.get('description')
         colorProduct.original_price = request.POST.get('original_price')
@@ -395,6 +429,32 @@ def deleteColorProduct(request, pk):
     colorProduct = ColorProduct.objects.get(id=pk)
     if len(colorProduct.image) > 0:
         os.remove(colorProduct.image.path)
+    if len(colorProduct.image1) > 0:
+        os.remove(colorProduct.image1.path)
+    if len(colorProduct.image2) > 0:
+        os.remove(colorProduct.image2.path)
+    if len(colorProduct.image3) > 0:
+        os.remove(colorProduct.image3.path)
+    if len(colorProduct.image4) > 0:
+        os.remove(colorProduct.image4.path)
     colorProduct.delete()
     messages.success(request, f"{colorProduct.colorName} has been deleted!")
     return redirect('manage-color-product', colorProduct.product_id)
+
+
+def manageColorProductImages(request, pk):
+    
+    if (ColorProduct.objects.filter(id=pk)):
+        headers = Header.objects.all()
+        colorProducts = ColorProduct.objects.filter(product__id=pk)
+        # product = Product.objects.get(id=pk)
+        
+        context = {
+            'headers': headers,
+            'colorProducts': colorProducts,
+            # 'product': product,
+        }
+        return render(request, 'manage_color_product_images.html', context)
+    else:
+        messages.warning(request, "No Image Found")
+        return render(request, 'manage_color_product_images.html')

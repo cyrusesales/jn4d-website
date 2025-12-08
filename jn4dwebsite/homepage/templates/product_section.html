@@ -20,7 +20,7 @@
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="http://127.0.0.1:8000/">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url "homepage" %}">Home</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ category.name }}</li>
         </ol>
     </nav>
@@ -33,7 +33,7 @@
             <div class="row">
                 {% for item in products %}
                     <div class="col-md-3">
-                        <div class="card mb-3">
+                        <div class="card mb-3 ">
                             <a href="{% url "view-color-products" item.id %}" style="text-decoration: none; color: inherit; font-weight: normal;">
                                 <div class="card-body" >
                                     <div class="category-image">

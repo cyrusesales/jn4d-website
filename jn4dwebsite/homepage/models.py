@@ -24,7 +24,7 @@ class Carousel(models.Model):
 class Category(models.Model):
     image = models.ImageField(upload_to='categories/')
     name = models.CharField(max_length=100, blank=True, null=True)
-    description = models.CharField(max_length=100, blank=True, null=True)
+    description = models.CharField(max_length=300, blank=True, null=True)
 
     def __str__(self):
         return str(self.name or self.id)
@@ -35,7 +35,7 @@ class Product(models.Model):
     #slug = models.CharField(max_length=150, blank=True, null=True)
     name = models.CharField(max_length=100, blank=True, null=True)
     image = models.ImageField(upload_to='products/')
-    description = models.CharField(max_length=200, blank=True, null=True)
+    description = models.CharField(max_length=300, blank=True, null=True)
     quantity = models.IntegerField(null=True, blank=True)
     sold = models.IntegerField(null=True, blank=True)
     original_price = models.FloatField(null=True, blank=True)
@@ -53,8 +53,12 @@ class ColorProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     colorName = models.CharField(max_length=100, blank=True, null=True)
-    description = models.CharField(max_length=100, blank=True, null=True)
+    description = models.CharField(max_length=300, blank=True, null=True)
     image = models.ImageField(upload_to='colorproducts/',blank=True, null=True)
+    image1 = models.ImageField(upload_to='colorproducts/',blank=True, null=True)
+    image2 = models.ImageField(upload_to='colorproducts/',blank=True, null=True)
+    image3 = models.ImageField(upload_to='colorproducts/',blank=True, null=True)
+    image4 = models.ImageField(upload_to='colorproducts/',blank=True, null=True)
     original_price = models.FloatField(null=True, blank=True)
     selling_price = models.FloatField(null=True, blank=True)
 

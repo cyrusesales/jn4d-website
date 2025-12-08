@@ -26,4 +26,6 @@ urlpatterns = [
     path('add-color-product/<str:pk>', views.addColorProduct, name="add-color-product"),
     path('edit-color-product/<str:pk>', views.editColorProduct, name='edit-color-product'),
     path('delete-color-product/<str:pk>', views.deleteColorProduct, name='delete-color-product'),
+
+    path('manage-color-product-images/<str:pk>', views.manageColorProductImages, name='manage-color-product-images'),
 ]

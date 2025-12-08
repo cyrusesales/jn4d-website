@@ -78,7 +78,34 @@
                 <label for="" class="form-label">Selling Price</label>
                 <input type="text" name="selling_price" value="{{ colorProduct.selling_price |floatformat:2  }}" class="form-control" />
               </div>
-
+              <div class="mb-3">
+                {% if colorProduct.image1 %}
+                <img src="{{ colorProduct.image1.url }}" alt="Image Here" class="" width="200" height="50" />
+                {% endif %}
+                <label for="" class="form-label">Image 1</label>
+                <input type="file" name="image1" class="form-control" />
+              </div>
+              <div class="mb-3">
+                {% if colorProduct.image2 %}
+                <img src="{{ colorProduct.image2.url }}" alt="Image Here" class="" width="200" height="50" />
+                {% endif %}
+                <label for="" class="form-label">Image 2</label>
+                <input type="file" name="image2" class="form-control" />
+              </div>
+              <div class="mb-3">
+                {% if colorProduct.image3 %}
+                <img src="{{ colorProduct.image3.url }}" alt="Image Here" class="" width="200" height="50" />
+                {% endif %}
+                <label for="" class="form-label">Image 3</label>
+                <input type="file" name="image3" class="form-control" />
+              </div>
+              <div class="mb-3">
+                {% if colorProduct.image4 %}
+                <img src="{{ colorProduct.image4.url }}" alt="Image Here" class="" width="200" height="50" />
+                {% endif %}
+                <label for="" class="form-label">Image 4</label>
+                <input type="file" name="image4" class="form-control" />
+              </div>
 
 
               <!--Bottons Below-->
