@@ -446,13 +446,14 @@ def manageColorProductImages(request, pk):
     
     if (ColorProduct.objects.filter(id=pk)):
         headers = Header.objects.all()
-        colorProducts = ColorProduct.objects.filter(product__id=pk)
-        # product = Product.objects.get(id=pk)
+        colorProducts = ColorProduct.objects.filter(id=pk)
+        colorProduct = ColorProduct.objects.get(id=pk)
+        product = Product.objects.get(id=colorProduct.product.id)
         
         context = {
             'headers': headers,
             'colorProducts': colorProducts,
-            # 'product': product,
+            'product': product,
         }
         return render(request, 'manage_color_product_images.html', context)
     else:
