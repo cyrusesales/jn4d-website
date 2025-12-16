@@ -81,4 +81,22 @@ def viewColorProducts(request, pk):
         return render(request, 'color_product_section.html', context)
     else:
         messages.warning(request, 'No Product Color Available.')
-        return render('view-color-products')
+        return render(request, 'view-color-products')
+    
+
+def viewSpecifications(request, pk):
+    if (ColorProduct.objects.filter(id=pk)):
+        headers = Header.objects.all()
+        colorProducts = ColorProduct.objects.get(id=pk)
+        category = Category.objects.get(id=colorProducts.category.id)
+        product = Product.objects.get(id=colorProducts.product.id)
+        context = {
+            'headers': headers,
+            'colorProducts': colorProducts,
+            'category': category,
+            'product': product,
+        }
+        return render(request, 'product_specifications.html', context)
+    else:
+        messages.warning(request, 'No Products Available')
+        return render(request, 'view-specifications')
