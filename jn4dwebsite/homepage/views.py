@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.template import loader
-from .models import Header, Carousel, Category, Product, ColorProduct
+from .models import Header, Carousel, Category, Product, ColorProduct, Placeholder
 from django.contrib import messages
 from django.template.exceptions import TemplateDoesNotExist
 
@@ -56,10 +56,12 @@ def viewProducts(request, pk):
         headers = Header.objects.all()
         products = Product.objects.filter(category__id=pk)
         category = Category.objects.get(id=pk)
+        placeholders = Placeholder.objects.all()
         context = {
             'headers': headers,
             'products': products,
             'category': category,
+            'placeholders': placeholders,
         }
         return render(request, 'product_section.html', context)
     else:
@@ -73,11 +75,13 @@ def viewColorProducts(request, pk):
         colorProducts = ColorProduct.objects.filter(product__id=pk)
         product = Product.objects.get(id=pk)
         category = Category.objects.get(id=product.category.id)
+        placeholders = Placeholder.objects.all()
         context = {
             'headers': headers,
             'colorProducts': colorProducts,
             'product': product,
             'category': category,
+            'placeholders': placeholders,
         }
         return render(request, 'color_product_section.html', context)
     else:
@@ -109,11 +113,13 @@ def viewSpecifications(request, pk):
         colorProducts = ColorProduct.objects.get(id=pk)
         category = Category.objects.get(id=colorProducts.category.id)
         product = Product.objects.get(id=colorProducts.product.id)
+        placeholders = Placeholder.objects.all()
         context = {
             'headers': headers,
             'colorProducts': colorProducts,
             'category': category,
             'product': product,
+            'placeholders': placeholders,
         }
         return render(request, 'product_specifications.html', context)
     else:

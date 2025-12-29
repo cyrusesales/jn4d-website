@@ -451,11 +451,13 @@ def manageColorProductImages(request, pk):
         colorProducts = ColorProduct.objects.filter(id=pk)
         colorProduct = ColorProduct.objects.get(id=pk)
         product = Product.objects.get(id=colorProduct.product.id)
+        placeholders = Placeholder.objects.all()
         
         context = {
             'headers': headers,
             'colorProducts': colorProducts,
             'product': product,
+            'placeholders': placeholders,
         }
         return render(request, 'manage_color_product_images.html', context)
     else:

@@ -16,6 +16,12 @@
   </symbol>
 </svg>
 
+<style>
+    #placeholder-image {
+        width: 250px;
+    }
+</style>
+
 <div class="container" style="margin-top: 100px;">
 
     <nav aria-label="breadcrumb">
@@ -31,21 +37,30 @@
             <h2 class="mb-4">{{ category.name }}</h2>
             <p>{{ category.description }}</p>
             <div class="row">
-                {% for item in products %}
-                    <div class="col-md-3">
-                        <div class="card mb-3 ">
-                            <a href="{% url "view-color-products" item.id %}" style="text-decoration: none; color: inherit; font-weight: normal;">
-                                <div class="card-body" >
-                                    <div class="category-image">
-                                        <img src="{{ item.image.url }}" alt="Product image" class="w-75 mb-5" style="height: 250px;"/>
+                {% if products %}
+                    {% for item in products %}
+                        <div class="col-md-3">
+                            <div class="card mb-3 ">
+                                <a href="{% url "view-color-products" item.id %}" style="text-decoration: none; color: inherit; font-weight: normal;">
+                                    <div class="card-body" >
+                                        <div class="category-image">
+                                            <img src="{{ item.image.url }}" alt="Product image" class="w-75 mb-5" style="height: 250px;"/>
+                                        </div>
+                                        <h5 class="text-start" style="font-weight: bold;">{{ item.name }}</h5>
+                                        <h5 class="text-start" style="font-size: 15px;">{{ item.description }}</h5>
                                     </div>
-                                    <h5 class="text-start" style="font-weight: bold;">{{ item.name }}</h5>
-                                    <h5 class="text-start" style="font-size: 15px;">{{ item.description }}</h5>
-                                </div>
-                            </a>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    {% for placeholder in placeholders %}
+                        <div class="row">
+                            <p>{{ placeholder.label }}</p>
+                            <img src="{{ placeholder.image.url }}" alt="Image Here" class="" id="placeholder-image" width="150" height="250" />
+                        </div>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
     </div>

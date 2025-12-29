@@ -309,6 +309,10 @@
             height: 80px;
         }
     }
+
+    #placeholder-image {
+        width: 250px;
+    }
 </style>
 
 
@@ -324,7 +328,7 @@
     </nav>
 
     <div class="row">
-        
+        {% if colorProducts.image1 %}
         <div class="col-md-12">
             <h2 class="mb-4">{{ colorProducts.colorName }}</h2>
             <p>{{ colorProducts.description}}</p>
@@ -383,10 +387,26 @@
                 
             </div>
         </div>
+        {% else %}
+            {% for placeholder in placeholders %}
+                <div class="row">
+                    <p>{{ placeholder.label }}</p>
+                    <img src="{{ placeholder.image.url }}" alt="Image Here" class="" id="placeholder-image" width="150" height="250" />
+                </div>
+            {% endfor %}
+        {% endif %}
+
+
     </div>
+
+
+
+
 </div>
 
 <script>
+
+{% if colorProducts.image1 %}
 const images = [
     {
         url: '{{ colorProducts.image.url }}',
@@ -410,6 +430,12 @@ const images = [
     },
     
 ];
+
+{% else %}
+const images = [
+    url: '{{ placeholder.image.url}}',
+];
+{% endif %}
 
 let currentIndex = 0;
 
