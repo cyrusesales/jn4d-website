@@ -29,6 +29,12 @@ class Category(models.Model):
     def __str__(self):
         return str(self.name or self.id)
 
+class Placeholder(models.Model):
+    image = models.ImageField(upload_to='placeholder/')
+    label = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.label or self.id)
 
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)

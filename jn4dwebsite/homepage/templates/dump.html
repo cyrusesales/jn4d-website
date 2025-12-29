@@ -129,3 +129,44 @@
                         </div>
                         <!-- Carousel wrapper -->
                         </div>
+
+
+
+
+def viewSpecifications(request, pk):
+    try:
+        colorProducts = get_object_or_404(ColorProduct, id=pk)
+        headers = Header.objects.all()
+        category = colorProducts.category
+        product = colorProducts.product
+
+        context = {
+            'headers': headers,
+            'colorProducts': colorProducts,
+            'category': category,
+            'product': product
+        }
+        return render(request, 'product_specifications.html', context)
+        # if (ColorProduct.objects.filter(id=pk)):
+        #     headers = Header.objects.all()
+        #     colorProducts = ColorProduct.objects.get(id=pk)
+        #     category = Category.objects.get(id=colorProducts.category.id)
+        #     product = Product.objects.get(id=colorProducts.product.id)
+        #     context = {
+        #         'headers': headers,
+        #         'colorProducts': colorProducts,
+        #         'category': category,
+        #         'product': product,
+        #     }
+        #     return render(request, 'product_specifications.html', context)
+    # except ValueError:
+    #     messages.warning(request, 'No Products Available')
+    #     return redirect(request, 'view-color-products')
+    # except TemplateDoesNotExist:
+    #     messages.warning(request, 'No Products Available')
+    #     return redirect(request, 'view-color-products')
+    except Exception as e:
+        # Handle other potential errors
+        # return HttpResponse(f"An unexpected error occurred: {e}", status=500)
+        messages.warning(request, 'No Products Available')
+        return redirect('homepage')

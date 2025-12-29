@@ -28,4 +28,8 @@ urlpatterns = [
     path('delete-color-product/<str:pk>', views.deleteColorProduct, name='delete-color-product'),
 
     path('manage-color-product-images/<str:pk>', views.manageColorProductImages, name='manage-color-product-images'),
+
+    path('edit-placeholder/<str:pk>', views.editPlaceholder, name='edit-placeholder'),
+    path('add-placeholder/', views.addPlaceholder, name='add-placeholder'),
+    path('delete-placeholder/<str:pk>', views.deletePlaceholder, name='delete-placeholder'),
 ]

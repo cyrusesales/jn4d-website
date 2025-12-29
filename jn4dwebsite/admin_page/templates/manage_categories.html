@@ -26,6 +26,9 @@ Categories{%endblock %} {% block content %}
     <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
     <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
   </symbol>
+  <symbol id="placeholder" viewBox="0 0 16 16" fill="currentColor">
+    <path fill-rule="evenodd" d="M15.817.113A.5.5 0 0 1 16 .5v14a.5.5 0 0 1-.402.49l-5 1a.5.5 0 0 1-.196 0L5.5 15.01l-4.902.98A.5.5 0 0 1 0 15.5v-14a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0L10.5.99l4.902-.98a.5.5 0 0 1 .415.103M10 1.91l-4-.8v12.98l4 .8zm1 12.98 4-.8V1.11l-4 .8zm-6-.8V1.11l-4 .8v12.98z"/>
+  </symbol>
 </svg>
 <section class="section">
   <div class="container">
@@ -63,12 +66,7 @@ Categories{%endblock %} {% block content %}
                   <td>{{ category.description }}</td>
                   {% if category.image %}
                   <td>
-                    <img
-                      src="{{ category.image.url }}"
-                      alt=""
-                      width="200"
-                      height="50"
-                    />
+                    <img src="{{ category.image.url }}" alt="" width="200" height="50" />
                   </td>
                   {% else %}
                   <td>
@@ -91,12 +89,11 @@ Categories{%endblock %} {% block content %}
                         <use xlink:href="#edit"><!--Edit--></use>
                       </svg>
                     </a>
-                    <button type="button" class="btn btn-danger px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ category.id }}"
-                    >
+                    <!--Delete-->
+                    <button type="button" class="btn btn-danger px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ category.id }}">
                       <svg class="bi m-2" width="16" height="16">
                         <use xlink:href="#delete"></use>
                       </svg>
-                      <!--Delete-->
                     </button>
                     <!--Modal-->
                     <div class="modal fade" id="staticBackdrop-{{ category.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel-{{ category.id }}" aria-hidden="true" >
@@ -131,6 +128,68 @@ Categories{%endblock %} {% block content %}
                 <use xlink:href="#add"><!--Add--></use>
               </svg>
             </a>
+
+            <!--placeholder-->
+            <button type="button" class="btn btn-dark px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ category.id }}">
+              <svg class="bi m-2" width="18" height="18">
+                <use xlink:href="#placeholder"><!--Add--></use>
+              </svg>
+            </button>
+            <!--Modal-->
+            <div class="modal fade" id="staticBackdrop-{{ category.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel-{{ category.id }}" aria-hidden="true" >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel-{{ category.id }}" >
+                      Placeholder
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+                  </div>
+
+                  {% if placeholders %}
+                    {% for placeholder in placeholders %} 
+                    <div class="modal-body">
+                      {% if placeholder.image %}
+                      <div class="mb-3">
+                        <label for="" class="form-label">Placeholder Image</label><br>
+                        <img src="{{ placeholder.image.url }}" alt="Image Here" class="" width="100" height="50" />
+                        {% comment %} <input type="file" name="image" class="form-control" /> {% endcomment %}
+                      </div><br>
+                      <div class="mb-3">
+                        <label for="" class="form-label">Placeholder Label</label><br>
+                        {% comment %}  {% endcomment %}
+                        {{ placeholder.label }}
+                      </div> 
+                    </div>
+                    
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                        Close
+                      </button>
+
+                      <a href="{% url "edit-placeholder" placeholder.id %}" class="btn btn-success">Edit</a>
+                      <a href="{% url "delete-placeholder" placeholder.id %}" class="btn btn-danger">Delete</a>
+                    </div>
+                      {% endif %}
+                    {% endfor %}
+
+                  {% else %}
+                  <div class="modal-body">
+                    <p>No Placeholder Available</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                      Close
+                    </button>
+                    <a href="{% url "add-placeholder" %}" class="btn btn-warning">Add</a>
+                  </div>
+                  {% endif %}
+
+                </div>
+              </div>
+            </div>
+
+
           </div>
         </div>
       </div>

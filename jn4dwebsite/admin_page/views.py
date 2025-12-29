@@ -2,7 +2,7 @@ from django.template import loader
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from homepage.forms import HeaderForm
-from homepage.models import Header, Carousel, Category, Product, ColorProduct
+from homepage.models import Header, Carousel, Category, Product, ColorProduct, Placeholder
 from django.contrib import messages
 import os
 
@@ -150,9 +150,11 @@ def deleteCarousel(request, pk):
 def manageCategories(request):
     categories = Category.objects.all()
     headers = Header.objects.all()
+    placeholders = Placeholder.objects.all()
     context = {
         'categories': categories,
         'headers': headers,
+        'placeholders': placeholders,
     }
     return render(request, 'manage_categories.html', context)
 
@@ -459,3 +461,62 @@ def manageColorProductImages(request, pk):
     else:
         messages.warning(request, "No Image Found")
         return render(request, 'manage_color_product_images.html')
+    
+
+def editPlaceholder(request, pk):
+    headers = Header.objects.all()
+    placeholders = Placeholder.objects.all()
+    placeholder = Placeholder.objects.get(id=pk)
+
+    if request.method == 'POST':
+        if len(request.FILES) != 0:
+            if len(placeholder.image) > 0:
+                os.remove(placeholder.image.path)   
+            placeholder.image = request.FILES['image']
+        placeholder.label = request.POST.get('label')
+        placeholder.save()
+        messages.success(request, "Placeholder updated successfully!")
+
+    context = {
+        'headers': headers,
+        'placeholders': placeholders,
+        'placeholder': placeholder,
+    }
+
+    return render(request, 'edit_placeholder.html', context)
+
+
+def addPlaceholder(request):
+    # categories = Category.objects.all()
+    headers = Header.objects.all()
+    # placeholders = Placeholder.objects.all()
+
+    if request.method == "POST":
+        placeholder = Placeholder()
+        placeholder.label = request.POST.get("label")
+
+        if len(request.FILES) != 0:
+            placeholder.image = request.FILES['image']
+
+            placeholder.save()
+            messages.success(request, "Placeholder added succesfully!")
+            # return redirect('manage-categories')
+        
+        else:
+            messages.success(request, "No image Found. Please upload!")
+
+    context = {
+        # 'categories': categories,
+        'headers': headers,
+        # 'placeholders': placeholders,
+    }
+    return render(request, 'add_placeholder.html', context)
+
+
+def deletePlaceholder(request, pk):
+    placeholder = Placeholder.objects.get(id=pk)
+    if len(placeholder.image) > 0:
+        os.remove(placeholder.image.path)
+    placeholder.delete()
+    messages.success(request, "Placeholder is deleted successfully!")
+    return redirect('manage-categories')

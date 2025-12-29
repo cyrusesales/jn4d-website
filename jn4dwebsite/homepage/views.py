@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.template import loader
 from .models import Header, Carousel, Category, Product, ColorProduct
 from django.contrib import messages
+from django.template.exceptions import TemplateDoesNotExist
 
 # Create your views here.
 
@@ -85,6 +86,24 @@ def viewColorProducts(request, pk):
     
 
 def viewSpecifications(request, pk):
+    # headers = Header.objects.all()
+
+    # try:
+    #     colorProducts = ColorProduct.objects.get(id=pk)
+    # except ColorProduct.DoesNotExist:
+    #     messages.warning(request, 'No Product Available')
+    #     return redirect('view-color-products')
+
+    # category = colorProducts.category
+    # product = colorProducts.product
+
+    # context = {
+    #     'headers': headers,
+    #     'colorProducts': colorProducts,
+    #     'category': category,
+    #     'product': product,
+    # }
+    # return render(request, 'product_specifications.html', context)
     if (ColorProduct.objects.filter(id=pk)):
         headers = Header.objects.all()
         colorProducts = ColorProduct.objects.get(id=pk)
@@ -98,5 +117,5 @@ def viewSpecifications(request, pk):
         }
         return render(request, 'product_specifications.html', context)
     else:
-        messages.warning(request, 'No Products Available')
-        return render(request, 'view-specifications')
+        messages.warning(request, 'No Product Available')
+        return render('view-specifications')
