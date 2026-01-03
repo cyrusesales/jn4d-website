@@ -114,12 +114,14 @@ def viewSpecifications(request, pk):
         category = Category.objects.get(id=colorProducts.category.id)
         product = Product.objects.get(id=colorProducts.product.id)
         placeholders = Placeholder.objects.all()
+        variations = ColorProduct.objects.filter(product__id=product.id)
         context = {
             'headers': headers,
             'colorProducts': colorProducts,
             'category': category,
             'product': product,
             'placeholders': placeholders,
+            'variations': variations,
         }
         return render(request, 'product_specifications.html', context)
     else:
