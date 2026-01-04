@@ -98,9 +98,9 @@
                     {% endfor %}
                 {% else %}
                     {% for placeholder in placeholders %}
-                        <div class="row">
-                            <p>{{ placeholder.label }}</p>
-                            <img src="{{ placeholder.image.url }}" alt="Image Here" class="" id="placeholder-image" width="150" height="250" />
+                        <div class="row mt-5">
+                            <p class="text-center">{{ placeholder.label }}</p>
+                            <img src="{{ placeholder.image.url }}" alt="Image Here" class="img-fluid mx-auto d-block" id="placeholder-image" width="150" height="250" />
                         </div>
                     {% endfor %}
                 {% endif %}

@@ -93,40 +93,29 @@
                         <br>
                         <p class="text-start">Variation: </p>
 
-                        {% for item in variations %}
                         <div class="row">
-                            <div class="col-md-3">
-                                <div class="row">
-                                
-                                    <div class="col" >
-                                        <a href="{% url "view-specifications" item.id %}" style="text-decoration: none; color: inherit; font-weight: normal;">
-                                        <div class="category-image">
-                                            <img src="{{ item.image.url }}" alt="Product image" class="w-100 mb-5" style="height: 100px;"/>
-                                        </div>
+                            {% for item in variations %}
 
-                                        <h5 class="text-start" style="font-weight: bold;">{{ item.colorName }}</h5>
-                                        {% comment %} <h5 class="text-start" style="font-size: 15px; font-weight: normal;">{{ item.description }}</h5> {% endcomment %}
-                                        {% comment %} <h5 class="text-start" style="color: blue; font-weight: bold;">
-                                            <svg class="bi m-2" width="18" height="18">
-                                                <use xlink:href="#price"><!--Add--></use>
-                                            </svg>
-                                            &#x20B1;{{ item.selling_price |floatformat:2}}
-                                        </h5>
-                                        <h5 class="text-start" style="text-decoration: line-through; font-size: 15px;">
-                                            <svg class="bi m-2" width="18" height="18">
-                                                <use xlink:href="#price"><!--Add--></use>
-                                            </svg>
-                                            &#x20B1;{{ item.original_price |floatformat:2}}
-                                        </h5> {% endcomment %}
+                                    
+                                <div class="col-md-3 px-0" >
+                                    <div class="card h-100">
+                                        <a href="{% url "view-specifications" item.id %}" style="text-decoration: none; color: inherit; font-weight: normal;">
+                                            <div class="card-header">
+                                                <img src="{{ item.image.url }}" alt="Product image" class="img-fluid" style="height: 100px;"/>
+                                            </div>
+                                            {% comment %} <div>
+                                                <h5 class="text-start" style="font-weight: bold;">{{ item.colorName }}</h5>
+                                            </div> {% endcomment %}
+                                            
                                         </a>
                                     </div>
-                                    
                                 </div>
-                            </div>
-                        </div>
-                        
-                        {% endfor %}
+                                        
 
+
+                            
+                            {% endfor %}
+                        </div>
 
                         One of three columns
                     
@@ -146,9 +135,9 @@
         </div>
         {% else %}
             {% for placeholder in placeholders %}
-                <div class="row">
-                    <p>{{ placeholder.label }}</p>
-                    <img src="{{ placeholder.image.url }}" alt="Image Here" class="" id="placeholder-image" width="150" height="250" />
+                <div class="row mt-5">
+                    <p class="text-center ">{{ placeholder.label }}</p>
+                    <img src="{{ placeholder.image.url }}" alt="Image Here" class="img-fluid mx-auto d-block" id="placeholder-image" width="150" height="250" />
                 </div>
             {% endfor %}
         {% endif %}
