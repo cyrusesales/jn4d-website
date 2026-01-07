@@ -5,6 +5,7 @@ from homepage.forms import HeaderForm
 from homepage.models import Header, Carousel, Category, Product, ColorProduct, Placeholder
 from django.contrib import messages
 import os
+from decimal import Decimal
 
 
 def adminBase(request):
@@ -231,10 +232,10 @@ def addProducts(request, pk):
         product.category = category
         product.name = request.POST.get('name')
         product.description = request.POST.get('description')
-        product.original_price = request.POST.get('original_price')
-        product.selling_price = request.POST.get('selling_price')
-        product.quantity = request.POST.get('quantity')
-        product.sold = request.POST.get('sold')
+        # product.original_price = request.POST.get('original_price')
+        # product.selling_price = request.POST.get('selling_price')
+        # product.quantity = request.POST.get('quantity')
+        # product.sold = request.POST.get('sold')
         product.one_size = request.POST.get('yes_no_dropdown')
 
         if len(request.FILES) != 0:
@@ -350,19 +351,26 @@ def addColorProduct(request, pk):
         colorProduct.category = category
         colorProduct.colorName = request.POST.get("colorName")
         colorProduct.description = request.POST.get("description")
-        colorProduct.original_price = request.POST.get("original_price")
-        colorProduct.selling_price = request.POST.get("selling_price")
+        colorProduct.original_price = Decimal(request.POST.get("original_price").replace(',', ''))
+        colorProduct.selling_price = Decimal(request.POST.get("selling_price").replace(',', ''))
 
-        if len(request.FILES) != 0:
-            colorProduct.image = request.FILES['image']
-            colorProduct.image1 = request.FILES['image1']
-            colorProduct.image2 = request.FILES['image2']
-            colorProduct.image3 = request.FILES['image3']
-            colorProduct.image4 = request.FILES['image4']
-        
-            colorProduct.save()
-            messages.success(request, f"{colorProduct.colorName} successfully added to {product.name}")
-            return redirect('manage-color-product', pk)
+        if (colorProduct.original_price <= colorProduct.selling_price):
+            messages.warning(request, f"Original Price must be greater than Selling Price!")
+            return redirect('add-color-product', pk)
+        else:
+            if len(request.FILES) != 0:
+                colorProduct.image = request.FILES['image']
+                colorProduct.image1 = request.FILES['image1']
+                colorProduct.image2 = request.FILES['image2']
+                colorProduct.image3 = request.FILES['image3']
+                colorProduct.image4 = request.FILES['image4']
+            
+                colorProduct.save()
+                messages.success(request, f"{colorProduct.colorName} successfully added to {product.name}")
+                return redirect('manage-color-product', pk)
+            else:
+                messages.warning(request, f"Image is not uploaded!")
+                return redirect('add-color-product', pk)
     
     context = {
         'headers': headers,
@@ -440,7 +448,7 @@ def deleteColorProduct(request, pk):
     if len(colorProduct.image4) > 0:
         os.remove(colorProduct.image4.path)
     colorProduct.delete()
-    messages.success(request, f"{colorProduct.colorName} has been deleted!")
+    messages.warning(request, f"{colorProduct.colorName} has been deleted!")
     return redirect('manage-color-product', colorProduct.product_id)
 
 
