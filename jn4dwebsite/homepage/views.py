@@ -54,7 +54,7 @@ def category(request):
 def viewProducts(request, pk):
     if (Category.objects.filter(id=pk)):
         headers = Header.objects.all()
-        products = Product.objects.filter(category__id=pk)
+        products = Product.objects.filter(category__id=pk).order_by('id')
         category = Category.objects.get(id=pk)
         placeholders = Placeholder.objects.all()
         context = {
@@ -72,7 +72,7 @@ def viewProducts(request, pk):
 def viewColorProducts(request, pk):
     if (Product.objects.filter(id=pk)):
         headers = Header.objects.all()
-        colorProducts = ColorProduct.objects.filter(product__id=pk)
+        colorProducts = ColorProduct.objects.filter(product__id=pk).order_by('id')
         product = Product.objects.get(id=pk)
         category = Category.objects.get(id=product.category.id)
         placeholders = Placeholder.objects.all()

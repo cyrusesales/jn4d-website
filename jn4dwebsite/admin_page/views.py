@@ -84,7 +84,7 @@ def display_header_logo(request):
 
 def manageCarousel(request):
     headers = Header.objects.all()
-    carousels = Carousel.objects.all()
+    carousels = Carousel.objects.all().order_by('id')
     context = {
         'carousels': carousels,
         'headers': headers
@@ -149,7 +149,7 @@ def deleteCarousel(request, pk):
 
 
 def manageCategories(request):
-    categories = Category.objects.all()
+    categories = Category.objects.all().order_by('id')
     headers = Header.objects.all()
     placeholders = Placeholder.objects.all()
     context = {
@@ -261,7 +261,7 @@ def addProducts(request, pk):
 def manageProducts(request, pk):
     if (Category.objects.filter(id=pk)):
         headers = Header.objects.all()
-        products = Product.objects.filter(category__id=pk)
+        products = Product.objects.filter(category__id=pk).order_by('id')
         category = Category.objects.get(id=pk)
         context = {
             'headers': headers,
@@ -324,7 +324,7 @@ def deleteProducts(request, pk):
 def manageColorProduct(request, pk):
     if (Product.objects.filter(id=pk)):
         headers = Header.objects.all()
-        colorProducts = ColorProduct.objects.filter(product__id=pk)
+        colorProducts = ColorProduct.objects.filter(product__id=pk).order_by('id')
         product = Product.objects.get(id=pk)
 
         context = {
@@ -358,7 +358,8 @@ def addColorProduct(request, pk):
             messages.warning(request, f"Original Price must be greater than Selling Price!")
             return redirect('add-color-product', pk)
         else:
-            if len(request.FILES) != 0:
+            # if len(request.FILES) != 0:
+            if 'image' and 'image1' and 'image2' and 'image3' and 'image4' in request.FILES:
                 colorProduct.image = request.FILES['image']
                 colorProduct.image1 = request.FILES['image1']
                 colorProduct.image2 = request.FILES['image2']
@@ -367,10 +368,10 @@ def addColorProduct(request, pk):
             
                 colorProduct.save()
                 messages.success(request, f"{colorProduct.colorName} successfully added to {product.name}")
-                return redirect('manage-color-product', pk)
+                # return redirect('manage-color-product', pk)
             else:
-                messages.warning(request, f"Image is not uploaded!")
-                return redirect('add-color-product', pk)
+                messages.warning(request, f"Image is not uploaded! Please select a file.")
+                # return redirect('add-color-product', pk)
     
     context = {
         'headers': headers,
@@ -421,8 +422,8 @@ def editColorProduct(request, pk):
 
         colorProduct.colorName = request.POST.get('colorName')
         colorProduct.description = request.POST.get('description')
-        colorProduct.original_price = request.POST.get('original_price')
-        colorProduct.selling_price = request.POST.get('selling_price')
+        colorProduct.original_price = Decimal(request.POST.get('original_price').replace(',', ''))
+        colorProduct.selling_price = Decimal(request.POST.get('selling_price').replace(',', ''))
 
         colorProduct.save()
         messages.success(request, f"{colorProduct} is edited successfully!")
