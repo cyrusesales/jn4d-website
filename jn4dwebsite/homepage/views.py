@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.template import loader
-from .models import Header, Carousel, Category, Product, ColorProduct, Placeholder
+from .models import Header, Carousel, Category, Product, ColorProduct, Placeholder, UserProfile
 from django.contrib import messages
 from django.template.exceptions import TemplateDoesNotExist
 
@@ -127,3 +127,14 @@ def viewSpecifications(request, pk):
     else:
         messages.warning(request, 'No Product Available')
         return render('view-specifications')
+    
+def signUp(request):
+    headers = Header.objects.all()
+    userprofile = UserProfile.objects.all()
+
+    context = {
+        'headers': headers,
+        'userprofile': userprofile,
+    }
+    return render(request, 'sign_up.html', context)
+

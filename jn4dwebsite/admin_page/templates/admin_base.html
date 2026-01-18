@@ -33,6 +33,13 @@
         <path d="M3 2v4.586l7 7L14.586 9l-7-7zM2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586z"/>
         <path d="M5.5 5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m0 1a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3M1 7.086a1 1 0 0 0 .293.707L8.75 15.25l-.043.043a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 0 7.586V3a1 1 0 0 1 1-1z"/>
       </symbol>
+      <symbol id="customizeSize" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M8 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5M.146 8.354a.5.5 0 0 1 0-.708l2-2a.5.5 0 1 1 .708.708L1.707 7.5H5.5a.5.5 0 0 1 0 1H1.707l1.147 1.146a.5.5 0 0 1-.708.708zM10 8a.5.5 0 0 1 .5-.5h3.793l-1.147-1.146a.5.5 0 0 1 .708-.708l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L14.293 8.5H10.5A.5.5 0 0 1 10 8"/>
+      </symbol>
+      <symbol id="multipleSize" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h13A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5zM1.5 3a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z"/>
+        <path d="M2 4.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1H3v2.5a.5.5 0 0 1-1 0zm12 7a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H13V8.5a.5.5 0 0 1 1 0z"/>
+      </symbol>
     </svg>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       {% if headers %} {% for header in headers %}
@@ -71,7 +78,7 @@
                 <svg class="bi me-2" width="16" height="16">
                   <use xlink:href="#header"></use>
                 </svg>
-                Manage Header
+                Header
               </a>
             </li>
             <li class="nav-item">
@@ -79,15 +86,32 @@
                 <svg class="bi me-2" width="16" height="16">
                   <use xlink:href="#carousel"></use>
                 </svg>
-                Manage Slide Photos
+                Slide Photos
               </a>
             </li>
+
             <li class="nav-item">
               <a href="{% url "manage-categories" %}" class="nav-link text-white" aria-current="page">
                 <svg class="bi me-2" width="16" height="16">
                   <use xlink:href="#category"></use>
                 </svg>
-                Product Categories
+                Products
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link text-white" aria-current="page">
+                <svg class="bi me-2" width="16" height="16">
+                  <use xlink:href="#customizeSize"></use>
+                </svg>
+                Customize Size
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link text-white" aria-current="page">
+                <svg class="bi me-2" width="16" height="16">
+                  <use xlink:href="#multipleSize"></use>
+                </svg>
+                Multiple Size
               </a>
             </li>
             <li class="nav-item">

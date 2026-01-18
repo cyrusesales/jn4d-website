@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import RegexValidator
 
 
 class Header(models.Model):
@@ -70,3 +71,21 @@ class ColorProduct(models.Model):
 
     def __str__(self):
         return str(self.colorName or self.id)
+
+  
+
+class UserProfile(models.Model):
+    phone_regex = RegexValidator(
+        regex=r'^\+?1?\d{9,15}$',
+        message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."
+    )
+    # username = models.CharField(max_length=100, blank=True, null=True)
+    firstName = models.CharField(max_length=100, blank=True, null=True)
+    lastName = models.CharField(max_length=100, blank=True, null=True)
+    email = models.EmailField(max_length=254, blank=True, null=True)
+    password = models.CharField(max_length=128, blank=True, null=True)
+    dateOfBirth = models.DateField(max_length=8, blank=True, null=True)
+    phoneNumber = models.CharField(validators=[phone_regex], max_length=20, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.username or self.id)

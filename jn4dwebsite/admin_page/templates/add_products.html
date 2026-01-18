@@ -1,4 +1,6 @@
-{% extends "admin_base.html" %} {% block title %}Add Product{%endblock %} {% block content %}
+{% extends "admin_base.html" %} 
+{% block title %}Add Product{%endblock %} 
+{% block content %}
 <link
   href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
   rel="stylesheet"
@@ -84,7 +86,7 @@
                 </svg>
               </button>
 
-              <a href="{% url "manage-categories" %}" class="btn btn-secondary px-0 py-0">
+              <a href="{% url "manage-products" category.id %}" class="btn btn-secondary px-0 py-0">
                 <svg class="bi m-2" width="18" height="18">
                   <use xlink:href="#back"><!--Back--></use>
                 </svg>
