@@ -5,6 +5,13 @@
   href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
   rel="stylesheet"
 />
+
+<link rel="stylesheet"
+ href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.5.2/build/css/intlTelInput.css"/>
+
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.5.2/build/js/intlTelInput.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.5.2/build/js/utils.js"></script>
+
 <script
   src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
@@ -30,9 +37,30 @@
   </symbol>
 
 </svg>
+
+<style>
+.iti {
+    width: 100%;
+}
+
+.iti--left .iti__flag-container {
+    left: auto;
+    right: 0;
+}
+
+.iti--left input {
+    padding-left: 12px !important;
+    padding-right: 95px !important;
+}
+
+.iti--left .iti__selected-flag {
+    justify-content: flex-end;
+}
+</style>
+
 <section class="section">
   <div class="container">
-    <div class="row justify-content-center" style="margin-top: 80px;">
+    <div class="row justify-content-center" style="margin-top: 80px; margin-bottom: 50px">
       <div class="col-md-8 mt-5">
         <div class="card">
           <div class="card-header">
@@ -51,30 +79,38 @@
                 </div>
               {% endfor %}
               <div class="form-floating mb-3">
-                <input type="text" name="firstName" class="form-control" id="firstname" placeholder="First Name">
+                <input type="text" name="firstName" class="form-control" id="firstname" placeholder="First Name" required>
                 <label for="">First Name</label>
               </div>
               <div class="form-floating mb-3">
-                <input type="text" name="lastName" class="form-control" id="lastname" placeholder="Last Name">
+                <input type="text" name="lastName" class="form-control" id="lastname" placeholder="Last Name" required>
                 <label for="">Last Name</label>
               </div>
               <div class="form-floating mb-3">
-                <input type="email" name="email" class="form-control" id="email" placeholder="name@example.com">
+                <input type="email" name="email" class="form-control" id="email" placeholder="Email" required>
                 <label for="">Email Address</label>
               </div>
               <div class="form-floating mb-3">
-                <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+                <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
                 <label for="">Password</label>
                 <input type="checkbox" name="" id="" onclick="myFunction()"> Show Password
               </div>
               <div class="form-floating mb-3">
-                <input type="date" name="dateOfBirth" class="form-control" id="dateOfBirth" placeholder="">
+                <input type="date" name="dateOfBirth" class="form-control" id="dateOfBirth" placeholder="Date of Birth" required>
                 <label for="">Date of Birth</label>
               </div>
+              <label class="">Phone Number</label>
               <div class="form-floating mb-3">
-                <input type="tel" name="phoneNumber" class="form-control" id="phoneNumber" placeholder="">
-                <label for="">Phone Number</label>
+                <input type="tel" name="phoneNumber" class="form-control" id="phoneNumber"  required>
+                <div class="invalid-feedback">
+                    Please enter a valid phone number.
+                </div>
+                <div class="valid-feedback">
+                    Phone number looks good!
+                </div>
+                
               </div>
+              <input type="hidden" name="full_phone" id="full_phone">
 
 {% comment %} 
               <div class="mb-3">
@@ -146,6 +182,46 @@ function myFunction(){
         x.type = "password";
     }
 }
+
+
+const phoneInput = document.querySelector("#phoneNumber");
+const hiddenPhone = document.querySelector("#full_phone");
+
+const iti = window.intlTelInput(phoneInput, {
+    separateDialCode: true,
+    initialCountry: "ph",
+    preferredCountries: ["ph", "us", "sg"],
+    utilsScript:
+      "https://cdn.jsdelivr.net/npm/intl-tel-input@18.5.2/build/js/utils.js",
+});
+
+// force dropdown right
+phoneInput.closest(".mb-3")
+    .querySelector(".iti")
+    .classList.add("iti--right");
+
+// validate live
+const validatePhone = () => {
+    if (phoneInput.value.trim() === "") {
+        phoneInput.classList.remove("is-valid", "is-invalid");
+        hiddenPhone.value = "";
+        return;
+    }
+
+    if (iti.isValidNumber()) {
+        phoneInput.classList.add("is-valid");
+        phoneInput.classList.remove("is-invalid");
+        hiddenPhone.value = iti.getNumber(); // E.164
+    } else {
+        phoneInput.classList.add("is-invalid");
+        phoneInput.classList.remove("is-valid");
+        hiddenPhone.value = "";
+    }
+};
+
+phoneInput.addEventListener("keyup", validatePhone);
+phoneInput.addEventListener("blur", validatePhone);
+phoneInput.addEventListener("countrychange", validatePhone);
 </script>
 
 {% endblock %}

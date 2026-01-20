@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
 from .models import Header, Carousel, Category, Product, ColorProduct, Placeholder, UserProfile
 from django.contrib import messages
 from django.template.exceptions import TemplateDoesNotExist
+import re
 
 # Create your views here.
 
@@ -131,6 +132,22 @@ def viewSpecifications(request, pk):
 def signUp(request):
     headers = Header.objects.all()
     userprofile = UserProfile.objects.all()
+
+    if request.method == "POST":
+        userprofile = UserProfile()
+        userprofile.firstName = request.POST.get('firstName')
+        userprofile.lastName = request.POST.get('lastName')
+        userprofile.email = request.POST.get('email')
+        userprofile.password = request.POST.get('password')
+        userprofile.dateOfBirth = request.POST.get('dateOfBirth')
+        userprofile.phoneNumber = request.POST.get('phoneNumber')
+
+        if not userprofile.phoneNumber or not re.match(r'^\+\d{8,15}$', userprofile.phoneNumber):
+            # return HttpResponseBadRequest("Invalid phone number")
+            messages.warning(request, "Invalid phone number")
+        else:
+            userprofile.save()
+            messages.success(request, "Sign Up Completed!")
 
     context = {
         'headers': headers,
