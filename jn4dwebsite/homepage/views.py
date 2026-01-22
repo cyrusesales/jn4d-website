@@ -5,6 +5,8 @@ from .models import Header, Carousel, Category, Product, ColorProduct, Placehold
 from django.contrib import messages
 from django.template.exceptions import TemplateDoesNotExist
 import re
+from django.core.validators import EmailValidator
+from django.core.exceptions import ValidationError
 
 # Create your views here.
 
@@ -142,12 +144,22 @@ def signUp(request):
         userprofile.dateOfBirth = request.POST.get('dateOfBirth')
         userprofile.phoneNumber = request.POST.get('full_phone')
 
-        if not userprofile.phoneNumber or not re.match(r'^\+\d{8,15}$', userprofile.phoneNumber):
-            # return HttpResponseBadRequest("Invalid phone number")
-            messages.warning(request, "Invalid phone number")
-        else:
-            userprofile.save()
-            messages.success(request, "Sign Up Completed!")
+        validator = EmailValidator()
+
+        try:
+            validator(userprofile.email)
+
+            if not userprofile.phoneNumber or not re.match(r'^\+\d{8,15}$', userprofile.phoneNumber):
+                # return HttpResponseBadRequest("Invalid phone number")
+                messages.warning(request, "Invalid phone number")
+            else:
+                userprofile.save()
+                messages.success(request, "Sign Up Completed!")
+        
+        except ValidationError as e:
+            messages.warning(request, "Invalid Email Address")
+
+        
 
     context = {
         'headers': headers,

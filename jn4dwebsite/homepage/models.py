@@ -1,5 +1,6 @@
 from django.db import models
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, EmailValidator
+from django.core.exceptions import ValidationError
 
 
 class Header(models.Model):
@@ -82,7 +83,7 @@ class UserProfile(models.Model):
     # username = models.CharField(max_length=100, blank=True, null=True)
     firstName = models.CharField(max_length=100, blank=True, null=True)
     lastName = models.CharField(max_length=100, blank=True, null=True)
-    email = models.EmailField(max_length=254, blank=True, null=True)
+    email = models.EmailField(max_length=254, validators=[EmailValidator()], blank=True, null=True)
     password = models.CharField(max_length=128, blank=True, null=True)
     dateOfBirth = models.DateField(max_length=8, blank=True, null=True)
     phoneNumber = models.CharField(validators=[phone_regex], max_length=20, blank=True, null=True)

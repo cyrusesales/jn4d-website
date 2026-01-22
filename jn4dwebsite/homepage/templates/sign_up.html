@@ -111,6 +111,7 @@
                 
               </div>
               <input type="hidden" name="full_phone" id="full_phone">
+              <br>
 
 {% comment %} 
               <div class="mb-3">
@@ -192,6 +193,10 @@ const iti = window.intlTelInput(phoneInput, {
     separateDialCode: true,
     initialCountry: "ph",
     preferredCountries: ["ph"],
+
+    autoPlaceholder: "off",
+
+
     utilsScript:
       "https://cdn.jsdelivr.net/npm/intl-tel-input@18.5.2/build/js/utils.js",
 });
