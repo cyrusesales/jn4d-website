@@ -140,7 +140,7 @@ def signUp(request):
         userprofile.email = request.POST.get('email')
         userprofile.password = request.POST.get('password')
         userprofile.dateOfBirth = request.POST.get('dateOfBirth')
-        userprofile.phoneNumber = request.POST.get('phoneNumber')
+        userprofile.phoneNumber = request.POST.get('full_phone')
 
         if not userprofile.phoneNumber or not re.match(r'^\+\d{8,15}$', userprofile.phoneNumber):
             # return HttpResponseBadRequest("Invalid phone number")

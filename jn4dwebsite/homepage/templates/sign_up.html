@@ -101,7 +101,7 @@
               </div>
               <label class="">Phone Number</label>
               <div class="form-floating mb-3">
-                <input type="tel" name="phoneNumber" class="form-control" id="phoneNumber"  required>
+                <input type="tel" name="phone" class="form-control" id="phone" required>
                 <div class="invalid-feedback">
                     Please enter a valid phone number.
                 </div>
@@ -174,6 +174,7 @@
 </section>
 
 <script>
+//Password Input
 function myFunction(){
     var x = document.getElementById("password");
     if (x.type === "password"){
@@ -183,14 +184,14 @@ function myFunction(){
     }
 }
 
-
-const phoneInput = document.querySelector("#phoneNumber");
+//Phone Number Input
+const phoneInput = document.querySelector("#phone");
 const hiddenPhone = document.querySelector("#full_phone");
 
 const iti = window.intlTelInput(phoneInput, {
     separateDialCode: true,
     initialCountry: "ph",
-    preferredCountries: ["ph", "us", "sg"],
+    preferredCountries: ["ph"],
     utilsScript:
       "https://cdn.jsdelivr.net/npm/intl-tel-input@18.5.2/build/js/utils.js",
 });
@@ -200,8 +201,20 @@ phoneInput.closest(".mb-3")
     .querySelector(".iti")
     .classList.add("iti--right");
 
+function normalizePHNumber(){
+    const country = iti.getSelectedCountryData().iso2;
+
+    if (country === "ph" && !phoneInput.value.startsWith("9")){
+        //phoneInput.value = phoneInput.value.replace(/^0+/, '')
+        phoneInput.classList.add("is-invalid");
+        return;
+    }
+}
+
 // validate live
 const validatePhone = () => {
+    normalizePHNumber();
+
     if (phoneInput.value.trim() === "") {
         phoneInput.classList.remove("is-valid", "is-invalid");
         hiddenPhone.value = "";
@@ -219,8 +232,9 @@ const validatePhone = () => {
     }
 };
 
-phoneInput.addEventListener("keyup", validatePhone);
-phoneInput.addEventListener("blur", validatePhone);
+//phoneInput.addEventListener("keyup", validatePhone);
+//phoneInput.addEventListener("blur", validatePhone);
+phoneInput.addEventListener("input", validatePhone);
 phoneInput.addEventListener("countrychange", validatePhone);
 </script>
 
