@@ -145,28 +145,20 @@ def signUp(request):
         userprofile.phoneNumber = request.POST.get('full_phone')
 
         validator = EmailValidator()
-
         try:
             validator(userprofile.email)
-
             regex = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%]).{12,16}$"
             if re.match(regex, userprofile.password):
-
                 if not userprofile.phoneNumber or not re.match(r'^\+\d{8,15}$', userprofile.phoneNumber):
-                    # return HttpResponseBadRequest("Invalid phone number")
                     messages.warning(request, "Invalid phone number")
                 else:
                     userprofile.save()
                     messages.success(request, "Sign Up Completed!")
-            
             else :
-                messages.warning(request, """Invalid Password! \n Password must be 12-16 characters long \n At least one uppercase, one lowercase, 
+                messages.warning(request, """Invalid Password! Password must be 12-16 characters long and at least one uppercase, one lowercase, 
                   one number, and one symbol (@, #, $, %).""")
-        
         except ValidationError as e:
             messages.warning(request, "Invalid Email Address")
-
-        
 
     context = {
         'headers': headers,
