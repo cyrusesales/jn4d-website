@@ -166,3 +166,13 @@ def signUp(request):
     }
     return render(request, 'sign_up.html', context)
 
+def signIn(request):
+    headers = Header.objects.all()
+    userprofile = UserProfile.objects.all()
+
+    context = {
+        'headers': headers,
+        'userprofile': userprofile,
+    }
+
+    return render(request, 'sign_in.html', context)
