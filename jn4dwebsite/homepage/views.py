@@ -7,6 +7,7 @@ from django.template.exceptions import TemplateDoesNotExist
 import re
 from django.core.validators import EmailValidator
 from django.core.exceptions import ValidationError
+from django.contrib.auth import authenticate, login
 
 # Create your views here.
 
@@ -169,6 +170,22 @@ def signUp(request):
 def signIn(request):
     headers = Header.objects.all()
     userprofile = UserProfile.objects.all()
+
+    if request.method == 'POST':
+        userprofile = UserProfile()
+        userprofile.email = request.POST.get('email')
+        userprofile.password = request.POST.get('password')
+
+        email = userprofile.email
+        password = userprofile.password
+
+        user = authenticate(request, email=email, password=password)
+    
+        if user is not None:
+            login(request, user)
+            return redirect('homepage')
+        else:
+            messages.warning(request, 'Invalid email and password')
 
     context = {
         'headers': headers,
