@@ -137,10 +137,10 @@ def viewSpecifications(request, pk):
     
 def signUp(request):
     headers = Header.objects.all()
-    userprofile = UserProfile.objects.all()
+    # userprofile = UserProfile.objects.all()
 
     if request.method == "POST":
-        userprofile = UserProfile()
+        # userprofile = UserProfile()
         username = request.POST.get('username')
         firstName = request.POST.get('firstName')
         lastName = request.POST.get('lastName')
@@ -149,50 +149,64 @@ def signUp(request):
         dateOfBirth = request.POST.get('dateOfBirth')
         phoneNumber = request.POST.get('full_phone')
 
-         # Create User
-        user = User.objects.create_user(
-            username=username,
-            password=password,
-        )
-
-        # Create user profile
-        UserProfile.objects.create(
-            user=user,
-            firstName=firstName,
-            lastName=lastName,
-            email=email,
-            dateOfBirth=dateOfBirth,
-            phoneNumber=phoneNumber,
-        )
+        
 
         validator = EmailValidator()
+
         try:
+            # Username validator
             if User.objects.filter(username=username).exists():
                 messages.warning(request, 'Username already exists!')
-            elif UserProfile.objects.filter(email=email).exists():
+                return redirect('sign-up')
+            
+            # Email validatiom
+            if UserProfile.objects.filter(email=email).exists():
                 messages.warning(request, 'Email already exists!')
-            else:
-                validator(email)
-                regex = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%]).{12,16}$"
-                if re.match(regex, password):
-                    if not phoneNumber or not re.match(r'^\+\d{8,15}$', phoneNumber):
-                        messages.warning(request, "Invalid phone number")
-                    else:
-                        userprofile.save()
-                        messages.success(request, "Sign Up Completed!")
-                else :
-                    messages.warning(request, """Invalid Password! Password must be 12-16 characters long and at least one uppercase, one lowercase, 
-                    one number, and one symbol (@, #, $, %).""")
-        except ValidationError as e:
+                return redirect('sign-up')
+
+            validator(email)
+
+            # Password validation
+            regex = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%]).{12,16}$"
+            
+            if not re.match(regex, password):
+                messages.warning(request, 
+                    "Password must be 12-16 characters long and at least one uppercase, one lowercase, one number, and one symbol (@#$%).""")
+                return redirect('sign-up')
+
+            # Phone validation
+            if not phoneNumber or not re.match(r'^\+\d{8,15}$', phoneNumber):
+                messages.warning(request, "Invalid phone number")
+                return redirect('sign-up')
+
+             # Create User
+            user = User.objects.create_user(
+                username=username,
+                password=password,
+            )
+
+            # Create user profile
+            UserProfile.objects.create(
+                user=user,
+                firstName=firstName,
+                lastName=lastName,
+                email=email,
+                dateOfBirth=dateOfBirth,
+                phoneNumber=phoneNumber,
+            )
+
+            messages.success(request, "Sign Up Completed!")
+            return redirect('sign-in')
+                    
+        except ValidationError:
             messages.warning(request, "Invalid Email Address")
+
         except Exception as e:
             messages.warning(request, f"Unexpected Error occured: {e}")
 
-       
-
     context = {
         'headers': headers,
-        'userprofile': userprofile,
+        # 'userprofile': userprofile,
     }
     return render(request, 'sign_up.html', context)
 
