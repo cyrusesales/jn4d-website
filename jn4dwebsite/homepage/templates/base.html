@@ -64,11 +64,20 @@
               <!--<a class="nav-link active" href="#">Log In</a>-->
               <!-- Sign In -->
               <button type="button" class="btn">
-                <a href="{% url "sign-in" %}">
-                  <svg class="bi m-1" width="20" height="20" style="color: white;">
-                      <use xlink:href="#user"></use>
-                  </svg>
-                </a>
+                {% if user.firstName %}
+                  <a href="">
+                    <p>Hello {{ user.firstName }} </p>
+                    {% comment %} <svg class="bi m-1" width="20" height="20" style="color: white;">
+                        <use xlink:href="#user"></use>
+                    </svg> {% endcomment %}
+                  </a>
+                {% else %}
+                  <a href="{% url "sign-in" %}">
+                    <svg class="bi m-1" width="20" height="20" style="color: white;">
+                        <use xlink:href="#user"></use>
+                    </svg>
+                  </a>
+                {% endif %}
               </button>
             </li>
             

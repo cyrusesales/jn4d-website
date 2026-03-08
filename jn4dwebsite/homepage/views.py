@@ -8,14 +8,17 @@ import re
 from django.core.validators import EmailValidator
 from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 
 # Create your views here.
 
 
 def base(request):
     headers = Header.objects.all()
+    user = UserProfile.objects.all()
     context = {
-        'headers': headers
+        'headers': headers,
+        'user': user
     }
     return render(request, 'base.html', context)
 
@@ -138,28 +141,54 @@ def signUp(request):
 
     if request.method == "POST":
         userprofile = UserProfile()
-        userprofile.firstName = request.POST.get('firstName')
-        userprofile.lastName = request.POST.get('lastName')
-        userprofile.email = request.POST.get('email')
-        userprofile.password = request.POST.get('password')
-        userprofile.dateOfBirth = request.POST.get('dateOfBirth')
-        userprofile.phoneNumber = request.POST.get('full_phone')
+        username = request.POST.get('username')
+        firstName = request.POST.get('firstName')
+        lastName = request.POST.get('lastName')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        dateOfBirth = request.POST.get('dateOfBirth')
+        phoneNumber = request.POST.get('full_phone')
+
+         # Create User
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+        )
+
+        # Create user profile
+        UserProfile.objects.create(
+            user=user,
+            firstName=firstName,
+            lastName=lastName,
+            email=email,
+            dateOfBirth=dateOfBirth,
+            phoneNumber=phoneNumber,
+        )
 
         validator = EmailValidator()
         try:
-            validator(userprofile.email)
-            regex = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%]).{12,16}$"
-            if re.match(regex, userprofile.password):
-                if not userprofile.phoneNumber or not re.match(r'^\+\d{8,15}$', userprofile.phoneNumber):
-                    messages.warning(request, "Invalid phone number")
-                else:
-                    userprofile.save()
-                    messages.success(request, "Sign Up Completed!")
-            else :
-                messages.warning(request, """Invalid Password! Password must be 12-16 characters long and at least one uppercase, one lowercase, 
-                  one number, and one symbol (@, #, $, %).""")
+            if User.objects.filter(username=username).exists():
+                messages.warning(request, 'Username already exists!')
+            elif UserProfile.objects.filter(email=email).exists():
+                messages.warning(request, 'Email already exists!')
+            else:
+                validator(email)
+                regex = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%]).{12,16}$"
+                if re.match(regex, password):
+                    if not phoneNumber or not re.match(r'^\+\d{8,15}$', phoneNumber):
+                        messages.warning(request, "Invalid phone number")
+                    else:
+                        userprofile.save()
+                        messages.success(request, "Sign Up Completed!")
+                else :
+                    messages.warning(request, """Invalid Password! Password must be 12-16 characters long and at least one uppercase, one lowercase, 
+                    one number, and one symbol (@, #, $, %).""")
         except ValidationError as e:
             messages.warning(request, "Invalid Email Address")
+        except Exception as e:
+            messages.warning(request, f"Unexpected Error occured: {e}")
+
+       
 
     context = {
         'headers': headers,
@@ -169,27 +198,25 @@ def signUp(request):
 
 def signIn(request):
     headers = Header.objects.all()
-    userprofile = UserProfile.objects.all()
+    # userprofile = User.objects.all()
 
     if request.method == 'POST':
-        userprofile = UserProfile()
-        userprofile.email = request.POST.get('email')
-        userprofile.password = request.POST.get('password')
-
-        email = userprofile.email
-        password = userprofile.password
-
-        user = authenticate(request, email=email, password=password)
+        # userprofile = UserProfile()
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        user = authenticate(username=username, password=password)
     
         if user is not None:
             login(request, user)
             return redirect('homepage')
+            # messages.success(request, 'Succesfully Login')
         else:
-            messages.warning(request, 'Invalid email and password')
+            messages.warning(request, 'Invalid username or password')
 
     context = {
         'headers': headers,
-        'userprofile': userprofile,
+        # 'userprofile': userprofile,
     }
 
     return render(request, 'sign_in.html', context)
