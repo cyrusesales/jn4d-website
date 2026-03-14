@@ -60,32 +60,7 @@
               <a class="nav-link active" href="#">{{ header.menu_item4 }}</a>
             </li>
             <hr />
-            <li class="nav-item">
-              <!--<a class="nav-link active" href="#">Log In</a>-->
-              <!-- Sign In -->
-              <button type="button" class="btn">
-                {% if user.firstName %}
-                  <a href="">
-                    <p>Hello {{ user.firstName }} </p>
-                    {% comment %} <svg class="bi m-1" width="20" height="20" style="color: white;">
-                        <use xlink:href="#user"></use>
-                    </svg> {% endcomment %}
-                  </a>
-                {% else %}
-                  <a href="{% url "sign-in" %}">
-                    <svg class="bi m-1" width="20" height="20" style="color: white;">
-                        <use xlink:href="#user"></use>
-                    </svg>
-                  </a>
-                {% endif %}
-              </button>
-            </li>
             
-           
-
-            
-
-
             <!--cart-->
             <li class="nav-item">
               <button type="button" class="btn">
@@ -101,6 +76,31 @@
                 </svg>
               </button>
             </li>
+
+            <li class="nav-item">
+              <!--<a class="nav-link active" href="#">Log In</a>-->
+              <!-- Sign In -->
+
+              {% if user.is_authenticated %}
+                <!--Show username and logout-->
+                <span style="color: white;">Hello, {{ user.username }}</span>
+                <form action="{% url "sign-out" %}" method="post" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit">Logout</button>
+                </form>
+              {% else %}
+                <!--Show Login/Register Buttons-->
+                <a href="{% url "sign-in" %}">
+                  <svg class="bi m-1" width="20" height="20" style="color: white;">
+                      <use xlink:href="#user"></use>
+                  </svg>
+                </a>
+                {% comment %} <a href="{% url "sign-up" %}">Sign Up</a> {% endcomment %}
+              {% endif %}
+
+            </li>
+
+
           </ul>
         </div>
         {% endwith %}

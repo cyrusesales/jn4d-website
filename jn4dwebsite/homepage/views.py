@@ -7,7 +7,7 @@ from django.template.exceptions import TemplateDoesNotExist
 import re
 from django.core.validators import EmailValidator
 from django.core.exceptions import ValidationError
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -234,3 +234,9 @@ def signIn(request):
     }
 
     return render(request, 'sign_in.html', context)
+
+def signOut(request):
+    logout(request)
+    messages.info(request, "Logged out successfully!")
+
+    return redirect('homepage')
