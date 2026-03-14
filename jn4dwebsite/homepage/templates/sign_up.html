@@ -137,30 +137,30 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
                             {% for message in messages %}
-                                {% if message.tags == 'warning' %}
-                                    <div class="modal-body" id="modalMessageBody">
-                                        <svg class="bi m-2" width="24" height="24">
-                                            <use xlink:href="#warning"></use>
-                                        </svg> {{ message }}
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
-                                            Close
-                                        </button>
-                                    </div>
-                                {% else %}
-                                    <div class="modal-body" id="modalMessageBody">
-                                        <svg class="bi m-2" width="24" height="24">
-                                            <use xlink:href="#success"></use>
-                                        </svg> {{ message }}
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
-                                            Close
-                                        </button>
-                                        <a href="{% url "sign-in" %}" class="btn btn-success">Login</a>
-                                    </div>
-                                {% endif %}
+                              {% if message.tags == 'warning' %}
+                                <div class="modal-body" id="modalMessageBody">
+                                    <svg class="bi m-2" width="24" height="24">
+                                        <use xlink:href="#warning"></use>
+                                    </svg> {{ message }}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                        Close
+                                    </button>
+                                </div>
+                              {% else %}
+                                <div class="modal-body" id="modalMessageBody">
+                                    <svg class="bi m-2" width="24" height="24">
+                                        <use xlink:href="#success"></use>
+                                    </svg> {{ message }}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                        Close
+                                    </button>
+                                    <a href="{% url "sign-in" %}" class="btn btn-success">Login</a>
+                                </div>
+                              {% endif %}
                             {% endfor %}
                         </div>
                     </div>
