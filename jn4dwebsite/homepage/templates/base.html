@@ -93,20 +93,41 @@
 
               {% if user.is_authenticated %}
                 <!--Show username and logout-->
-                <span style="color: white;">Hello, {{ user.username }}</span>
-                {% comment %} <form action="{% url "sign-out" %}" method="post" style="display:inline;"> {% endcomment %}
+                <div class="row">
+                  <div class="col">
+                    <span style="color: white;">
+                      <div class="dropdown">
+                        <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                          Hello, {{ user.username }}
+                        </button>
+                        
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
+                          <li><a class="dropdown-item" href="{% url "view-user-profile" user.id %}">Profile</a></li>
+      
+                          <li><a class="dropdown-item" href="#">Another action</a></li>
+                          <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                        
+                      </div>
+                    </span>
+                  </div>
                   {% csrf_token %}
-                  <button type="button" class="btn btn-dark px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-adminpage">
-                    <svg class="bi m-1" width="20" height="20" style="color: white;">
-                      <use xlink:href="#admin"></use>
-                    </svg>
-                  </button>
-                  <button type="button" class="btn btn-dark px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ user.id }}">
-                    <svg class="bi m-1" width="20" height="20" style="color: white;">
-                      <use xlink:href="#logout"></use>
-                    </svg>
-                  </button>
-                {% comment %} </form> {% endcomment %}
+                  <div class="col">
+                    <button type="button" class="btn btn-dark px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-adminpage">
+                      <svg class="bi m-1" width="20" height="20" style="color: white;">
+                        <use xlink:href="#admin"></use>
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button type="button" class="btn btn-dark px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ user.id }}">
+                      <svg class="bi m-1" width="20" height="20" style="color: white;">
+                        <use xlink:href="#logout"></use>
+                      </svg>
+                    </button>
+                  </div>
+                  {% comment %} </form> {% endcomment %}
+                </div>
               {% else %}
                 <!--Show Login/Register Buttons-->
                 <a href="{% url "sign-in" %}">
@@ -145,7 +166,7 @@
     </footer>
     {% endcomment %}
 
-  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   </body>
   <!-- Modal for Logout -->
   <div class="modal fade" id="staticBackdrop-{{ user.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel-{{ user.id }}" aria-hidden="true">

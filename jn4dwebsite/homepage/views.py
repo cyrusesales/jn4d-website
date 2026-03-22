@@ -15,10 +15,10 @@ from django.contrib.auth.models import User
 
 def base(request):
     headers = Header.objects.all()
-    user = UserProfile.objects.all()
+    userpro = UserProfile.objects.all()
     context = {
         'headers': headers,
-        'user': user
+        'userpro': userpro,
     }
     return render(request, 'base.html', context)
 
@@ -240,3 +240,14 @@ def signOut(request):
     messages.info(request, "Logged out successfully!")
 
     return redirect('homepage')
+
+
+def viewUserProfile(request, pk):
+    headers = Header.objects.all()
+    userprofile = UserProfile.objects.get(user_id=pk)
+
+    context = {
+        'headers': headers,
+        'userprofile': userprofile,
+    }
+    return render(request, 'view_userprofile.html', context)
