@@ -39,6 +39,13 @@
       <symbol id="wishlist" viewBox="0 0 16 16" fill="currentColor">
         <path d="M3.75 0a1 1 0 0 0-.8.4L.1 4.2a.5.5 0 0 0-.1.3V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4.5a.5.5 0 0 0-.1-.3L13.05.4a1 1 0 0 0-.8-.4zM15 4.667V5H1v-.333L1.5 4h6V1h1v3h6z"/>
       </symbol>
+      <symbol id="wishlist" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M3.75 0a1 1 0 0 0-.8.4L.1 4.2a.5.5 0 0 0-.1.3V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4.5a.5.5 0 0 0-.1-.3L13.05.4a1 1 0 0 0-.8-.4zM15 4.667V5H1v-.333L1.5 4h6V1h1v3h6z"/>
+      </symbol>
+      <symbol id="profile" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5"/>
+          <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+      </symbol>
     </svg>
   </head>
   <body>
@@ -102,31 +109,41 @@
                         </button>
                         
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
-                          <li><a class="dropdown-item" href="{% url "view-user-profile" user.id %}">Profile</a></li>
-      
-                          <li><a class="dropdown-item" href="#">Another action</a></li>
-                          <li><a class="dropdown-item" href="#">Something else here</a></li>
+                          <li class="ms-3">
+                            {% comment %} <a class="dropdown-item" href="{% url "view-user-profile" user.id %}"></a> {% endcomment %}
+                            <a type="button" class="btn px-0 py-0 dropdown-item" href="{% url "view-user-profile" user.id %}">
+                              <svg class="bi m-1" width="20" height="20" style="color: white;">
+                                <use xlink:href="#profile"></use>
+                              </svg>
+                              Profile
+                            </a>
+                          </li>
+                          <li class="ms-3">
+                            <form action="{% url "adminpage" %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                              <button type="submit" class="btn px-0 py-0 dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop-adminpage">
+                                <svg class="bi m-1" width="20" height="20" style="color: white;">
+                                  <use xlink:href="#admin"></use>
+                                </svg>
+                                Admin Page
+                              </button>
+                            </form>
+                          </li>
+                          <li class="ms-3">
+                            <button type="button" class="btn px-0 py-0 dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ user.id }}">
+                              <svg class="bi m-1" width="20" height="20" style="color: white;">
+                                <use xlink:href="#logout"></use>
+                              </svg>
+                              Logout
+                            </button>
+                          </a></li>
+                          <li><a class="dropdown-item" href="#">Something</a></li>
                         </ul>
                         
                       </div>
                     </span>
                   </div>
-                  {% csrf_token %}
-                  <div class="col">
-                    <button type="button" class="btn btn-dark px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-adminpage">
-                      <svg class="bi m-1" width="20" height="20" style="color: white;">
-                        <use xlink:href="#admin"></use>
-                      </svg>
-                    </button>
-                  </div>
-                  <div class="col">
-                    <button type="button" class="btn btn-dark px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ user.id }}">
-                      <svg class="bi m-1" width="20" height="20" style="color: white;">
-                        <use xlink:href="#logout"></use>
-                      </svg>
-                    </button>
-                  </div>
-                  {% comment %} </form> {% endcomment %}
+ 
                 </div>
               {% else %}
                 <!--Show Login/Register Buttons-->
@@ -182,28 +199,6 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
           <form action="{% url "sign-out" %}" method="post" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Yes</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal for Admin Page -->
-  <div class="modal fade" id="staticBackdrop-adminpage" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel-adminpage" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel-adminpage">Confirmation</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          Are you sure you want to go to Admin Page?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-          <form action="{% url "adminpage" %}" method="post" style="display:inline;">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger">Yes</button>
           </form>
