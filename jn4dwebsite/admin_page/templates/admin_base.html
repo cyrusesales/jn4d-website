@@ -14,6 +14,7 @@
 
     <link rel="stylesheet" href="{% static '/homepage/styles.css' %}" />
   </head>
+
   <body>
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;" >
       <symbol id="home" viewBox="0 0 16 16" fill="currentColor">
@@ -55,7 +56,12 @@
       <symbol id="website" viewBox="0 0 16 16" fill="currentColor">
         <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855A8 8 0 0 0 5.145 4H7.5zM4.09 4a9.3 9.3 0 0 1 .64-1.539 7 7 0 0 1 .597-.933A7.03 7.03 0 0 0 2.255 4zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a7 7 0 0 0-.656 2.5zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5zM8.5 5v2.5h2.99a12.5 12.5 0 0 0-.337-2.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5zM5.145 12q.208.58.468 1.068c.552 1.035 1.218 1.65 1.887 1.855V12zm.182 2.472a7 7 0 0 1-.597-.933A9.3 9.3 0 0 1 4.09 12H2.255a7 7 0 0 0 3.072 2.472M3.82 11a13.7 13.7 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5zm6.853 3.472A7 7 0 0 0 13.745 12H11.91a9.3 9.3 0 0 1-.64 1.539 7 7 0 0 1-.597.933M8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855q.26-.487.468-1.068zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.7 13.7 0 0 1-.312 2.5m2.802-3.5a7 7 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7 7 0 0 0-3.072-2.472c.218.284.418.598.597.933M10.855 4a8 8 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4z"/>
       </symbol>
+      <symbol id="profile" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5"/>
+        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+      </symbol>
     </svg>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       {% if headers %} {% for header in headers %}
       <div class="container">
@@ -63,27 +69,50 @@
           ><img src="{{ header.logo.url }}" alt="" width="200" height="50"
         /></a>
       </div>
-      <nav>
-        {% comment %} <a href="{% url "homepage" %}" class="btn text-white">View Website</a> {% endcomment %}
-        <button type="button" class="btn btn-dark px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-websitepage">
-          <svg class="bi m-1" width="20" height="20" style="color: white;">
-            <use xlink:href="#website"></use>
-          </svg>
-        </button>
-      </nav>
-      <nav>
-        {% comment %} <a href="#" class="btn text-white">Log in</a> {% endcomment %}
+
+
+        
         {% if user.is_authenticated %}
-          <!--Show username and logout-->
-          <span style="color: white;">Hello, {{ user.username }}</span>
-          {% comment %} <form action="{% url "sign-out" %}" method="post" style="display:inline;"> {% endcomment %}
-            {% csrf_token %}
-            <button type="button" class="btn btn-dark px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-logout">
-              <svg class="bi m-1" width="20" height="20" style="color: white;">
-                <use xlink:href="#logout"></use>
-              </svg>
+          <div class="dropdown">
+            <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              Hello, {{ user.username }}
             </button>
-          {% comment %} </form> {% endcomment %}
+            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
+              <li class="ms-3">
+                <a type="button" class="btn px-0 py-0 dropdown-item" href="{% url "view-user-profile" user.id %}">
+                  <svg class="bi m-1" width="20" height="20" style="color: white;">
+                    <use xlink:href="#profile"></use>
+                  </svg>
+                  Profile
+                </a>
+              </li>
+              <li class="ms-3">
+                <form action="{% url "homepage" %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                  <button type="submit" class="btn px-0 py-0 dropdown-item">
+                    <svg class="bi m-1" width="20" height="20" style="color: white;">
+                      <use xlink:href="#website"></use>
+                    </svg>
+                    Website
+                  </button>
+                </form>
+              </li>
+              
+              <li class="ms-3">
+                {% csrf_token %}
+                <button type="button" class="btn px-0 py-0 dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop-logout">
+                  <svg class="bi m-1" width="20" height="20" style="color: white;">
+                    <use xlink:href="#logout"></use>
+                  </svg>
+                  Logout
+                </button>
+              </li>
+              <li><a class="dropdown-item" href="#">Something</a></li>
+            </ul>
+            
+          </div>
+        
+
         {% else %}
           <!--Show Login/Register Buttons-->
           <a href="{% url "sign-in" %}">
@@ -94,7 +123,7 @@
           {% comment %} <a href="{% url "sign-up" %}">Sign Up</a> {% endcomment %}
         {% endif %}
 
-      </nav>
+
       {% endfor %} {% else %}
       <p>No Logo Uploaded</p>
       {% endif %}

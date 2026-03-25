@@ -108,7 +108,7 @@
                           Hello, {{ user.username }}
                         </button>
                         
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
+                        <ul class="dropdown-menu dropdown-menu-dark" style="min-width: 0; width: auto;" aria-labelledby="dropdownMenuButton1">
                           <li class="ms-3">
                             {% comment %} <a class="dropdown-item" href="{% url "view-user-profile" user.id %}"></a> {% endcomment %}
                             <a type="button" class="btn px-0 py-0 dropdown-item" href="{% url "view-user-profile" user.id %}">
