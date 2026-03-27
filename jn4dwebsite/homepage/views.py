@@ -9,6 +9,9 @@ from django.core.validators import EmailValidator
 from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import check_password
 
 # Create your views here.
 
@@ -163,6 +166,11 @@ def signUp(request):
             if UserProfile.objects.filter(email=email).exists():
                 messages.warning(request, 'Email already exists!')
                 return redirect('sign-up')
+            
+            # Phone Number validatiom
+            if UserProfile.objects.filter(phoneNumber=phoneNumber).exists():
+                messages.warning(request, 'Phone number already exists!')
+                return redirect('sign-up')
 
             validator(email)
 
@@ -241,7 +249,7 @@ def signOut(request):
 
     return redirect('homepage')
 
-
+@login_required
 def viewUserProfile(request, pk):
     headers = Header.objects.all()
     userprofile = UserProfile.objects.get(user_id=pk)
@@ -251,3 +259,73 @@ def viewUserProfile(request, pk):
         'userprofile': userprofile,
     }
     return render(request, 'view_userprofile.html', context)
+
+@login_required
+def editUserProfile(request, pk):
+    headers = Header.objects.all()
+    user = User.objects.get(id=pk)
+    userprofile = UserProfile.objects.get(user_id=pk)
+
+    if request.method == 'POST':
+        user.username = request.POST.get("username")
+        userprofile.firstName = request.POST.get("firstName")
+        userprofile.lastName = request.POST.get("lastName")
+        userprofile.email = request.POST.get("email")
+        userprofile.dateOfBirth = request.POST.get("dateOfBirth")
+        userprofile.phoneNumber = request.POST.get("phoneNumber")
+
+        # Username validator
+        if User.objects.filter(username=user.username).exists():
+            messages.warning(request, 'Username already exists!')
+        # Email validatiom
+        elif UserProfile.objects.filter(email=userprofile.email).exists():
+            messages.warning(request, 'Email already exists!')
+        # Phone Number validation
+        elif UserProfile.objects.filter(phoneNumber=userprofile.phoneNumber).exists():
+            messages.warning(request, 'Phone number already exists!')
+        # Phone validation
+        elif not userprofile.phoneNumber or not re.match(r'^\+\d{8,15}$', userprofile.phoneNumber):
+            messages.warning(request, "Invalid phone number")
+        else:
+            user.save()
+            userprofile.save()
+            messages.success(request, "User Profile successfully update!")
+
+    context = {
+        'headers': headers,
+        'user': user,
+        'userprofile': userprofile,
+    }
+    return render(request, 'edit_userprofile.html', context)
+
+@login_required
+def changePassword(request, pk):
+    headers = Header.objects.all()
+    user = User.objects.get(id=pk)
+
+    if request.method == 'POST':
+        old_pwd = request.POST.get("password")
+        new_pwd1 = request.POST.get("new_password1")
+        new_pwd2 = request.POST.get("new_password2")
+
+        # Password validation
+        regex = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%]).{12,16}$"
+        if not re.match(regex, new_pwd1):
+            messages.error(request, 
+                "Password must be 12-16 characters long and at least one uppercase, one lowercase, one number, and one symbol (@#$%).""")
+        elif not all([old_pwd, new_pwd1, new_pwd2]) or new_pwd1 != new_pwd2:
+            messages.error(request, "Invalid input or password do not match")
+        elif not check_password(old_pwd, user.password):
+            messages.error(request, "Incorrect current password.")
+        else:
+            user.set_password(new_pwd1)
+            user.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, "Password changed successfully!")
+    
+    context = {
+        'headers': headers,
+        'user': user,
+    }
+
+    return render(request, "change_password.html", context)

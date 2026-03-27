@@ -15,7 +15,7 @@
   </symbol>
   <symbol id="save" viewBox="0 0 16 16" fill="currentColor">
     <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H3v5.5A1.5 1.5 0 0 0 4.5 7h7A1.5 1.5 0 0 0 13 5.5V0h.086a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5H14v-5.5A1.5 1.5 0 0 0 12.5 9h-9A1.5 1.5 0 0 0 2 10.5V16h-.5A1.5 1.5 0 0 1 0 14.5z"/>
-  <path d="M3 16h10v-5.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5zm9-16H4v5.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5zM9 1h2v4H9z"/>
+    <path d="M3 16h10v-5.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5zm9-16H4v5.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5zM9 1h2v4H9z"/>
   </symbol>
   <symbol id="back" viewBox="0 0 16 16" fill="currentColor">
     <path d="M.5 3.5A.5.5 0 0 0 0 4v8a.5.5 0 0 0 1 0V8.753l6.267 3.636c.54.313 1.233-.066 1.233-.697v-2.94l6.267 3.636c.54.314 1.233-.065 1.233-.696V4.308c0-.63-.693-1.01-1.233-.696L8.5 7.248v-2.94c0-.63-.692-1.01-1.233-.696L1 7.248V4a.5.5 0 0 0-.5-.5"/>
@@ -57,16 +57,18 @@
                 <input type="text" name="description" value="{{ categories.description }}" class="form-control" />
               </div>
               {% comment %} <button type="submit" class="btn btn-warning">Update</button> {% endcomment %}
-              <button type="submit" class="btn btn-success px-0 py-0">
-                <svg class="bi m-2" width="18" height="18">
+              <button type="submit" class="btn btn-success">
+                <svg class="bi m-1" width="15" height="15">
                   <use xlink:href="#save"><!--Save--></use>
                 </svg>
+                Save
               </button>
               {% comment %} <a href="{% url "manage-categories" %}" class="btn btn-secondary">Back</a> {% endcomment %}
-              <a href="{% url "manage-categories" %}" class="btn btn-secondary px-0 py-0">
-                <svg class="bi m-2" width="18" height="18">
+              <a href="{% url "manage-categories" %}" class="btn btn-secondary">
+                <svg class="bi m-1" width="15" height="15">
                   <use xlink:href="#back"><!--Back--></use>
                 </svg>
+                Back
               </a>
             </form>
           </div>
