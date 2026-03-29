@@ -68,24 +68,24 @@
             <img src="{{ item.image.url }}" class=" w-25 mx-1 my-1"  alt="...">
             <img src="{{ item.image1.url }}" class=" w-25 mx-1 my-1" alt="...">
             <img src="{{ item.image2.url }}" class=" w-25 mx-1 my-1" alt="...">
-            <img src="{{ item.image3.url }}" class=" w-25 mx-1 my-1" alt="...">
-            <img src="{{ item.image4.url }}" class=" w-25 mx-1 my-1" alt="...">
+            <img src="{{ item.image3.url }}" class=" w-25 mx-1 my-1" style="height: 350px" alt="...">
+            <img src="{{ item.image4.url }}" class=" w-25 mx-1 my-1" style="height: 350px" alt="...">
             {% else %}
               {% for placeholder in placeholders %}
                 <div class="row">
                     <p>{{ placeholder.label }}</p>
-                    <img src="{{ placeholder.image.url }}" alt="Image Here" class="" id="placeholder-image" width="150" height="250" />
+                    <img src="{{ placeholder.image.url }}" alt="Image Here" class="" id="placeholder-image" width="125" height="200" />
                 </div>
               {% endfor %}
             {% endif %}
           {% endfor %}
         </div>
         
-        <a href="{% url "manage-color-product" product.id %}" class="btn btn-secondary px-0 py-0">
-            <svg class="bi m-2" width="18" height="18">
+        <a href="{% url "manage-color-product" product.id %}" class="btn btn-dark">
+            <svg class="bi m-1" width="15" height="15">
                 <use xlink:href="#back"><!--Back--></use>
             </svg> 
-            <!--Back-->
+            Back
         </a>
       </div>
     </div>

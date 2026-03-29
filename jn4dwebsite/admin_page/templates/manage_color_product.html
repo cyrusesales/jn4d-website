@@ -138,16 +138,17 @@
                 {% endfor %}
               </tbody>
             </table>
-            <a href="{% url 'add-color-product' product.id %}" class="btn btn-primary px-0 py-0">
-              <svg class="bi m-2" width="18" height="18">
+            <a href="{% url 'add-color-product' product.id %}" class="btn btn-primary">
+              <svg class="bi m-1" width="15" height="15">
                 <use xlink:href="#add"><!--Add--></use>
               </svg>
+              Add
             </a> 
-            <a href="{% url "manage-products" product.category_id%}" class="btn btn-secondary px-0 py-0">
-              <svg class="bi m-2" width="18" height="18">
+            <a href="{% url "manage-products" product.category_id%}" class="btn btn-dark">
+              <svg class="bi m-1" width="15" height="15">
                 <use xlink:href="#back"><!--Back--></use>
               </svg> 
-              <!--Back-->
+              Back
             </a>
           </div>
         </div>

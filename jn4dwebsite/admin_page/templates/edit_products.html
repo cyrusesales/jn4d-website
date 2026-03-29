@@ -41,12 +41,19 @@
           <div class="card-body">
             <form method="POST" enctype="multipart/form-data">
               {% csrf_token %}
-              <div class="mb-3">
-                {% if product.image %}
-                <img src="{{ product.image.url }}" alt="Image Here" class="" width="200" height="50" />
-                {% endif %}
-                <label for="" class="form-label">Image</label>
-                <input type="file" name="image" class="form-control" />
+              <div class="mb-3 col">
+                <div class="row">
+                  <label for="" class="form-label">Image</label>
+                </div>
+                <div class="row mb-2" style="width: 200px; height: 100px;">
+                  {% if product.image %}
+                  <img src="{{ product.image.url }}" alt="Image Here" class="" width="150" height="100" />
+                  {% endif %}
+                </div>
+                <div class="row">
+                  <input type="file" name="image" class="form-control ms-2" style="width: 685px;" />
+                </div>
+                
               </div>
               <div class="mb-3">
                 <label for="" class="form-label">Name</label>
@@ -84,16 +91,18 @@
                 </select>
               </div>
               <!--Bottons Below-->
-              <button type="submit" class="btn btn-success px-0 py-0">
-                <svg class="bi m-2" width="18" height="18">
+              <button type="submit" class="btn btn-primary">
+                <svg class="bi m-1" width="15" height="15">
                   <use xlink:href="#save"><!--Save--></use>
                 </svg>
+                Save
               </button>
 
-              <a href="{% url "manage-products" product.category_id %}" class="btn btn-secondary px-0 py-0">
-                <svg class="bi m-2" width="18" height="18">
+              <a href="{% url "manage-products" product.category_id %}" class="btn btn-dark">
+                <svg class="bi m-1" width="15" height="15">
                   <use xlink:href="#back"><!--Back--></use>
                 </svg>
+                Back
               </a>
             </form>
           </div>

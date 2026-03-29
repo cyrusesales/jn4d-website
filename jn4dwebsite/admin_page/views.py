@@ -2,10 +2,11 @@ from django.template import loader
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from homepage.forms import HeaderForm
-from homepage.models import Header, Carousel, Category, Product, ColorProduct, Placeholder
+from homepage.models import Header, Carousel, Category, Product, ColorProduct, Placeholder, UserProfile
 from django.contrib import messages
 import os
 from decimal import Decimal
+from django.contrib.auth.decorators import login_required
 
 
 def adminBase(request):
@@ -531,3 +532,15 @@ def deletePlaceholder(request, pk):
     placeholder.delete()
     messages.success(request, "Placeholder is deleted successfully!")
     return redirect('manage-categories')
+
+@login_required
+def manageUsers(request):
+    headers = Header.objects.all()
+    userprofile = UserProfile.objects.all()
+
+    context = {
+        'headers': headers,
+        'userprofile': userprofile,
+    }
+
+    return render(request, 'manage_users.html', context)
