@@ -91,19 +91,19 @@
                   
                   <td>
                     <!-- Action Buttons -->
-                     <a href="{% url "manage-color-product-images" color.id %}" class="btn px-0 py-0" style="background-color: rgb(128, 0, 0); color: white;">
+                     <a href="{% url "manage-color-product-images" color.id %}" class="btn px-0 py-0" style="background-color: rgb(128, 0, 0); color: white;" data-bs-toggle="tooltip" data-bs-placement="top" title="View Product Image">
                       <svg class="bi m-2" width="16" height="16">
                         <use xlink:href="#images"><!--Edit--></use>
                       </svg>
                     </a>  
 
-                    <a href="{% url "edit-color-product" color.id %}" class="btn btn-success px-0 py-0">
+                    <a href="{% url "edit-color-product" color.id %}" class="btn btn-success px-0 py-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Product Color">
                       <svg class="bi m-2" width="16" height="16">
                         <use xlink:href="#edit"><!--Edit--></use>
                       </svg>
                     </a>   
                     
-                    <button type="button" class="btn btn-danger px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ color.id }}" >
+                    <button type="button" class="btn btn-danger px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ color.id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Product Color">
                       <svg class="bi m-2" width="16" height="16">
                         <use xlink:href="#delete"></use>
                       </svg>

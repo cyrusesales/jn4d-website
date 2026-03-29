@@ -92,13 +92,13 @@
                   {% comment %} <td>{{ product.one_size }}</td> {% endcomment %}
                   <td>
                     <!-- Action Buttons -->
-                    <a href=" {% url 'edit-products' product.id %}" class="btn btn-success px-0 py-0">
+                    <a href=" {% url 'edit-products' product.id %}" class="btn btn-success px-0 py-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Product">
                       <svg class="bi m-2" width="16" height="16">
                         <use xlink:href="#edit"><!--Edit--></use>
                       </svg>
                     </a>   
                     
-                    <button type="button" class="btn btn-danger px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ product.id }}" >
+                    <button type="button" class="btn btn-danger px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ product.id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Product">
                       <svg class="bi m-2" width="16" height="16">
                         <use xlink:href="#delete"></use>
                       </svg>
@@ -127,7 +127,7 @@
                       </div>
                     </div>
                     <!--Color Button-->
-                    <a href="{% url 'manage-color-product' product.id %}" class="btn btn-primary px-0 py-0">
+                    <a href="{% url 'manage-color-product' product.id %}" class="btn btn-primary px-0 py-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Manage Product Color">
                       <svg class="bi m-2" width="16" height="16">
                         <use xlink:href="#color"><!--Edit--></use>
                       </svg>
