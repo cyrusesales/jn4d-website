@@ -78,7 +78,7 @@ Categories{%endblock %} {% block content %}
                   </td>
                   {% endif %}
                   <td>
-                    <a href="{% url "manage-products" category.id %}" class="btn btn-secondary px-0 py-0" data-bs-toggle="tooltip" data-bs-placement="top" title="View Product">
+                    <a href="{% url "manage-products" category.id %}" class="btn px-0 py-0" style="background-color: rgb(129, 65, 65); color: white;" data-bs-toggle="tooltip" data-bs-placement="top" title="View Product">
                       <svg class="bi m-2" width="16" height="16">
                         <use xlink:href="#view"><!--View--></use>
                       </svg>

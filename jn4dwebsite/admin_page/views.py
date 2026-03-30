@@ -538,9 +538,20 @@ def manageUsers(request):
     headers = Header.objects.all()
     userprofile = UserProfile.objects.all()
 
+    status_choices = [
+        ('active', 'Active'),
+        ('inactive', 'Inactive')
+    ]
+
+    if request.method == 'POST':
+        status = request.POST.get('status_dropdown')
+        # userprofile.update(status=status)
+        messages.success(request, f"Status has been updated.")
+
     context = {
         'headers': headers,
         'userprofile': userprofile,
+        'status_choices': status_choices,
     }
 
     return render(request, 'manage_users.html', context)
