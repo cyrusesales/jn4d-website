@@ -77,7 +77,7 @@
                   <td>{{ userpro.dateOfBirth }}</td>
                   <td>{{ userpro.phoneNumber }}</td>
                   <td>
-                    {% if user.is_staff %}
+                    {% if user.is_superuser %}
                     <form method="POST" action="{% url "change-user-role" userpro.user_id %}" id="status_form">
                       {% csrf_token %}
                       <select name="role_dropdown" id="role_dropdown" onchange="this.form.submit()">
@@ -93,7 +93,7 @@
                     {% endif %}
                   </td>
                   <td>
-                      {% if user.is_staff %}
+                      {% if user.is_superuser %}
                       <form method="POST" action="{% url "change-user-status" userpro.user_id %}" id="status_form">
                         {% csrf_token %}
                         <select name="status_dropdown" id="status_dropdown" onchange="this.form.submit()">

@@ -571,7 +571,7 @@ def changeUserStatus(request, pk):
         userprofile = UserProfile.objects.get(user_id=pk)
         userprofile.status = status
         userprofile.save()
-        
+
         messages.success(request, "Status updated successfully!")
         return redirect("manage-users")
     
@@ -583,9 +583,19 @@ def changeUserRole(request, pk):
         userprofile = UserProfile.objects.get(user_id=pk)
         user = User.objects.get(id=pk)
         userprofile.role = role
-        user.is_staff = "t"
+        if role == "admin":
+            user.is_staff = "t"
+            user.is_superuser = "t"
+            user.save()
+        elif role == "employee":
+            user.is_staff = "t"
+            user.is_superuser = "f"
+            user.save()
+        else:
+            user.is_staff = "f"
+            user.save()
         userprofile.save()
-        user.save()
+        
 
         messages.success(request, "Role updated successfully!")
         return redirect("manage-users")
