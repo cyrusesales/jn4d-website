@@ -78,17 +78,23 @@
                   <td>{{ userpro.phoneNumber }}</td>
                   <td>{{ userpro.role }}</td>
                   <td>
-                    <form method="POST" enctype="multipart/form-data">
-                      {% csrf_token %}
-                      <select name="status_dropdown" id="status_dropdown" onChange="form.submit();">
-                        {% for value, label in status_choices %}
-                        <option value="{{ value }}" {% if value == userpro.status %}selected{% endif %}>
-                          {{ label }}
-                        </option>
-                        {% endfor %}
-                      </select>
-                      <!--{{ userpro.status }}-->
-                    </form>
+                    <!--<form method="POST" enctype="multipart/form-data">-->
+                      
+                      {% if userpro.role == "customer" %}
+                      <form method="POST" action="{% url "change-user-status" user.id %}" id="status_form">
+                        {% csrf_token %}
+                        <select name="status_dropdown" id="status_dropdown" onchange="this.form.submit()">
+                          {% for value, label in status_choices %}
+                          <option value="{{ value }}" {% if value == userpro.status %}selected{% endif %}>
+                            {{ label }}
+                          </option>
+                          {% endfor %}
+                        </select>
+                      </form>
+                      {% else %}
+                        {{ userpro.status }}
+                      {% endif %}
+                    <!--</form>-->
                   </td>
                  
                 </tr>
@@ -113,4 +119,6 @@
     </div>
   </div>
 </section>
+
+
 {% endblock %}

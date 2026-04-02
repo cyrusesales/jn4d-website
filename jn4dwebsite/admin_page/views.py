@@ -7,6 +7,8 @@ from django.contrib import messages
 import os
 from decimal import Decimal
 from django.contrib.auth.decorators import login_required
+import json
+from django.http import JsonResponse
 
 
 def adminBase(request):
@@ -543,11 +545,6 @@ def manageUsers(request):
         ('inactive', 'Inactive')
     ]
 
-    if request.method == 'POST':
-        status = request.POST.get('status_dropdown')
-        # userprofile.update(status=status)
-        messages.success(request, f"Status has been updated.")
-
     context = {
         'headers': headers,
         'userprofile': userprofile,
@@ -555,3 +552,15 @@ def manageUsers(request):
     }
 
     return render(request, 'manage_users.html', context)
+
+
+
+@login_required
+def changeUserStatus(request, pk):
+    if request.method == "POST":
+        status = request.POST.get("status_dropdown")
+        userprofile = UserProfile.objects.get(user_id=pk)
+        userprofile.status = status
+        userprofile.save()
+        messages.success(request, "Status updated successfully!")
+        return redirect("manage-users")

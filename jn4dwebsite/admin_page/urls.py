@@ -34,4 +34,5 @@ urlpatterns = [
     path('delete-placeholder/<str:pk>', views.deletePlaceholder, name='delete-placeholder'),
 
     path('manage-users/', views.manageUsers, name='manage-users'),
+    path('changeUserStatus/<str:pk>', views.changeUserStatus, name='change-user-status'),
 ]
