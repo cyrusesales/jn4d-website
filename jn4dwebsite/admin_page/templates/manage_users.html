@@ -76,12 +76,25 @@
                   <td>{{ userpro.email }}</td>
                   <td>{{ userpro.dateOfBirth }}</td>
                   <td>{{ userpro.phoneNumber }}</td>
-                  <td>{{ userpro.role }}</td>
                   <td>
-                    <!--<form method="POST" enctype="multipart/form-data">-->
-                      
-                      {% if userpro.role == "customer" %}
-                      <form method="POST" action="{% url "change-user-status" user.id %}" id="status_form">
+                    {% if user.is_staff %}
+                    <form method="POST" action="{% url "change-user-role" userpro.user_id %}" id="status_form">
+                      {% csrf_token %}
+                      <select name="role_dropdown" id="role_dropdown" onchange="this.form.submit()">
+                        {% for value, label in role_choices %}
+                        <option value="{{ value }}" {% if value == userpro.role %}selected{% endif %}>
+                          {{ label }}
+                        </option>
+                        {% endfor %}
+                      </select>
+                    </form>
+                    {% else %}
+                      {{ userpro.role }}
+                    {% endif %}
+                  </td>
+                  <td>
+                      {% if user.is_staff %}
+                      <form method="POST" action="{% url "change-user-status" userpro.user_id %}" id="status_form">
                         {% csrf_token %}
                         <select name="status_dropdown" id="status_dropdown" onchange="this.form.submit()">
                           {% for value, label in status_choices %}
@@ -94,7 +107,6 @@
                       {% else %}
                         {{ userpro.status }}
                       {% endif %}
-                    <!--</form>-->
                   </td>
                  
                 </tr>

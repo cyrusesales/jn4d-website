@@ -2,7 +2,7 @@ from django.template import loader
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from homepage.forms import HeaderForm
-from homepage.models import Header, Carousel, Category, Product, ColorProduct, Placeholder, UserProfile
+from homepage.models import Header, Carousel, Category, Product, ColorProduct, Placeholder, UserProfile, User
 from django.contrib import messages
 import os
 from decimal import Decimal
@@ -538,17 +538,26 @@ def deletePlaceholder(request, pk):
 @login_required
 def manageUsers(request):
     headers = Header.objects.all()
-    userprofile = UserProfile.objects.all()
+    userprofile = UserProfile.objects.all().order_by('user_id')
+    # user = User.objects.all()
 
     status_choices = [
         ('active', 'Active'),
         ('inactive', 'Inactive')
     ]
 
+    role_choices = [
+        ('admin', 'Admin'),
+        ('employee', 'Employee'),
+        ('customer', 'Customer')
+    ]
+
     context = {
         'headers': headers,
         'userprofile': userprofile,
         'status_choices': status_choices,
+        'role_choices': role_choices,
+        # 'user': user,
     }
 
     return render(request, 'manage_users.html', context)
@@ -562,5 +571,21 @@ def changeUserStatus(request, pk):
         userprofile = UserProfile.objects.get(user_id=pk)
         userprofile.status = status
         userprofile.save()
+        
         messages.success(request, "Status updated successfully!")
+        return redirect("manage-users")
+    
+
+@login_required
+def changeUserRole(request, pk):
+    if request.method == "POST":
+        role = request.POST.get("role_dropdown")
+        userprofile = UserProfile.objects.get(user_id=pk)
+        user = User.objects.get(id=pk)
+        userprofile.role = role
+        user.is_staff = "t"
+        userprofile.save()
+        user.save()
+
+        messages.success(request, "Role updated successfully!")
         return redirect("manage-users")

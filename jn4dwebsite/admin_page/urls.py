@@ -35,4 +35,5 @@ urlpatterns = [
 
     path('manage-users/', views.manageUsers, name='manage-users'),
     path('changeUserStatus/<str:pk>', views.changeUserStatus, name='change-user-status'),
+    path('change-user-role/<str:pk>', views.changeUserRole, name='change-user-role'),
 ]
