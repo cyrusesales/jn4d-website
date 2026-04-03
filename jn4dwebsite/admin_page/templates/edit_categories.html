@@ -41,12 +41,18 @@
           <div class="card-body">
             <form method="POST" enctype="multipart/form-data">
               {% csrf_token %}
-              <div class="mb-3">
-                {% if categories.image %}
-                <img src="{{ categories.image.url }}" alt="Image Here" class="" width="200" height="50" />
-                {% endif %}
-                <label for="" class="form-label">Image</label>
-                <input type="file" name="image" class="form-control" />
+              <div class="mb-3 col">
+                <div class="row">
+                  <label for="" class="form-label">Image</label>
+                </div>
+                <div class="row mb-2" style="width: 200px; height: 100px;">
+                  {% if categories.image %}
+                  <img src="{{ categories.image.url }}" alt="Image Here" class="" width="150" height="100"/>
+                  {% endif %}
+                </div>
+                <div class="row">
+                  <input type="file" name="image" class="form-control ms-2" style="width: 685px;" />
+                </div>
               </div>
               <div class="mb-3">
                 <label for="" class="form-label">Name</label>
@@ -64,7 +70,7 @@
                 Save
               </button>
               {% comment %} <a href="{% url "manage-categories" %}" class="btn btn-secondary">Back</a> {% endcomment %}
-              <a href="{% url "manage-categories" %}" class="btn btn-secondary">
+              <a href="{% url "manage-categories" %}" class="btn btn-dark">
                 <svg class="bi m-1" width="15" height="15">
                   <use xlink:href="#back"><!--Back--></use>
                 </svg>
