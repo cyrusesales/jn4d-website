@@ -89,7 +89,16 @@
                         <h4 class="mb-4 text-start">{{ colorProducts.colorName }}</h4>
                         <p class="text-start">{{ colorProducts.description }}</p>
                         <p class="fw-bold fs-5 text-start">PHP {{ colorProducts.selling_price }}</p>
-                        <br>
+                        {% if colorProducts.original_price > 0 %}
+                        <p class="text-start" style="text-decoration: line-through; font-size: 15px;">PHP {{ colorProducts.original_price }}
+                            <button class="btn btn-danger ms-2 p-1">Save 
+                                {% widthratio colorProducts.selling_price colorProducts.original_price 100 as discount %}
+                                {{ discount|add:"-100"|cut:"-"}}%
+
+                            </button>
+                        </p>
+                        
+                        {% endif %}
                         <br>
                         <p class="text-start">Variation: </p>
 
