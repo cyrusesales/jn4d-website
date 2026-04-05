@@ -2,7 +2,7 @@ from django.template import loader
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from homepage.forms import HeaderForm
-from homepage.models import Header, Carousel, Category, Product, ColorProduct, Placeholder, UserProfile, User
+from homepage.models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, User
 from django.contrib import messages
 import os
 from decimal import Decimal
@@ -284,10 +284,10 @@ def editProducts(request, pk):
     #category = Category.objects.all()
     product = Product.objects.get(id=pk)
 
-    yes_no_choices = [
-        ('yes', 'Yes'),
-        ('no', 'No'),
-    ]
+    # yes_no_choices = [
+    #     ('yes', 'Yes'),
+    #     ('no', 'No'),
+    # ]
 
     if request.method == 'POST':
         if len(request.FILES) != 0:
@@ -296,11 +296,11 @@ def editProducts(request, pk):
             product.image = request.FILES['image']
         product.name = request.POST.get('name')
         product.description = request.POST.get('description')
-        product.quantity = request.POST.get('quantity')
-        product.sold = request.POST.get('sold')
-        product.original_price = request.POST.get('original_price')
-        product.selling_price = request.POST.get('selling_price')
-        product.one_size = request.POST.get('yes_no_dropdown')
+        # product.quantity = request.POST.get('quantity')
+        # product.sold = request.POST.get('sold')
+        # product.original_price = request.POST.get('original_price')
+        # product.selling_price = request.POST.get('selling_price')
+        # product.one_size = request.POST.get('yes_no_dropdown')
         product.save()
         messages.success(request, f"{product.name} successfully updated {product.category_id}")
         return redirect('manage-products', product.category_id)
@@ -308,7 +308,7 @@ def editProducts(request, pk):
         'headers': headers,
         #'category': category,
         'product': product,
-        'yes_no_choices': yes_no_choices,
+        # 'yes_no_choices': yes_no_choices,
     }
 
     return render(request, "edit_products.html", context)
@@ -324,70 +324,82 @@ def deleteProducts(request, pk):
 
 
 
-def manageColorProduct(request, pk):
+def manageItem(request, pk):
     if (Product.objects.filter(id=pk)):
         headers = Header.objects.all()
-        colorProducts = ColorProduct.objects.filter(product__id=pk).order_by('id')
+        items = Item.objects.filter(product__id=pk).order_by('id')
         product = Product.objects.get(id=pk)
 
         context = {
             'headers': headers,
-            'colorProducts': colorProducts,
+            'items': items,
             'product': product,
         }
 
-        return render(request, "manage_color_product.html", context)
+        return render(request, "manage_item.html", context)
     else:
         messages.warning(request, "No Color Product Found")
-        return render(request, "manage_color_product.html")
+        return render(request, "manage_item.html")
     
 
-def addColorProduct(request, pk):
+def addItem(request, pk):
     headers = Header.objects.all()
     product = Product.objects.get(id=pk)
     category = Category.objects.get(id=product.category.id)
-    colorProduct = ColorProduct.objects.all()
+    item = Item.objects.all()
 
     if request.method == 'POST':
-        colorProduct = ColorProduct()
-        colorProduct.product = product
-        colorProduct.category = category
-        colorProduct.colorName = request.POST.get("colorName")
-        colorProduct.description = request.POST.get("description")
-        colorProduct.original_price = Decimal(request.POST.get("original_price").replace(',', ''))
-        colorProduct.selling_price = Decimal(request.POST.get("selling_price").replace(',', ''))
+        item = Item()
+        item.product = product
+        item.category = category
+        item.itemName = request.POST.get("itemName")
+        item.description = request.POST.get("description")
+        item.original_price = Decimal(request.POST.get("original_price").replace(',', ''))
+        item.selling_price = Decimal(request.POST.get("selling_price").replace(',', ''))
+        
 
-        if (colorProduct.original_price <= colorProduct.selling_price):
+        if (item.original_price <= item.selling_price):
             messages.warning(request, f"Original Price must be greater than Selling Price!")
-            return redirect('add-color-product', pk)
+            return redirect('add-item', pk)
         else:
             # if len(request.FILES) != 0:
             if 'image' and 'image1' and 'image2' and 'image3' and 'image4' in request.FILES:
-                colorProduct.image = request.FILES['image']
-                colorProduct.image1 = request.FILES['image1']
-                colorProduct.image2 = request.FILES['image2']
-                colorProduct.image3 = request.FILES['image3']
-                colorProduct.image4 = request.FILES['image4']
+                item.image = request.FILES['image']
+                item.image1 = request.FILES['image1']
+                item.image2 = request.FILES['image2']
+                item.image3 = request.FILES['image3']
+                item.image4 = request.FILES['image4']
             
-                colorProduct.save()
-                messages.success(request, f"{colorProduct.colorName} successfully added to {product.name}")
-                # return redirect('manage-color-product', pk)
+                item.save()
+                messages.success(request, f"{item.itemName} successfully added to {product.name}")
+                # return redirect('manage-item', pk)
             else:
                 messages.warning(request, f"Image is not uploaded! Please select a file.")
-                # return redirect('add-color-product', pk)
+                # return redirect('add-item', pk)
     
     context = {
         'headers': headers,
         'product': product,
-        'colorProduct': colorProduct,
+        'item': item,
     }
 
-    return render(request, "add_color_product.html", context)
+    return render(request, "add_item.html", context)
 
 
-def editColorProduct(request, pk):
+def editItem(request, pk):
     headers = Header.objects.all()
-    colorProduct = ColorProduct.objects.get(id=pk)
+    item = Item.objects.get(id=pk)
+
+    yes_no_choices = [
+        ('yes', 'Yes'),
+        ('no', 'No'),
+    ]
+
+    size_choices = [
+        ('one size', 'One Size'),
+        ('customize', 'Customize'),
+        ('standard', 'Standard'),
+    ]
 
     if request.method == 'POST':
         # if len(request.FILES) != 0:
@@ -415,66 +427,72 @@ def editColorProduct(request, pk):
 
             if new_image:
                 # delete old file if exist
-                old_image = getattr(colorProduct, field)
+                old_image = getattr(item, field)
                 if old_image and old_image.name:
                     if os.path.exists(old_image.path):
                         os.remove(old_image.path)
 
                 #assign new image
-                setattr(colorProduct, field, new_image)
+                setattr(item, field, new_image)
 
-        colorProduct.colorName = request.POST.get('colorName')
-        colorProduct.description = request.POST.get('description')
-        colorProduct.original_price = Decimal(request.POST.get('original_price').replace(',', ''))
-        colorProduct.selling_price = Decimal(request.POST.get('selling_price').replace(',', ''))
+        item.itemName = request.POST.get('itemName')
+        item.description = request.POST.get('description')
+        item.original_price = Decimal(request.POST.get('original_price').replace(',', ''))
+        item.selling_price = Decimal(request.POST.get('selling_price').replace(',', ''))
+        item.size = request.POST.get("size_dropdown")
 
-        colorProduct.save()
-        messages.success(request, f"{colorProduct} is edited successfully!")
-        return redirect('manage-color-product', colorProduct.product_id)
+        item.save()
+        messages.success(request, f"{item} is edited successfully!")
+        return redirect('manage-item', item.product_id)
     
     context = {
         'headers': headers,
-        'colorProduct': colorProduct,
+        'item': item,
+        'yes_no_choices': yes_no_choices,
+        'size_choices': size_choices,
     }
+    return render(request, 'edit_item.html', context)
 
-    return render(request, 'edit_color_product.html', context)
+def changeProductSize(request, pk):
 
-def deleteColorProduct(request, pk):
-    colorProduct = ColorProduct.objects.get(id=pk)
-    if len(colorProduct.image) > 0:
-        os.remove(colorProduct.image.path)
-    if len(colorProduct.image1) > 0:
-        os.remove(colorProduct.image1.path)
-    if len(colorProduct.image2) > 0:
-        os.remove(colorProduct.image2.path)
-    if len(colorProduct.image3) > 0:
-        os.remove(colorProduct.image3.path)
-    if len(colorProduct.image4) > 0:
-        os.remove(colorProduct.image4.path)
-    colorProduct.delete()
-    messages.warning(request, f"{colorProduct.colorName} has been deleted!")
-    return redirect('manage-color-product', colorProduct.product_id)
+    return redirect("change-product-size")
+
+def deleteItem(request, pk):
+    item = Item.objects.get(id=pk)
+    if len(item.image) > 0:
+        os.remove(item.image.path)
+    if len(item.image1) > 0:
+        os.remove(item.image1.path)
+    if len(item.image2) > 0:
+        os.remove(item.image2.path)
+    if len(item.image3) > 0:
+        os.remove(item.image3.path)
+    if len(item.image4) > 0:
+        os.remove(item.image4.path)
+    item.delete()
+    messages.warning(request, f"{item.itemName} has been deleted!")
+    return redirect('manage-item', item.product_id)
 
 
-def manageColorProductImages(request, pk):
+def manageItemImages(request, pk):
     
-    if (ColorProduct.objects.filter(id=pk)):
+    if (Item.objects.filter(id=pk)):
         headers = Header.objects.all()
-        colorProducts = ColorProduct.objects.filter(id=pk)
-        colorProduct = ColorProduct.objects.get(id=pk)
-        product = Product.objects.get(id=colorProduct.product.id)
+        items = Item.objects.filter(id=pk)
+        item = Item.objects.get(id=pk)
+        product = Product.objects.get(id=item.product.id)
         placeholders = Placeholder.objects.all()
         
         context = {
             'headers': headers,
-            'colorProducts': colorProducts,
+            'items': items,
             'product': product,
             'placeholders': placeholders,
         }
-        return render(request, 'manage_color_product_images.html', context)
+        return render(request, 'manage_item_images.html', context)
     else:
         messages.warning(request, "No Image Found")
-        return render(request, 'manage_color_product_images.html')
+        return render(request, 'manage_item_images.html')
     
 
 def editPlaceholder(request, pk):

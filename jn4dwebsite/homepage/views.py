@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
-from .models import Header, Carousel, Category, Product, ColorProduct, Placeholder, UserProfile
+from .models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile
 from django.contrib import messages
 from django.template.exceptions import TemplateDoesNotExist
 import re
@@ -79,24 +79,24 @@ def viewProducts(request, pk):
         return render('view-products')
     
 
-def viewColorProducts(request, pk):
+def viewItems(request, pk):
     if (Product.objects.filter(id=pk)):
         headers = Header.objects.all()
-        colorProducts = ColorProduct.objects.filter(product__id=pk).order_by('id')
+        items = Item.objects.filter(product__id=pk).order_by('id')
         product = Product.objects.get(id=pk)
         category = Category.objects.get(id=product.category.id)
         placeholders = Placeholder.objects.all()
         context = {
             'headers': headers,
-            'colorProducts': colorProducts,
+            'items': items,
             'product': product,
             'category': category,
             'placeholders': placeholders,
         }
-        return render(request, 'color_product_section.html', context)
+        return render(request, 'item_section.html', context)
     else:
         messages.warning(request, 'No Product Color Available.')
-        return render(request, 'view-color-products')
+        return render(request, 'view-items')
     
 
 def viewSpecifications(request, pk):
@@ -106,7 +106,7 @@ def viewSpecifications(request, pk):
     #     colorProducts = ColorProduct.objects.get(id=pk)
     # except ColorProduct.DoesNotExist:
     #     messages.warning(request, 'No Product Available')
-    #     return redirect('view-color-products')
+    #     return redirect('view-items')
 
     # category = colorProducts.category
     # product = colorProducts.product
@@ -118,16 +118,16 @@ def viewSpecifications(request, pk):
     #     'product': product,
     # }
     # return render(request, 'product_specifications.html', context)
-    if (ColorProduct.objects.filter(id=pk)):
+    if (Item.objects.filter(id=pk)):
         headers = Header.objects.all()
-        colorProducts = ColorProduct.objects.get(id=pk)
-        category = Category.objects.get(id=colorProducts.category.id)
-        product = Product.objects.get(id=colorProducts.product.id)
+        items = Item.objects.get(id=pk)
+        category = Category.objects.get(id=items.category.id)
+        product = Product.objects.get(id=items.product.id)
         placeholders = Placeholder.objects.all()
-        variations = ColorProduct.objects.filter(product__id=product.id)
+        variations = Item.objects.filter(product__id=product.id)
         context = {
             'headers': headers,
-            'colorProducts': colorProducts,
+            'items': items,
             'category': category,
             'product': product,
             'placeholders': placeholders,

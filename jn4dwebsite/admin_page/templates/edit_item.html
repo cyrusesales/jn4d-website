@@ -1,4 +1,4 @@
-{% extends "admin_base.html" %} {% block title %}Edit Color Product {%endblock %} {% block content %}
+{% extends "admin_base.html" %} {% block title %}Edit Items{%endblock %} {% block content %}
 <link
   href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
   rel="stylesheet"
@@ -50,7 +50,7 @@
         {% endfor %}
         <div class="card">
           <div class="card-header">
-            <h2 class="fw">Edit Color Product</h2>
+            <h2 class="fw">Edit Item</h2>
           </div>
           <div class="card-body">
             <form method="POST" enctype="multipart/form-data">
@@ -60,8 +60,8 @@
                   <label for="" class="form-label">Image</label>
                 </div>
                 <div class="row mb-2" style="width: 200px; height: 100px;">
-                  {% if colorProduct.image %}
-                  <img src="{{ colorProduct.image.url }}" alt="Image Here" class="" width="150" height="100" />
+                  {% if item.image %}
+                  <img src="{{ item.image.url }}" alt="Image Here" class="" width="150" height="100" />
                   {% endif %}
                 </div>
                 <div class="row">
@@ -70,59 +70,97 @@
               </div>
               <div class="mb-3">
                 <label for="" class="form-label">Color Name</label>
-                <input type="text" name="colorName" value="{{ colorProduct.colorName }}" class="form-control"/>
+                <input type="text" name="colorName" value="{{ item.colorName }}" class="form-control"/>
               </div>
               <div class="mb-3">
                 <label for="" class="form-label">Description</label>
-                <input type="text" name="description" value="{{ colorProduct.description }}" class="form-control" />
+                <input type="text" name="description" value="{{ item.description }}" class="form-control" />
               </div>
               <div class="mb-3">
                 <label for="" class="form-label">Original Price</label>
-                <input type="text" name="original_price" value="{{ colorProduct.original_price |floatformat:2  }}" class="form-control" />
+                <input type="text" name="original_price" value="{{ item.original_price |floatformat:2  }}" class="form-control" />
               </div>
               <div class="mb-3">
                 <label for="" class="form-label">Selling Price</label>
-                <input type="text" name="selling_price" value="{{ colorProduct.selling_price |floatformat:2  }}" class="form-control" />
+                <input type="text" name="selling_price" value="{{ item.selling_price |floatformat:2  }}" class="form-control" />
               </div>
-              <div class="mb-3">
-                {% if colorProduct.image1 %}
-                <img src="{{ colorProduct.image1.url }}" alt="Image Here" class="" width="200" height="50" />
-                {% endif %}
-                <label for="" class="form-label">Image 1</label>
-                <input type="file" name="image1" class="form-control" />
+              <div class="mb-3 col">
+                <div class="row">
+                  <label for="" class="form-label">Image 1</label>
+                </div>
+                <div class="row mb-2" style="width: 200px; height: 100px;">
+                  {% if item.image1 %}
+                  <img src="{{ item.image1.url }}" alt="Image Here" class="" width="150" height="100" />
+                  {% endif %}
+                </div>
+                <div class="row">
+                  <input type="file" name="image1" class="form-control ms-2" style="width: 685px;" />
+                </div>
               </div>
-              <div class="mb-3">
-                {% if colorProduct.image2 %}
-                <img src="{{ colorProduct.image2.url }}" alt="Image Here" class="" width="200" height="50" />
-                {% endif %}
-                <label for="" class="form-label">Image 2</label>
-                <input type="file" name="image2" class="form-control" />
+              <div class="mb-3 col">
+                <div class="row">
+                  <label for="" class="form-label">Image 2</label>
+                </div>
+                <div class="row mb-2" style="width: 200px; height: 100px;">
+                  {% if item.image2 %}
+                  <img src="{{ item.image2.url }}" alt="Image Here" class="" width="150" height="100" />
+                  {% endif %}
+                </div>
+                <div class="row">
+                  <input type="file" name="image2" class="form-control ms-2" style="width: 685px;"  />
+                </div>
               </div>
-              <div class="mb-3">
-                {% if colorProduct.image3 %}
-                <img src="{{ colorProduct.image3.url }}" alt="Image Here" class="" width="200" height="50" />
-                {% endif %}
-                <label for="" class="form-label">Image 3</label>
-                <input type="file" name="image3" class="form-control" />
+              <div class="mb-3 col">
+                <div class="row">
+                  <label for="" class="form-label">Image 3</label>
+                </div>
+                <div class="row mb-2" style="width: 200px; height: 100px;">
+                  {% if item.image3 %}
+                  <img src="{{ item.image3.url }}" alt="Image Here" class="" width="150" height="100" />
+                  {% endif %}
+                </div>
+                <div class="row" >
+                  <input type="file" name="image3" class="form-control ms-2" style="width: 685px;" />
+                </div>
               </div>
-              <div class="mb-3">
-                {% if colorProduct.image4 %}
-                <img src="{{ colorProduct.image4.url }}" alt="Image Here" class="" width="200" height="50" />
-                {% endif %}
-                <label for="" class="form-label">Image 4</label>
-                <input type="file" name="image4" class="form-control" />
+              <div class="mb-3 col">
+                <div class="row">
+                  <label for="" class="form-label">Image 4</label>
+                </div>
+                <div class="row mb-2" style="width: 200px; height: 100px;">
+                  {% if item.image4 %}
+                  <img src="{{ item.image4.url }}" alt="Image Here" class="" width="150" height="100" />
+                  {% endif %}
+                </div>
+                <div class="row" >
+                  <input type="file" name="image4" class="form-control ms-2" style="width: 685px;" />
+                </div>
               </div>
-
-
+              <div class="mb-3 col">
+                <div class="row">
+                  <label for="size_dropdown" class="form-label">Size</label>
+                </div>
+                <div class="row" class="form-control ms-2"  >
+                  <select name="size_dropdown" id="size_dropdown" class="ms-2"  style="width: 685px;">
+                    {% for value, label in size_choices %}
+                      <option value="{{ value }}" {% if value == item.size %}selected{% endif %} >
+                        {{ label }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <br>
+              <br>
               <!--Bottons Below-->
-              <button type="submit" class="btn btn-success">
+              <button type="submit" class="btn btn-primary">
                 <svg class="bi m-1" width="15" height="15">
                   <use xlink:href="#save"><!--Save--></use>
                 </svg>
                 Save
               </button>
 
-              <a href="{% url "manage-color-product" colorProduct.product_id %}" class="btn btn-secondary">
+              <a href="{% url "manage-item" item.product_id %}" class="btn btn-dark">
                 <svg class="bi m-1" width="15" height="15">
                   <use xlink:href="#back"><!--Back--></use>
                 </svg>

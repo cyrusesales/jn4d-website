@@ -49,7 +49,7 @@ class Product(models.Model):
     # sold = models.IntegerField(null=True, blank=True)
     # original_price = models.FloatField(null=True, blank=True)
     # selling_price = models.FloatField(null=True, blank=True)
-    one_size = models.CharField(max_length=100, blank=True, null=True)
+    # one_size = models.CharField(max_length=100, blank=True, null=True)
     #one_size = models.BooleanField(default=False, help_text="0=default, 1=Hidden")
     #trending = models.BooleanField(default=False, help_text="0=default, 1=Trending")
     #tag = models.CharField(max_length=100, null=True, blank=True)
@@ -58,23 +58,22 @@ class Product(models.Model):
     def __str__(self):
         return str(self.name or self.id)
     
-class ColorProduct(models.Model):
+class Item(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    colorName = models.CharField(max_length=100, blank=True, null=True)
+    itemName = models.CharField(max_length=100, blank=True, null=True)
     description = models.CharField(max_length=300, blank=True, null=True)
-    image = models.ImageField(upload_to='colorproducts/',blank=True, null=True)
-    image1 = models.ImageField(upload_to='colorproducts/',blank=True, null=True)
-    image2 = models.ImageField(upload_to='colorproducts/',blank=True, null=True)
-    image3 = models.ImageField(upload_to='colorproducts/',blank=True, null=True)
-    image4 = models.ImageField(upload_to='colorproducts/',blank=True, null=True)
+    image = models.ImageField(upload_to='items/',blank=True, null=True)
+    image1 = models.ImageField(upload_to='items/',blank=True, null=True)
+    image2 = models.ImageField(upload_to='items/',blank=True, null=True)
+    image3 = models.ImageField(upload_to='items/',blank=True, null=True)
+    image4 = models.ImageField(upload_to='items/',blank=True, null=True)
     original_price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
     selling_price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    size = models.CharField(max_length=20, default='one size', blank=True, null=True)
 
     def __str__(self):
         return str(self.colorName or self.id)
-
-  
 
 class UserProfile(models.Model):
     phone_regex = RegexValidator(
@@ -94,3 +93,8 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return str(self.user.username or self.id)
+
+
+class ProductSize(models.Model):
+    name = models.CharField(max_length=100, blank=True, null=True)
+    description = models.CharField(max_length=100, blank=True, null=True)

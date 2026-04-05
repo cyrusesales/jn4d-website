@@ -22,12 +22,13 @@ urlpatterns = [
     path('edit-products/<str:pk>', views.editProducts, name="edit-products"),
     path('delete-products/<str:pk>', views.deleteProducts, name="delete-products"),
     
-    path('manage-color-product/<str:pk>', views.manageColorProduct, name='manage-color-product'),
-    path('add-color-product/<str:pk>', views.addColorProduct, name="add-color-product"),
-    path('edit-color-product/<str:pk>', views.editColorProduct, name='edit-color-product'),
-    path('delete-color-product/<str:pk>', views.deleteColorProduct, name='delete-color-product'),
+    path('manage-item/<str:pk>', views.manageItem, name='manage-item'),
+    path('add-item/<str:pk>', views.addItem, name="add-item"),
+    path('edit-item/<str:pk>', views.editItem, name='edit-item'),
+    path('delete-item/<str:pk>', views.deleteItem, name='delete-item'),
+    path('change-product-size/<str:pk', views.changeProductSize, name='change-product-size'),
 
-    path('manage-color-product-images/<str:pk>', views.manageColorProductImages, name='manage-color-product-images'),
+    path('manage-item-images/<str:pk>', views.manageItemImages, name='manage-item-images'),
 
     path('edit-placeholder/<str:pk>', views.editPlaceholder, name='edit-placeholder'),
     path('add-placeholder/', views.addPlaceholder, name='add-placeholder'),

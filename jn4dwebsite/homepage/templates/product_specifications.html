@@ -40,13 +40,13 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url "homepage" %}">Home</a></li>
             <li class="breadcrumb-item"><a href="{% url "view-products" category.id %}">{{ category.name }}</a></li>
-            <li class="breadcrumb-item"><a href="{% url "view-color-products" product.id %}">{{ product.name }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ colorProducts.colorName }}</li>
+            <li class="breadcrumb-item"><a href="{% url "view-items" product.id %}">{{ product.name }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ items.itemName }}</li>
         </ol>
     </nav>
 
     <div class="row">
-        {% if colorProducts.image1 %}
+        {% if items.image1 %}
         <div class="col-md-12">
             
             {% for msg in messages %}
@@ -63,22 +63,22 @@
 
                     <div class="col">
                         <div class="row">
-                            <img src="{{ colorProducts.image.url }}" class="img-fluid" alt="" style="height: 550px; padding-left: 0px;padding-right: 0px;" >
+                            <img src="{{ items.image.url }}" class="img-fluid" alt="" style="height: 550px; padding-left: 0px;padding-right: 0px;" >
                         </div>
                         <div class="row">
                             <div class="col px-0 py-0" style="width: 50%; ">
-                                <img src="{{ colorProducts.image2.url }}" class="img-fluid" alt="" style="height: 300px;" >
+                                <img src="{{ items.image2.url }}" class="img-fluid" alt="" style="height: 300px;" >
                             </div>
                             <div class="col px-0 py-0" style="width: 50%; ">
-                                <img src="{{ colorProducts.image1.url }}" class="img-fluid" alt="" style="height: 300px;">
+                                <img src="{{ items.image1.url }}" class="img-fluid" alt="" style="height: 300px;">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col px-0 py-0" style="width: 50%; ">
-                                <img src="{{ colorProducts.image3.url }}" class="img-fluid" alt="" style="height: 300px;">
+                                <img src="{{ items.image3.url }}" class="img-fluid" alt="" style="height: 300px;">
                             </div>
                             <div class="col px-0 py-0" style="width: 50%; ">
-                                <img src="{{ colorProducts.image4.url }}" class="img-fluid" alt="" style="height: 300px;">
+                                <img src="{{ items.image4.url }}" class="img-fluid" alt="" style="height: 300px;">
                             </div>
                         </div>
                         
@@ -86,13 +86,13 @@
                     </div>
 
                     <div class="col" style="margin-left: 30px; padding-left: 40px;">
-                        <h4 class="mb-4 text-start">{{ colorProducts.colorName }}</h4>
-                        <p class="text-start">{{ colorProducts.description }}</p>
-                        <p class="fw-bold fs-5 text-start">PHP {{ colorProducts.selling_price }}</p>
-                        {% if colorProducts.original_price > 0 %}
-                        <p class="text-start" style="text-decoration: line-through; font-size: 15px;">PHP {{ colorProducts.original_price }}
+                        <h4 class="mb-4 text-start">{{ items.itemName }}</h4>
+                        <p class="text-start">{{ items.description }}</p>
+                        <p class="fw-bold fs-5 text-start">PHP {{ items.selling_price }}</p>
+                        {% if items.original_price > 0 %}
+                        <p class="text-start" style="text-decoration: line-through; font-size: 15px;">PHP {{ items.original_price }}
                             <button class="btn btn-danger ms-2 p-1">Save 
-                                {% widthratio colorProducts.selling_price colorProducts.original_price 100 as discount %}
+                                {% widthratio items.selling_price items.original_price 100 as discount %}
                                 {{ discount|add:"-100"|cut:"-"}}%
 
                             </button>

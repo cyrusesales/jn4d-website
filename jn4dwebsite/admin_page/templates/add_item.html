@@ -48,8 +48,8 @@
                 <input type="file" name="image" class="form-control" />
               </div>
               <div class="mb-3">
-                <label for="" class="form-label">Color Name</label>
-                <input type="text" name="colorName" class="form-control" />
+                <label for="" class="form-label">Item Name</label>
+                <input type="text" name="itemName" class="form-control" />
               </div>
               <div class="mb-3">
                 <label for="" class="form-label">Description</label>
@@ -89,7 +89,7 @@
                 Save
               </button>
 
-              <a href="{% url 'manage-color-product' product.id %}" class="btn btn-dark">
+              <a href="{% url 'manage-item' product.id %}" class="btn btn-dark">
                 <svg class="bi m-1" width="15" height="15">
                   <use xlink:href="#back"><!--Back--></use>
                 </svg>
