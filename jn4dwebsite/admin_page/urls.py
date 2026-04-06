@@ -37,4 +37,9 @@ urlpatterns = [
     path('manage-users/', views.manageUsers, name='manage-users'),
     path('changeUserStatus/<str:pk>', views.changeUserStatus, name='change-user-status'),
     path('change-user-role/<str:pk>', views.changeUserRole, name='change-user-role'),
+
+    path('manage-product-size/', views.manageProductSize, name='manage-product-size'),
+    path('edit-product-size/<str:pk>', views.editProductSize, name='edit-product-size'),
+    path('add-product-size/', views.addProductSize, name='add-product-size'),
+    path('delete-product-size/<str:pk>', views.deleteProductSize, name='delete-product-size'),
 ]

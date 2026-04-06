@@ -73,7 +73,7 @@ class Item(models.Model):
     size = models.CharField(max_length=20, default='one size', blank=True, null=True)
 
     def __str__(self):
-        return str(self.colorName or self.id)
+        return str(self.itemName or self.id)
 
 class UserProfile(models.Model):
     phone_regex = RegexValidator(
@@ -98,3 +98,6 @@ class UserProfile(models.Model):
 class ProductSize(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
     description = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.name or self.id)

@@ -2,13 +2,12 @@ from django.template import loader
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from homepage.forms import HeaderForm
-from homepage.models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, User
+from homepage.models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, User, ProductSize
 from django.contrib import messages
 import os
 from decimal import Decimal
 from django.contrib.auth.decorators import login_required
-import json
-from django.http import JsonResponse
+
 
 
 def adminBase(request):
@@ -358,7 +357,7 @@ def addItem(request, pk):
         item.selling_price = Decimal(request.POST.get("selling_price").replace(',', ''))
         
 
-        if (item.original_price <= item.selling_price):
+        if (item.original_price <= item.selling_price and item.original_price > 0):
             messages.warning(request, f"Original Price must be greater than Selling Price!")
             return redirect('add-item', pk)
         else:
@@ -372,7 +371,7 @@ def addItem(request, pk):
             
                 item.save()
                 messages.success(request, f"{item.itemName} successfully added to {product.name}")
-                # return redirect('manage-item', pk)
+                return redirect('manage-item', pk)
             else:
                 messages.warning(request, f"Image is not uploaded! Please select a file.")
                 # return redirect('add-item', pk)
@@ -613,7 +612,60 @@ def changeUserRole(request, pk):
             user.is_staff = "f"
             user.save()
         userprofile.save()
-        
 
         messages.success(request, "Role updated successfully!")
         return redirect("manage-users")
+
+def manageProductSize(request):
+    headers = Header.objects.all()
+    productSize = ProductSize.objects.all().order_by('id')
+
+    context = {
+        'headers': headers,
+        'productSize': productSize,
+    }
+
+    return render(request, 'manage_product_size.html', context)
+
+def editProductSize(request, pk):
+    headers = Header.objects.all()
+    productSize = ProductSize.objects.get(id=pk)
+
+    if request.method == "POST":
+        productSize.name = request.POST.get('name')
+        productSize.description = request.POST.get('description')
+        productSize.save()
+        messages.success(request, f"{productSize.name} updated successfully!")
+        return redirect('manage-product-size')
+
+    context = {
+        'headers': headers,
+        'productSize': productSize,
+    }
+
+    return render(request, 'edit_product_size.html', context)
+
+def addProductSize(request):
+    headers = Header.objects.all()
+    productSize = ProductSize.objects.all()
+
+    if request.method == "POST":
+        prodSize = ProductSize()
+        prodSize.name = request.POST.get("name")
+        prodSize.description = request.POST.get("description")
+        prodSize.save()
+        messages.success(request, f"{prodSize.name} successfully added!")
+        return redirect('manage-product-size')
+
+    context = {
+        'headers': headers,
+        'productSize': productSize,
+    }
+
+    return render(request, "add_product_size.html", context)
+
+def deleteProductSize(request, pk):
+    productSize = ProductSize.objects.get(id=pk)
+    productSize.delete()
+    messages.success(request, f"{productSize.name} deleted successfully!")
+    return redirect('manage-product-size')

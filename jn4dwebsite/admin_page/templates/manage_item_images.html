@@ -63,13 +63,13 @@
         {% endfor %}
 
         <div class="row mb-5" style="width: 1100px; ">
-          {% for i in item %}
-            {% if i.image1 %}
-            <img src="{{ i.image.url }}" class=" w-25 mx-1 my-1"  alt="...">
-            <img src="{{ i.image1.url }}" class=" w-25 mx-1 my-1" alt="...">
-            <img src="{{ i.image2.url }}" class=" w-25 mx-1 my-1" alt="...">
-            <img src="{{ i.image3.url }}" class=" w-25 mx-1 my-1" alt="...">
-            <img src="{{ i.image4.url }}" class=" w-25 mx-1 my-1" alt="..." >
+          {% for it in items %}
+            {% if it.image1 %}
+            <img src="{{ it.image.url }}" class=" w-25 mx-1 my-1"  alt="...">
+            <img src="{{ it.image1.url }}" class=" w-25 mx-1 my-1" alt="...">
+            <img src="{{ it.image2.url }}" class=" w-25 mx-1 my-1" alt="...">
+            <img src="{{ it.image3.url }}" class=" w-25 mx-1 my-1" alt="...">
+            <img src="{{ it.image4.url }}" class=" w-25 mx-1 my-1" alt="..." >
             {% else %}
               {% for placeholder in placeholders %}
                 <div class="row">
