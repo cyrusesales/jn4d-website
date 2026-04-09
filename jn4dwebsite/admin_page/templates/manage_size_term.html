@@ -1,4 +1,4 @@
-{% extends "admin_base.html" %} {% block title %}Manage Product Size{%endblock %}
+{% extends "admin_base.html" %} {% block title %}Manage Size Term{%endblock %}
 {%block content %}
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous" ></script>
@@ -20,9 +20,8 @@
     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
     <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
   </symbol>
-  <symbol id="view" viewBox="0 0 16 16" fill="currentColor">
-    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+  <symbol id="back" viewBox="0 0 16 16" fill="currentColor">
+    <path d="M.5 3.5A.5.5 0 0 0 0 4v8a.5.5 0 0 0 1 0V8.753l6.267 3.636c.54.313 1.233-.066 1.233-.697v-2.94l6.267 3.636c.54.314 1.233-.065 1.233-.696V4.308c0-.63-.693-1.01-1.233-.696L8.5 7.248v-2.94c0-.63-.692-1.01-1.233-.696L1 7.248V4a.5.5 0 0 0-.5-.5"/>
   </symbol>
 </svg>
 <section class="section">
@@ -40,31 +39,28 @@
         {% endfor %}
         <div class="card" style="width: 1000px;">
           <div class="card-header">
-            <h2 class="fw-bold">Size</h2>
+            <h2 class="fw-bold">Size Term for {{ productSize.name }}</h2>
           </div>
           <div class="card-body">
             <table class="table table-bordered table-striped">
               <thead>
                 <tr>
+                  <th>Acronym</th>
                   <th>Name</th>
                   <th>Description</th>
-                  <th>Actions</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {% for size in productSize %}
+                {% for size in sizeTerm %}
                 <tr>
+                  <td>{{ size.acronym }}</td>
                   <td>{{ size.name }}</td>
                   <td>{{ size.description }}</td>
+                  
 
                   <td>
-                    <a href="{% url 'manage-size-term' size.id %}" class="btn" style="background-color: rgb(129, 65, 65); color: white;" data-bs-toggle="tooltip" data-bs-placement="top" title="View Product">
-                      <svg class="bi m-1" width="15" height="15">
-                        <use xlink:href="#view"><!--Edit--></use>
-                      </svg>
-                      View
-                    </a>
-                    <a href="{% url 'edit-product-size' size.id %}" class="btn btn-success">
+                    <a href="{% url 'edit-size-term' size.id %}" class="btn btn-success">
                       <svg class="bi m-1" width="15" height="15">
                         <use xlink:href="#edit"><!--Edit--></use>
                       </svg>
@@ -94,7 +90,7 @@
                               </svg>
                               Close
                             </button>
-                            <a href="{% url "delete-product-size" size.id %}" class="btn btn-danger">
+                            <a href="{% url "delete-size-term" size.id %}" class="btn btn-danger">
                               <svg class="bi m-1" width="15" height="15">
                                 <use xlink:href="#delete"></use>
                               </svg>
@@ -110,11 +106,17 @@
                 {% endfor %}
               </tbody>
             </table>
-            <a href="{% url "add-product-size" %}" class="btn btn-primary">
+            <a href="{% url "add-size-term" productSize.id %}" class="btn btn-primary">
               <svg class="bi m-1" width="15" height="15">
                 <use xlink:href="#add"><!--Add--></use>
               </svg>
               Add Size
+            </a>
+            <a href="{% url 'manage-product-size' %}" class="btn btn-dark">
+              <svg class="bi m-1" width="15" height="15">
+                <use xlink:href="#back"><!--Back--></use>
+              </svg>
+              Back
             </a>
           </div>
         </div>

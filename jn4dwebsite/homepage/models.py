@@ -101,3 +101,12 @@ class ProductSize(models.Model):
 
     def __str__(self):
         return str(self.name or self.id)
+
+class SizeTerm(models.Model):
+    productSize = models.ForeignKey(ProductSize, on_delete=models.CASCADE, blank=True, null=True)
+    name=models.CharField(max_length=100, blank=True, null=True)
+    description=models.CharField(max_length=100, blank=True, null=True)
+    acronym=models.CharField(max_length=5, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.name or self.id)

@@ -2,7 +2,7 @@ from django.template import loader
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from homepage.forms import HeaderForm
-from homepage.models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, User, ProductSize
+from homepage.models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, User, ProductSize, SizeTerm
 from django.contrib import messages
 import os
 from decimal import Decimal
@@ -667,5 +667,75 @@ def addProductSize(request):
 def deleteProductSize(request, pk):
     productSize = ProductSize.objects.get(id=pk)
     productSize.delete()
-    messages.success(request, f"{productSize.name} deleted successfully!")
+    messages.success(request, f"{productSize.name} has been deleted.")
     return redirect('manage-product-size')
+
+
+def manageSizeTerm(request, pk):
+    if(ProductSize.objects.filter(id=pk)):
+        headers = Header.objects.all()
+        sizeTerm = SizeTerm.objects.filter(productSize__id=pk).order_by('id')
+        productSize = ProductSize.objects.get(id=pk)
+
+        context = {
+            'headers': headers,
+            'sizeTerm': sizeTerm,
+            'productSize': productSize
+        }
+
+        return render(request, 'manage_size_term.html', context)
+    else:
+        messages.warning(request, "No Size Term found")
+        return render(request, "manage_size_term.html")
+    
+def addSizeTerm(request, pk):
+    headers = Header.objects.all()
+    productSize = ProductSize.objects.get(id=pk)
+    sizeTerm = SizeTerm.objects.all()
+
+    if request.method == 'POST':
+        sizeTerm = SizeTerm()
+        sizeTerm.productSize = productSize
+        sizeTerm.name = request.POST.get("name")
+        sizeTerm.description = request.POST.get("description")
+        sizeTerm.acronym = request.POST.get("acronym")
+        sizeTerm.save()
+        messages.success(request, f"{sizeTerm.name} has been added.")
+        return redirect('manage-size-term', productSize.id)
+
+    context = {
+        'headers': headers,
+        'productSize': productSize,
+        'sizeTerm': sizeTerm,
+    }
+
+    return render(request, 'add_size_term.html', context)
+
+def editSizeTerm(request, pk):
+    headers = Header.objects.all()
+    sizeTerm = SizeTerm.objects.get(id=pk)
+    productSize = ProductSize.objects.get(id=sizeTerm.productSize_id)
+
+    if request.method == "POST":
+        sizeTerm.acronym = request.POST.get('acronym')
+        sizeTerm.name = request.POST.get('name')
+        sizeTerm.description = request.POST.get('description')
+        sizeTerm.save()
+        messages.success(request, f"{sizeTerm.name} has been updated.")
+        return redirect('manage-size-term', productSize.id)
+
+    context = {
+        'headers': headers,
+        'sizeTerm': sizeTerm,
+        'productSize': productSize,
+    }
+    return render(request, 'edit_size_term.html', context)
+
+def deleteSizeTerm(request, pk):
+    sizeTerm = SizeTerm.objects.get(id=pk)
+    productSize = ProductSize.objects.get(id=sizeTerm.productSize_id)
+    sizeTerm.delete()
+    messages.success(request, f"{sizeTerm.name} has been deleted.")
+    return redirect('manage-size-term', productSize.id)
+    
+    

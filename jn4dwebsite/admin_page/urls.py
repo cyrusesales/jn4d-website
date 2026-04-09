@@ -26,7 +26,7 @@ urlpatterns = [
     path('add-item/<str:pk>', views.addItem, name="add-item"),
     path('edit-item/<str:pk>', views.editItem, name='edit-item'),
     path('delete-item/<str:pk>', views.deleteItem, name='delete-item'),
-    path('change-product-size/<str:pk', views.changeProductSize, name='change-product-size'),
+    path('change-product-size/<str:pk>', views.changeProductSize, name='change-product-size'),
 
     path('manage-item-images/<str:pk>', views.manageItemImages, name='manage-item-images'),
 
@@ -42,4 +42,9 @@ urlpatterns = [
     path('edit-product-size/<str:pk>', views.editProductSize, name='edit-product-size'),
     path('add-product-size/', views.addProductSize, name='add-product-size'),
     path('delete-product-size/<str:pk>', views.deleteProductSize, name='delete-product-size'),
+
+    path('manage-size-term/<str:pk>', views.manageSizeTerm, name='manage-size-term'),
+    path('add-size-term/<str:pk>', views.addSizeTerm, name='add-size-term'),
+    path('edit-size-term/<str:pk>', views.editSizeTerm, name='edit-size-term'),
+    path('delete-size-term/<str:pk>', views.deleteSizeTerm, name='delete-size-term'),
 ]
