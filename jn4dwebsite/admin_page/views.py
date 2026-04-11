@@ -388,17 +388,18 @@ def addItem(request, pk):
 def editItem(request, pk):
     headers = Header.objects.all()
     item = Item.objects.get(id=pk)
+    sizes = ProductSize.objects.all()
 
     yes_no_choices = [
         ('yes', 'Yes'),
         ('no', 'No'),
     ]
 
-    size_choices = [
-        ('one size', 'One Size'),
-        ('customize', 'Customize'),
-        ('standard', 'Standard'),
-    ]
+    # size_choices = [
+    #     ('one size', 'One Size'),
+    #     ('customize', 'Customize'),
+    #     ('standard', 'Standard'),
+    # ]
 
     if request.method == 'POST':
         # if len(request.FILES) != 0:
@@ -448,7 +449,7 @@ def editItem(request, pk):
         'headers': headers,
         'item': item,
         'yes_no_choices': yes_no_choices,
-        'size_choices': size_choices,
+        'sizes': sizes,
     }
     return render(request, 'edit_item.html', context)
 

@@ -138,13 +138,14 @@
               </div>
               <div class="mb-3 col">
                 <div class="row">
-                  <label for="size_dropdown" class="form-label">Size</label>
+                  <label for="size_select" class="form-label">Choose a Size:</label>
                 </div>
                 <div class="row" class="form-control ms-2"  >
-                  <select name="size_dropdown" id="size_dropdown" class="ms-2"  style="width: 685px;">
-                    {% for value, label in size_choices %}
-                      <option value="{{ value }}" {% if value == item.size %}selected{% endif %} >
-                        {{ label }}
+                  <select name="size" id="size_select" class="ms-2"  style="width: 685px;">
+                    <option value="" selected disabled>Select size</option>
+                    {% for size in sizes %}
+                      <option value="{{ size.id }}">
+                        {{ size.name }}
                       </option>
                     {% endfor %}
                   </select>
