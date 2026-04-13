@@ -21,6 +21,63 @@
     <path d="M.5 3.5A.5.5 0 0 0 0 4v8a.5.5 0 0 0 1 0V8.753l6.267 3.636c.54.313 1.233-.066 1.233-.697v-2.94l6.267 3.636c.54.314 1.233-.065 1.233-.696V4.308c0-.63-.693-1.01-1.233-.696L8.5 7.248v-2.94c0-.63-.692-1.01-1.233-.696L1 7.248V4a.5.5 0 0 0-.5-.5"/>
   </symbol>
 </svg>
+
+<style>
+#terms-table {
+    border-collapse: collapse; /* Merges borders into a single line */
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 8px 8px 0 0;
+    overflow: hidden; /* Ensures rounded corners show */
+}
+
+#terms-table thead tr {
+    /* background-color: #009879;  Modern teal color */
+    background-color: #060303; 
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+#terms-table th, 
+#terms-table td {
+    padding: 12px 15px; /* Adds breathing room */
+}
+
+#terms-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+#terms-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3; /* Zebra striping for readability */
+}
+
+#terms-table tbody tr:last-of-type {
+    border-bottom: 2px solid #060303;
+}
+
+#terms-table tbody tr:hover {
+    background-color: #f1f1f1; /* Subtle hover effect */
+    cursor: pointer;
+}
+
+select {
+  appearance: none; /* Remove default arrow */
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px 40px 10px 15px; /* Extra right padding for arrow */
+  font-size: 16px;
+  cursor: pointer;
+  background-image: url('custom-arrow.svg'); /* Path to your arrow icon */
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+}
+</style>
+
 <section class="section">
   <div class="container">
     <div class="row justify-content-center">
@@ -138,17 +195,34 @@
               </div>
               <div class="mb-3 col">
                 <div class="row">
-                  <label for="size_select" class="form-label">Choose a Size:</label>
+                  <label for="size-select" class="form-label">Choose a Size:</label>
                 </div>
-                <div class="row" class="form-control ms-2"  >
-                  <select name="size" id="size_select" class="ms-2"  style="width: 685px;">
-                    <option value="" selected disabled>Select size</option>
+                <div class="row" class="form-control ms-2" style="width: 685px;" >
+                  <select id="size-select" style="width: 685px; margin-left: 10px;">
+                    <option value="" >Select size</option>
                     {% for size in sizes %}
                       <option value="{{ size.id }}">
                         {{ size.name }}
                       </option>
                     {% endfor %}
                   </select>
+                </div>
+                {% comment %} <div id="terms-container" style="margin-top: 20px;">
+                  <ul id="terms-list">
+                    
+                  </ul>
+                </div> {% endcomment %}
+                <div id="terms-container" style="margin-top: 20px; position: center;">
+                  <table id="terms-table" border="1" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                      <tr>
+                        <th>Acronym</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody id="terms-list">
+                    </tbody>
+                  </table>
                 </div>
               </div>
               <br>
@@ -174,4 +248,78 @@
     </div>
   </div>
 </section>
+<script>
+  {% comment %} document.addEventListener('DOMContentLoaded', function() {
+    const sizeSelect = document.getElementById('size-select');
+    const termsList = document.getElementById('terms-list');
+
+    if (sizeSelect) {
+      sizeSelect.addEventListener('change', function() {
+          const sizeId = this.value;
+          termsList.innerHTML = ''; // Clear previous results
+
+          if (sizeId) {
+              fetch(`/adminpage/get-size-term/?size_id=${sizeId}`)
+                  .then(response => response.json())
+                  .then(data => {
+                      if (data.terms.length > 0) {
+                          data.terms.forEach(term => {
+                              let li = document.createElement('li');
+                              li.textContent = term.forEach(tr => {
+                                let li = document.createElement('li');
+                                li.textContent = tr;
+                                termsList.appendChild(li);
+                              });
+                              termsList.appendChild(li);
+                          });
+                      } else {
+                          termsList.innerHTML = '<li>No terms found for this size.</li>';
+                      }
+                  });
+          } else {
+              termsList.innerHTML = '<li>Select a size to see terms</li>';
+          }
+      });
+    }
+  }); {% endcomment %}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const sizeSelect = document.getElementById('size-select');
+  const termsList = document.getElementById('terms-list');
+
+  if (sizeSelect) {
+    sizeSelect.addEventListener('change', function() {
+      const sizeId = this.value;
+      termsList.innerHTML = ''; // Clear previous results
+
+      if (sizeId) {
+        fetch(`/adminpage/get-size-term/?size_id=${sizeId}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.terms.length > 0) {
+              data.terms.forEach(term => {
+                let tr = document.createElement('tr');
+
+                let td1 = document.createElement('td');
+                td1.textContent = Array.isArray(term) ? term[0] : '';
+                tr.appendChild(td1);
+
+                let td2 = document.createElement('td');
+                td2.textContent = Array.isArray(term) ? term[1] : '';
+                tr.appendChild(td2);
+
+                termsList.appendChild(tr);
+              });
+            } else {
+              termsList.innerHTML = '<tr><td colspan="2">No terms found for this size.</td></tr>';
+            }
+          });
+      } else {
+        termsList.innerHTML = '<tr><td colspan="2">Select a size to see terms</td></tr>';
+      }
+    });
+  }
+});
+
+</script>
 {% endblock %}

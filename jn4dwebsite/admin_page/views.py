@@ -1,5 +1,5 @@
 from django.template import loader
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from homepage.forms import HeaderForm
 from homepage.models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, User, ProductSize, SizeTerm
@@ -739,4 +739,9 @@ def deleteSizeTerm(request, pk):
     messages.success(request, f"{sizeTerm.name} has been deleted.")
     return redirect('manage-size-term', productSize.id)
     
-    
+def getSizeTerm(request):
+    size_id = request.GET.get('size_id')
+    if not size_id:
+        return JsonResponse({'terms': []})
+    terms = SizeTerm.objects.filter(productSize__id=size_id).values_list("acronym","description")
+    return JsonResponse({'terms': list(terms)})

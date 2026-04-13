@@ -47,4 +47,5 @@ urlpatterns = [
     path('add-size-term/<str:pk>', views.addSizeTerm, name='add-size-term'),
     path('edit-size-term/<str:pk>', views.editSizeTerm, name='edit-size-term'),
     path('delete-size-term/<str:pk>', views.deleteSizeTerm, name='delete-size-term'),
+    path('get-size-term/', views.getSizeTerm, name='get_size_term'),
 ]
