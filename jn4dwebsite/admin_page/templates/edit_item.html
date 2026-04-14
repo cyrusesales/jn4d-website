@@ -3,6 +3,8 @@
   href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
   rel="stylesheet"
 />
+
+
 <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
   <symbol id="check-circle-fill" viewBox="0 0 16 16">
     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
@@ -23,7 +25,7 @@
 </svg>
 
 <style>
-#terms-table {
+  #terms-table {
     border-collapse: collapse; /* Merges borders into a single line */
     margin: 25px 0;
     font-size: 0.9em;
@@ -200,7 +202,9 @@ select {
                 </div>
                 <div class="row" class="form-control ms-2" style="width: 685px;" >
                   <select name="size-select" id="size-select" style="width: 685px; margin-left: 10px;">
-                    <option value="{{ sizeSelect.name}}" selected >{{ sizeSelect.name }}</option>
+
+                    <option value="{{ sizeSelect.name}}" selected disabled hidden>{{ sizeSelect.name }}</option>
+
                     {% for size in sizes %}
                       <option value="{{ size.id }}" >
                         {{ size.name }}
