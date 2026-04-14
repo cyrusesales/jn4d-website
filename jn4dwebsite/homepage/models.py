@@ -58,9 +58,17 @@ class Product(models.Model):
     def __str__(self):
         return str(self.name or self.id)
     
+class ProductSize(models.Model):
+    name = models.CharField(max_length=100, blank=True, null=True)
+    description = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.name or self.id)
+    
 class Item(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    size = models.ForeignKey(ProductSize, on_delete=models.CASCADE, blank=True, null=True)
     itemName = models.CharField(max_length=100, blank=True, null=True)
     description = models.CharField(max_length=300, blank=True, null=True)
     image = models.ImageField(upload_to='items/',blank=True, null=True)
@@ -70,7 +78,6 @@ class Item(models.Model):
     image4 = models.ImageField(upload_to='items/',blank=True, null=True)
     original_price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
     selling_price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
-    size = models.CharField(max_length=20, default='one size', blank=True, null=True)
 
     def __str__(self):
         return str(self.itemName or self.id)
@@ -95,12 +102,7 @@ class UserProfile(models.Model):
         return str(self.user.username or self.id)
 
 
-class ProductSize(models.Model):
-    name = models.CharField(max_length=100, blank=True, null=True)
-    description = models.CharField(max_length=100, blank=True, null=True)
 
-    def __str__(self):
-        return str(self.name or self.id)
 
 class SizeTerm(models.Model):
     productSize = models.ForeignKey(ProductSize, on_delete=models.CASCADE, blank=True, null=True)

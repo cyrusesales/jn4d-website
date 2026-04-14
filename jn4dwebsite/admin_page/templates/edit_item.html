@@ -52,7 +52,7 @@
 }
 
 #terms-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3; /* Zebra striping for readability */
+    /* background-color: #f3f3f3;  Zebra striping for readability */
 }
 
 #terms-table tbody tr:last-of-type {
@@ -193,25 +193,22 @@ select {
                   <input type="file" name="image4" class="form-control ms-2" style="width: 685px;" />
                 </div>
               </div>
+              <!--dropdown for Size-->
               <div class="mb-3 col">
                 <div class="row">
                   <label for="size-select" class="form-label">Choose a Size:</label>
                 </div>
                 <div class="row" class="form-control ms-2" style="width: 685px;" >
-                  <select id="size-select" style="width: 685px; margin-left: 10px;">
-                    <option value="" >Select size</option>
+                  <select name="size-select" id="size-select" style="width: 685px; margin-left: 10px;">
+                    <option value="{{ sizeSelect.name}}" selected >{{ sizeSelect.name }}</option>
                     {% for size in sizes %}
-                      <option value="{{ size.id }}">
+                      <option value="{{ size.id }}" >
                         {{ size.name }}
                       </option>
                     {% endfor %}
+
                   </select>
                 </div>
-                {% comment %} <div id="terms-container" style="margin-top: 20px;">
-                  <ul id="terms-list">
-                    
-                  </ul>
-                </div> {% endcomment %}
                 <div id="terms-container" style="margin-top: 20px; position: center;">
                   <table id="terms-table" border="1" style="width: 100%; border-collapse: collapse;">
                     <thead>

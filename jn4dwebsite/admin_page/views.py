@@ -346,6 +346,7 @@ def addItem(request, pk):
     product = Product.objects.get(id=pk)
     category = Category.objects.get(id=product.category.id)
     item = Item.objects.all()
+    sizes = ProductSize.objects.all()
 
     if request.method == 'POST':
         item = Item()
@@ -355,7 +356,7 @@ def addItem(request, pk):
         item.description = request.POST.get("description")
         item.original_price = Decimal(request.POST.get("original_price").replace(',', ''))
         item.selling_price = Decimal(request.POST.get("selling_price").replace(',', ''))
-        
+        item.size = request.POST.get("size-select")
 
         if (item.original_price <= item.selling_price and item.original_price > 0):
             messages.warning(request, f"Original Price must be greater than Selling Price!")
@@ -380,6 +381,7 @@ def addItem(request, pk):
         'headers': headers,
         'product': product,
         'item': item,
+        'sizes': sizes,
     }
 
     return render(request, "add_item.html", context)
@@ -389,7 +391,8 @@ def editItem(request, pk):
     headers = Header.objects.all()
     item = Item.objects.get(id=pk)
     sizes = ProductSize.objects.all()
-
+    sizeSelect = ProductSize.objects.get(name=item.size)
+    
     yes_no_choices = [
         ('yes', 'Yes'),
         ('no', 'No'),
@@ -439,7 +442,7 @@ def editItem(request, pk):
         item.description = request.POST.get('description')
         item.original_price = Decimal(request.POST.get('original_price').replace(',', ''))
         item.selling_price = Decimal(request.POST.get('selling_price').replace(',', ''))
-        item.size = request.POST.get("size_dropdown")
+        item.size = request.POST.get("size-select")
 
         item.save()
         messages.success(request, f"{item} is edited successfully!")
@@ -450,6 +453,7 @@ def editItem(request, pk):
         'item': item,
         'yes_no_choices': yes_no_choices,
         'sizes': sizes,
+        'sizeSelect': sizeSelect,
     }
     return render(request, 'edit_item.html', context)
 
