@@ -392,17 +392,7 @@ def editItem(request, pk):
     item = Item.objects.get(id=pk)
     sizes = ProductSize.objects.all()
     sizeSelect = ProductSize.objects.get(name=item.size)
-    
-    yes_no_choices = [
-        ('yes', 'Yes'),
-        ('no', 'No'),
-    ]
 
-    # size_choices = [
-    #     ('one size', 'One Size'),
-    #     ('customize', 'Customize'),
-    #     ('standard', 'Standard'),
-    # ]
 
     if request.method == 'POST':
         # if len(request.FILES) != 0:
@@ -442,7 +432,9 @@ def editItem(request, pk):
         item.description = request.POST.get('description')
         item.original_price = Decimal(request.POST.get('original_price').replace(',', ''))
         item.selling_price = Decimal(request.POST.get('selling_price').replace(',', ''))
-        item.size = request.POST.get("size-select")
+        size_id = request.POST.get("size")
+        selected_size = ProductSize.objects.get(id=size_id)
+        item.size = selected_size
 
         item.save()
         messages.success(request, f"{item} is edited successfully!")
@@ -451,7 +443,6 @@ def editItem(request, pk):
     context = {
         'headers': headers,
         'item': item,
-        'yes_no_choices': yes_no_choices,
         'sizes': sizes,
         'sizeSelect': sizeSelect,
     }

@@ -34,7 +34,9 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     border-radius: 8px 8px 0 0;
     overflow: hidden; /* Ensures rounded corners show */
+    display: none;
 }
+
 
 #terms-table thead tr {
     /* background-color: #009879;  Modern teal color */
@@ -201,9 +203,9 @@ select {
                   <label for="size-select" class="form-label">Choose a Size:</label>
                 </div>
                 <div class="row" class="form-control ms-2" style="width: 685px;" >
-                  <select name="size-select" id="size-select" style="width: 685px; margin-left: 10px;">
+                  <select name="size" id="size-select" style="width: 685px; margin-left: 10px;">
 
-                    <option value="{{ sizeSelect.name}}" selected disabled hidden>{{ sizeSelect.name }}</option>
+                    <option value="{{ sizeSelect.id }}" selected disabled hidden>{{ sizeSelect.name }}</option>
 
                     {% for size in sizes %}
                       <option value="{{ size.id }}" >
@@ -213,7 +215,7 @@ select {
 
                   </select>
                 </div>
-                <div id="terms-container" style="margin-top: 20px; position: center;">
+                <div id="terms-container" style="margin-top: 20px; position: center;" >
                   <table id="terms-table" border="1" style="width: 100%; border-collapse: collapse;">
                     <thead>
                       <tr>
@@ -287,6 +289,7 @@ select {
 document.addEventListener('DOMContentLoaded', function() {
   const sizeSelect = document.getElementById('size-select');
   const termsList = document.getElementById('terms-list');
+  const termsTable = document.getElementById('terms-table');
 
   if (sizeSelect) {
     sizeSelect.addEventListener('change', function() {
@@ -310,6 +313,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 tr.appendChild(td2);
 
                 termsList.appendChild(tr);
+                termsTable.style.display = "table";
               });
             } else {
               termsList.innerHTML = '<tr><td colspan="2">No terms found for this size.</td></tr>';
