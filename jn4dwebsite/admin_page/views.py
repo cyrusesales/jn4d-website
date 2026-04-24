@@ -356,7 +356,9 @@ def addItem(request, pk):
         item.description = request.POST.get("description")
         item.original_price = Decimal(request.POST.get("original_price").replace(',', ''))
         item.selling_price = Decimal(request.POST.get("selling_price").replace(',', ''))
-        item.size = request.POST.get("size-select")
+        size_id = request.POST.get("size")
+        selected_size = ProductSize.objects.get(id=size_id)
+        item.size = selected_size
 
         if (item.original_price <= item.selling_price and item.original_price > 0):
             messages.warning(request, f"Original Price must be greater than Selling Price!")
