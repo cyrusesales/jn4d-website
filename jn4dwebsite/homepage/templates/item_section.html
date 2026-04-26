@@ -45,6 +45,7 @@
         <div class="col-md-12">
             <h2 class="mb-4">{{ product.name }}</h2>
             <p>{{ product.description}}</p>
+            <br>
             {% for msg in messages %}
                 <div class="alert alert-success alert-dismissible d-flex align-items-center fade show" role="alert" >
                     <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:" width="20" height="20" >
@@ -94,6 +95,14 @@
                                             </svg>
                                         </button> {% endcomment %}
                                     </div>
+                                    {% if item.original_price > 0 %}
+                                    <span class="position-absolute top-0 start-90 translate-middle badge rounded-pill bg-danger">
+                                        Save
+                                        {% widthratio item.selling_price item.original_price 100 as discount %}
+                                        {{ discount|add:"-100"|cut:"-" }}%
+                                    </span>
+                                    {% endif %}
+                                    
                                 
                             </div>
                         </div>
