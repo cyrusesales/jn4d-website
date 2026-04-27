@@ -100,14 +100,29 @@
                         
                         {% endif %}
                         <br>
+                        <br>
+                        <p class="text-start">Size: </p>
+
+                        <div class="row">
+                            {% for size in sizeTerm %}
+                                <div class="col-md-3 px-0" style="width: 75px;">
+                                    <div class="border ">
+                                        <a href="" class="">
+                                            <div class="">
+                                                <p class="m-1 p-3">{{ size.acronym }}</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <br>
                         <p class="text-start">Variation: </p>
 
                         <div class="row">
                             {% for item in variations %}
-
-                                    
                                 <div class="col-md-3 px-0" >
-                                    <div class="card h-100">
+                                    <div class="border h-100">
                                         <a href="{% url "view-specifications" item.id %}" style="text-decoration: none; color: inherit; font-weight: normal;">
                                             <div class="card-header">
                                                 <img src="{{ item.image.url }}" alt="Product image" class="img-fluid" style="height: 100px;"/>
@@ -119,12 +134,10 @@
                                         </a>
                                     </div>
                                 </div>
-                                        
-
-
-                            
                             {% endfor %}
                         </div>
+
+                        
 
                         One of three columns
                     

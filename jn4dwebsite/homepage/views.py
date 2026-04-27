@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
-from .models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile
+from .models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, SizeTerm
 from django.contrib import messages
 from django.template.exceptions import TemplateDoesNotExist
 import re
@@ -125,6 +125,8 @@ def viewSpecifications(request, pk):
         product = Product.objects.get(id=items.product.id)
         placeholders = Placeholder.objects.all()
         variations = Item.objects.filter(product__id=product.id)
+        sizeTerm = SizeTerm.objects.filter(productSize_id=items.size)
+        
         context = {
             'headers': headers,
             'items': items,
@@ -132,6 +134,7 @@ def viewSpecifications(request, pk):
             'product': product,
             'placeholders': placeholders,
             'variations': variations,
+            'sizeTerm': sizeTerm,
         }
         return render(request, 'product_specifications.html', context)
     else:
