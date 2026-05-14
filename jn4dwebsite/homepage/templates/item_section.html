@@ -96,11 +96,13 @@
                                         </button> {% endcomment %}
                                     </div>
                                     {% if item.original_price > 0 %}
-                                    <span class="position-absolute top-0 start-90 translate-middle badge rounded-pill bg-danger">
+                                    <h5>
+                                    <span class="position-absolute top-0 start-90 translate-middle badge bg-danger">
                                         
                                         {% widthratio item.selling_price item.original_price 100 as discount %}
-                                        {{ discount|add:"-100"|cut:"-" }}% Off
+                                        Save {{ discount|add:"-100"|cut:"-" }}%
                                     </span>
+                                    </h5>
                                     {% endif %}
                                     
                                 

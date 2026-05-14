@@ -31,6 +31,33 @@
     #placeholder-image {
         width: 250px;
     }
+
+    .size {
+        cursor: pointer;
+        border: 1px solid rgb(229, 228, 226);
+    }
+
+    a {
+        text-decoration: none;
+        color: black;
+    }
+
+    .size:hover {
+        border: 1px solid black;
+        background-color: rgb(229, 228, 226);
+    }
+
+    .size.active {
+        border: 1px solid black;
+        background-color: rgb(229, 228, 226);
+    }
+
+    .variation {
+        border: 1px solid rgb(229, 228, 226);
+    }
+    .variation:hover {
+        border: 1px solid black;
+    }
 </style>
 
 
@@ -106,9 +133,9 @@
                         <div class="row">
                             {% for size in sizeTerm %}
                                 <div class="col-md-3 px-0" style="width: 75px;">
-                                    <div class="border ">
-                                        <a href="" class="">
-                                            <div class="">
+                                    <div class="size ">
+                                        <a href="javascript:void(0);" class="">
+                                            <div class="" >
                                                 <p class="m-1 p-3">{{ size.acronym }}</p>
                                             </div>
                                         </a>
@@ -122,7 +149,7 @@
                         <div class="row">
                             {% for item in variations %}
                                 <div class="col-md-3 px-0" >
-                                    <div class="border h-100">
+                                    <div class="variation h-100">
                                         <a href="{% url "view-specifications" item.id %}" style="text-decoration: none; color: inherit; font-weight: normal;">
                                             <div class="card-header">
                                                 <img src="{{ item.image.url }}" alt="Product image" class="img-fluid" style="height: 100px;"/>
@@ -137,8 +164,17 @@
                             {% endfor %}
                         </div>
 
-                        
-
+                        <br>
+                        <br>
+                        <br>
+                        <div class="row">
+                            <a href="" class="btn btn-dark">
+                                Add to cart
+                            </a>
+                        </div>
+                        <br>
+                        <br>
+                        <br>
                         One of three columns
                     
                         
@@ -172,7 +208,20 @@
 
 </div>
 
+<script>
+const sizes = document.querySelectorAll('.size');
 
+    sizes.forEach(size => {
+        size.addEventListener('click', function () {
+
+            // remove active from all
+            sizes.forEach(s => s.classList.remove('active'));
+
+            // add active to clicked
+            this.classList.add('active');
+        });
+    });
+</script>
 
 {% endblock %}
 
