@@ -39,6 +39,7 @@
             <table class="table table-bordered table-striped">
               <thead>
                 <tr>
+                  <th>User Name</th>
                   <th>Image</th>
                   <th>Item Name</th>
                   <th>Price</th>
@@ -50,6 +51,7 @@
               <tbody>
                 {% for cart in cart_items %}
                 <tr>
+                  <td>{{ cart.user.username }}</td>
                   {% if cart.item.image %}
                   <td>
                     <img src="{{ cart.item.image.url }}" alt="" width="150" height="50" />
@@ -59,6 +61,7 @@
                     <p>No Image Available</p>
                   </td>
                   {% endif %}
+                  
                   <td>{{ cart.item.itemName }}</td>
                   <td>{{ cart.item.selling_price }}</td>
                   <td>{{ cart.size }}</td>

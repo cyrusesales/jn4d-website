@@ -83,19 +83,6 @@ class Item(models.Model):
         return str(self.itemName or self.id)
     
 
-class Cart(models.Model):
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    size = models.CharField(max_length=20)
-    quantity = models.PositiveIntegerField(default=1)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def total_price(self):
-        return self.item.selling_price * self.quantity
-
-    def __str__(self):
-        return self.item.itemName
-    
-
 class UserProfile(models.Model):
     phone_regex = RegexValidator(
         regex=r'^\+?1?\d{9,15}$',
@@ -115,7 +102,18 @@ class UserProfile(models.Model):
     def __str__(self):
         return str(self.user.username or self.id)
 
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    size = models.CharField(max_length=20)
+    quantity = models.PositiveIntegerField(default=1)
+    created_at = models.DateTimeField(auto_now_add=True)
 
+    def total_price(self):
+        return self.item.selling_price * self.quantity
+
+    def __str__(self):
+        return self.item.itemName
 
 
 class SizeTerm(models.Model):

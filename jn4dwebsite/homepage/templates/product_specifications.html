@@ -133,6 +133,7 @@
                             {% csrf_token %}
 
                             <input type="hidden" name="item_id" value={{ items.id }}>
+                            <input type="hidden" name="user_id" value={{ user.id }}>
                             <input type="hidden" name="item_name" value={{ items.itemName }}>
                             <input type="hidden" name="item_image" value={{ items.image.url }}>
                             <input type="hidden" name="selling_price" value={{ items.selling_price }}>

@@ -84,11 +84,11 @@
             
             <!--cart-->
             <li class="nav-item">
-              <button type="button" class="btn">
+              <a href="{% url "view-cart" user.id %}" class="btn">
                 <svg class="bi m-1" width="20" height="20" style="color: white;">
                     <use xlink:href="#cart"></use>
                 </svg>
-              </button>
+              </a>
             </li>
             <li class="nav-item">
               <button type="button" class="btn">

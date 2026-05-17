@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
-from .models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, SizeTerm, Cart
+from .models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, SizeTerm, Cart, User
 from django.contrib import messages
 from django.template.exceptions import TemplateDoesNotExist
 import re
@@ -143,23 +143,26 @@ def viewSpecifications(request, pk):
     
 
 def addToCart(request, pk):
+    
     if request.method == 'POST':
+        user = get_object_or_404(User, id=request.user.id)
         item = get_object_or_404(Item, id=pk)
         selected_size = request.POST.get('selected_size')
         quantity = request.POST.get('quantity')
 
         Cart.objects.create(
+            user=user,
             item=item,
             size=selected_size,
             quantity=quantity,
         )
 
-    return redirect ('view-cart')
+    return redirect ('view-cart', request.user.id)
 
 
-def viewCart(request):
+def viewCart(request, pk):
     headers = Header.objects.all()
-    cart_items = Cart.objects.all()
+    cart_items = Cart.objects.filter(user_id=pk)
 
     context = {
         'headers': headers,
