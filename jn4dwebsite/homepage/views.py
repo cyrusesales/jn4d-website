@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
-from .models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, SizeTerm
+from .models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, SizeTerm, Cart
 from django.contrib import messages
 from django.template.exceptions import TemplateDoesNotExist
 import re
@@ -141,6 +141,35 @@ def viewSpecifications(request, pk):
         messages.warning(request, 'No Product Available')
         return render('view-specifications')
     
+
+def addToCart(request, pk):
+    if request.method == 'POST':
+        item = get_object_or_404(Item, id=pk)
+        selected_size = request.POST.get('selected_size')
+        quantity = request.POST.get('quantity')
+
+        Cart.objects.create(
+            item=item,
+            size=selected_size,
+            quantity=quantity,
+        )
+
+    return redirect ('view-cart')
+
+
+def viewCart(request):
+    headers = Header.objects.all()
+    cart_items = Cart.objects.all()
+
+    context = {
+        'headers': headers,
+        'cart_items': cart_items,
+    }
+
+    return render(request, "add_to_cart.html", context)
+
+
+
 def signUp(request):
     headers = Header.objects.all()
     # userprofile = UserProfile.objects.all()

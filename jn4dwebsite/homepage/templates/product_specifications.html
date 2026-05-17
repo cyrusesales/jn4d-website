@@ -128,21 +128,49 @@
                         {% endif %}
                         <br>
                         <br>
-                        <p class="text-start">Size: </p>
 
-                        <div class="row">
-                            {% for size in sizeTerm %}
-                                <div class="col-md-3 px-0" style="width: 75px;">
-                                    <div class="size ">
-                                        <a href="javascript:void(0);" class="">
+                        <form method="POST" action="{% url "add-to-cart" items.id %}">
+                            {% csrf_token %}
+
+                            <input type="hidden" name="item_id" value={{ items.id }}>
+                            <input type="hidden" name="item_name" value={{ items.itemName }}>
+                            <input type="hidden" name="item_image" value={{ items.image.url }}>
+                            <input type="hidden" name="selling_price" value={{ items.selling_price }}>
+
+                            <input type="hidden" name="selected_size" id="selected_size">
+
+                            <p class="text-start">Size: </p>
+
+                            <div class="row">
+                                {% for size in sizeTerm %}
+                                    <div class="col-md-3 px-0" style="width: 75px;">
+                                        <div class="size " data-size="{{ size.acronym }}">
                                             <div class="" >
                                                 <p class="m-1 p-3">{{ size.acronym }}</p>
                                             </div>
-                                        </a>
+
+                                        </div>
                                     </div>
-                                </div>
-                            {% endfor %}
-                        </div>
+                                {% endfor %}
+                            </div>
+                            <br>
+                            <br>
+                            <p class="text-start">Quantity: </p>
+                            <div class="row mb-3 mt-3">
+                                <input type="number" name="quantity" value="1" min="1" class="form-control" style="width:100px">
+                            </div>
+                            <br>
+                            <br>
+                            <br>
+                            <div class="row">
+                                <button type="submit" class="btn btn-dark">
+                                    Add to cart
+                                </button>
+                            </div>
+                        </form>
+
+                        <br>
+                        <br>
                         <br>
                         <p class="text-start">Variation: </p>
 
@@ -162,15 +190,6 @@
                                     </div>
                                 </div>
                             {% endfor %}
-                        </div>
-
-                        <br>
-                        <br>
-                        <br>
-                        <div class="row">
-                            <a href="" class="btn btn-dark">
-                                Add to cart
-                            </a>
                         </div>
                         <br>
                         <br>
@@ -210,6 +229,7 @@
 
 <script>
 const sizes = document.querySelectorAll('.size');
+const selectedSizeInput = document.getElementById('selected_size');
 
     sizes.forEach(size => {
         size.addEventListener('click', function () {
@@ -219,6 +239,9 @@ const sizes = document.querySelectorAll('.size');
 
             // add active to clicked
             this.classList.add('active');
+
+            // Save selected size
+            selectedSizeInput.value = this.dataset.size;
         });
     });
 </script>
