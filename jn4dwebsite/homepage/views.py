@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import check_password
+from django.views.decorators.http import require_POST
 
 # Create your views here.
 
@@ -162,14 +163,40 @@ def addToCart(request, pk):
 
 def viewCart(request, pk):
     headers = Header.objects.all()
-    cart_items = Cart.objects.filter(user_id=pk)
+    cart_items = Cart.objects.filter(user_id=pk).order_by('created_at')
+    total = sum(cart.total_price() for cart in cart_items)
 
     context = {
         'headers': headers,
         'cart_items': cart_items,
+        'total': total,
     }
 
     return render(request, "add_to_cart.html", context)
+
+@require_POST
+def updateQuantity(request, pk):
+    cart_item = get_object_or_404(Cart, id=pk, user=request.user)
+    action = request.POST.get('action') # 'increase' or 'decrease'
+
+    if action == 'increase':
+        cart_item.quantity += 1
+        cart_item.save()
+    elif action == 'decrease':
+        if cart_item.quantity > 1:
+            cart_item.quantity -= 1
+            cart_item.save()
+        else:
+            cart_item.delete()
+            messages.info(request, "Item removed from cart.")
+            return redirect('view-cart', request.user.id)
+    return redirect('view-cart', request.user.id)
+    
+@require_POST
+def removeItem(request, pk):
+    cart_item = get_object_or_404(Cart, id=pk, user=request.user)
+    cart_item.delete()
+    return redirect('view-cart', request.user.id)
 
 
 
