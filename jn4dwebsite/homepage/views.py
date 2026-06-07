@@ -149,14 +149,26 @@ def addToCart(request, pk):
         user = get_object_or_404(User, id=request.user.id)
         item = get_object_or_404(Item, id=pk)
         selected_size = request.POST.get('selected_size')
-        quantity = request.POST.get('quantity')
+        quantity = int(request.POST.get('quantity',1))
 
-        Cart.objects.create(
-            user=user,
+        # check if item already exist in cart
+        cart_item = Cart.objects.filter(
             item=item,
             size=selected_size,
-            quantity=quantity,
-        )
+        ).first()
+
+        if cart_item:
+            # update quantity
+            cart_item.quantity += quantity
+            cart_item.save()
+        else:
+            # create new cart item
+            Cart.objects.create(
+                user=user,
+                item=item,
+                size=selected_size,
+                quantity=quantity,
+            )
 
     return redirect ('view-cart', request.user.id)
 
