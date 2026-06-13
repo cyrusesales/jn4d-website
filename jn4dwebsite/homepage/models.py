@@ -111,6 +111,18 @@ class Cart(models.Model):
 
     def total_price(self):
         return self.item.selling_price * self.quantity
+    
+    def original_price(self):
+        if self.item.original_price == 0:
+            return self.item.selling_price * self.quantity
+        else:
+            return self.item.original_price * self.quantity
+    
+    def discount_price(self):
+        if self.item.original_price == 0:
+            return 0
+        else:
+            return (self.item.original_price - self.item.selling_price) * self.quantity
 
     def __str__(self):
         return self.item.itemName
