@@ -187,8 +187,23 @@ def viewCart(request, pk):
         'order_value': order_value,
         'discount': discount,
     }
-
     return render(request, "add_to_cart.html", context)
+
+def viewCheckout(request, pk):
+    headers = Header.objects.all()
+    cart_items = Cart.objects.filter(user_id=pk).order_by('created_at')
+    total = sum(cart.total_price()  for cart in cart_items)
+    order_value = sum(cart.original_price() for cart in cart_items)
+    discount = sum(cart.discount_price()  for cart in cart_items)
+
+    context = {
+        'headers': headers,
+        'cart_items': cart_items,
+        'total': total,
+        'order_value': order_value,
+        'discount': discount,
+    }
+    return render(request, "checkout.html", context)
 
 @require_POST
 def updateQuantity(request, pk):
