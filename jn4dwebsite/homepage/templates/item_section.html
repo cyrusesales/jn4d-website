@@ -75,25 +75,7 @@
                                                 </svg>
                                                 &#x20B1;{{ item.selling_price |floatformat:2}}
                                             </h5>
-                                            {% comment %} {% if item.original_price > 0 %}
-                                            <h5 class="text-start" style="text-decoration: line-through; font-size: 15px;">
-                                                <svg class="bi m-2" width="18" height="18">
-                                                    <use xlink:href="#price"><!--Add--></use>
-                                                </svg>
-                                                &#x20B1;{{ item.original_price |floatformat:2}}
-                                            </h5>
-                                            {% endif %} {% endcomment %}
                                         </a>
-                                        {% comment %} <button type="button" class="btn">
-                                            <svg class="bi m-1" width="20" height="20">
-                                                <use xlink:href="#cart"></use>
-                                            </svg>
-                                        </button>
-                                        <button type="button" class="btn">
-                                            <svg class="bi m-1" width="20" height="20">
-                                                <use xlink:href="#favorite"></use>
-                                            </svg>
-                                        </button> {% endcomment %}
                                     </div>
                                     {% if item.original_price > 0 %}
                                     <h5>

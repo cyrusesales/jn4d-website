@@ -74,107 +74,128 @@ th, td {
     <br>
     <div class="row ">
         <!-- Left Side - Cart Items -->
-        {% for cart in cart_items %}
+        
         <div class="col-md-8">
-
+            {% for cart in cart_items %}
             <div class="card mb-3 p-3 border-0">
 
             
-            <div class="row align-items-center" >
-                <!-- Image -->
-                <div class="col-md-3">
-                    <div class="">
-                        <img src="{{ cart.item.image.url }}" alt="" class="img-fluid" style="max-height: 150px;" />
+                <div class="row align-items-center" >
+                    <!-- Image -->
+                    <div class="col-md-3">
+                        <div class="">
+                            <img src="{{ cart.item.image.url }}" alt="" class="img-fluid" style="max-height: 150px;" />
+                        </div>
                     </div>
+                    <!-- Product Details -->
+                    <div class="col-md-6">
+                        <p><strong>{{ cart.item.itemName }}</strong></p>
+                        {% comment %} <p>{{ cart.id }}</p> {% endcomment %}
+                        
+                        <div class="row align-items-start">
+                            {% if cart.item.original_price > 0 %}
+                            <div class="col">
+                                <span style="font-weight: bold; color: red;">₱{{ cart.item.selling_price }} </span>
+                            </div>
+                            <div class="col">
+                                <span class="text-start" style="text-decoration: line-through; font-size: 15px; font-weight: light;">₱{{ cart.item.original_price }}</span>
+                            </div>
+                            {% else %}
+                            <div class="col">
+                                <span style="font-weight: bold">₱{{ cart.item.selling_price }} </span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <br>
+                        <table class="table table-sm">
+                        <tbody>
+                        <tr>
+                            <th scope="row">Size</th>
+                            <td>{{ cart.size }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Quantity</th>
+                            <td>{{ cart.quantity }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Total</th>
+                            <td>₱{{ cart.total_price }}</td>
+                        </tr>
+                        </tbody>
+                        </table>
+                        <div class="" style="border: 0.5px solid black; width: 128px;">
+                            {% if cart.quantity == 1 %}
+                            <!-- Remove -->
+                            <form method="POST" action="{% url "remove-item" cart.id %}" style="display:inline">
+                                {% csrf_token %}
+                                <button type="submit" class="qty-btn ps-1" data-bs-placement="top" title="Delete">
+                                    <svg class="bi m-2" width="23" height="23">
+                                        <use xlink:href="#delete"></use>
+                                    </svg>
+                                </button>
+                            </form>
+                            {% else %}
+                            <!-- Minus Button -->
+                            <form method="POST" action="{% url "update-quantity" cart.id %}" style="display:inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="decrease" >
+                                <button type="submit" class="qty-btn" data-bs-placement="top" title="Minus">
+                                    <svg class="bi m-2" width="30" height="30">
+                                        <use xlink:href="#minus"></use>
+                                    </svg>
+                                </button>
+                            </form>
+                            {% endif %}
+
+                            <span class="mx-2">{{ cart.quantity }}</span>
+
+                            <!-- Plus Button -->
+                            <form method="POST" action="{% url "update-quantity" cart.id %}" style="display:inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="increase">
+                                <button type="submit" class="qty-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Add">
+                                    <svg class="bi m-2" width="30" height="30">
+                                        <use xlink:href="#plus"></use>
+                                    </svg>
+                                </button>
+                            </form>
+                            {% comment %} </div> {% endcomment %}
+                        </div>
+                        
+                        
+                    </div>
+
+                    
                 </div>
-                <!-- Product Details -->
-                <div class="col-md-6">
-                    <p><strong>{{ cart.item.itemName }}</strong></p>
-                    {% comment %} <p>{{ cart.id }}</p> {% endcomment %}
-                    
-                    <div class="row align-items-start">
-                        {% if cart.item.original_price > 0 %}
-                        <div class="col">
-                            <span style="font-weight: bold; color: red;">₱{{ cart.item.selling_price }} </span>
-                        </div>
-                        <div class="col">
-                            <span class="text-start" style="text-decoration: line-through; font-size: 15px; font-weight: light;">₱{{ cart.item.original_price }}</span>
-                        </div>
-                        {% else %}
-                        <div class="col">
-                            <span style="font-weight: bold">₱{{ cart.item.selling_price }} </span>
-                        </div>
-                        {% endif %}
-                    </div>
-                    <br>
-                    <table class="table table-sm">
-                    <tbody>
-                    <tr>
-                        <th scope="row">Size</th>
-                        <td>{{ cart.size }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Quantity</th>
-                        <td>{{ cart.quantity }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Total</th>
-                        <td>₱{{ cart.total_price }}</td>
-                    </tr>
-                    </tbody>
-                    </table>
-                    <div class="" style="border: 0.5px solid black; width: 128px;">
-                    {% if cart.quantity == 1 %}
-                    <!-- Remove -->
-                    <form method="POST" action="{% url "remove-item" cart.id %}" style="display:inline">
-                        {% csrf_token %}
-                        <button type="submit" class="qty-btn ps-1" data-bs-placement="top" title="Delete">
-                            <svg class="bi m-2" width="23" height="23">
-                                <use xlink:href="#delete"></use>
-                            </svg>
-                        </button>
-                    </form>
-                    {% else %}
-                    <!-- Minus Button -->
-                    <form method="POST" action="{% url "update-quantity" cart.id %}" style="display:inline">
-                        {% csrf_token %}
-                        <input type="hidden" name="action" value="decrease" >
-                        <button type="submit" class="qty-btn" data-bs-placement="top" title="Minus">
-                            <svg class="bi m-2" width="30" height="30">
-                                <use xlink:href="#minus"></use>
-                            </svg>
-                        </button>
-                    </form>
-                    {% endif %}
-
-                    <span class="mx-2">{{ cart.quantity }}</span>
-
-                    <!-- Plus Button -->
-                    <form method="POST" action="{% url "update-quantity" cart.id %}" style="display:inline">
-                        {% csrf_token %}
-                        <input type="hidden" name="action" value="increase">
-                        <button type="submit" class="qty-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Add">
-                            <svg class="bi m-2" width="30" height="30">
-                                <use xlink:href="#plus"></use>
-                            </svg>
-                        </button>
-                    </form>
-                    {% comment %} </div> {% endcomment %}
-                    </div>
-                    
-                    
-                </div>
-
-                
             </div>
-            </div>
-
+            {% endfor %}
         </div>
-        {% endfor %}
+        
         <!-- Right Side  -->
         <div class="col">
-            <div class="align-self-start ">
-                
+            <div class="container">
+                {% for cart in cart_items %}
+                <div class="row">
+                    <div class="col">
+                        <div class="position-relative d-inline-block">
+                            <img src="{{ cart.item.image.url }}" alt="" class="img-fluid" style="max-height: 75px;" />
+                            <span class="position-absolute top-0 start-100 translate-middle badge bg-dark">
+                            {{ cart.quantity }}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="col">
+                        One of three columns
+                    </div>
+                    <div class="col">
+                        One of three columns
+                    </div>
+                </div>
+                <br>
+                {% endfor %}
+                <br>
+                <br>
                 <table class="table table-sm">
                     <tbody>
                         <tr>
@@ -195,20 +216,7 @@ th, td {
                         </tr>
                     </tbody>
                 </table>
-                <div class="row">
-                    <a href="" class="btn btn-dark">
-                        Checkout
-                    </a>
-                </div>
-                <br>
-                <div>
-                    <div>
-                        <span>30-day returns. Read more about our return and refund policy.</span>
-                    </div>
-                    <div>
-                        <span>Need help? Please contact Customer Support.</span>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </div>

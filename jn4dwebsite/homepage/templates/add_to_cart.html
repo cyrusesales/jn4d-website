@@ -74,9 +74,9 @@ th, td {
     <br>
     <div class="row ">
         <!-- Left Side - Cart Items -->
-        {% for cart in cart_items %}
+        
         <div class="col-md-8">
-
+            {% for cart in cart_items %}
             <div class="card mb-3 p-3 border-0">
 
             
@@ -168,9 +168,9 @@ th, td {
                 
             </div>
             </div>
-
+            {% endfor %}
         </div>
-        {% endfor %}
+        
         <!-- Right Side  -->
         <div class="col">
             <div class="align-self-start ">
