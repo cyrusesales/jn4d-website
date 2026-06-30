@@ -1,13 +1,21 @@
 {% extends "base.html" %} 
 {% block title %}JN4D Interior Services{% endblock %}
 {% block content %}
-<link
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" 
+    rel="stylesheet" 
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
+    crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" 
+    crossorigin="anonymous">
+</script>
+
+{% comment %} <link
   href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
   rel="stylesheet"
 />
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> {% endcomment %}
 
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;" >
@@ -76,100 +84,183 @@ th, td {
         <!-- Left Side - Cart Items -->
         
         <div class="col-md-8">
-            {% for cart in cart_items %}
-            <div class="card mb-3 p-3 border-0">
-
-            
-                <div class="row align-items-center" >
-                    <!-- Image -->
-                    <div class="col-md-3">
-                        <div class="">
-                            <img src="{{ cart.item.image.url }}" alt="" class="img-fluid" style="max-height: 150px;" />
-                        </div>
-                    </div>
-                    <!-- Product Details -->
-                    <div class="col-md-6">
-                        <p><strong>{{ cart.item.itemName }}</strong></p>
-                        {% comment %} <p>{{ cart.id }}</p> {% endcomment %}
-                        
-                        <div class="row align-items-start">
-                            {% if cart.item.original_price > 0 %}
-                            <div class="col">
-                                <span style="font-weight: bold; color: red;">₱{{ cart.item.selling_price }} </span>
-                            </div>
-                            <div class="col">
-                                <span class="text-start" style="text-decoration: line-through; font-size: 15px; font-weight: light;">₱{{ cart.item.original_price }}</span>
-                            </div>
-                            {% else %}
-                            <div class="col">
-                                <span style="font-weight: bold">₱{{ cart.item.selling_price }} </span>
-                            </div>
-                            {% endif %}
-                        </div>
-                        <br>
-                        <table class="table table-sm">
-                        <tbody>
-                        <tr>
-                            <th scope="row">Size</th>
-                            <td>{{ cart.size }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Quantity</th>
-                            <td>{{ cart.quantity }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Total</th>
-                            <td>₱{{ cart.total_price }}</td>
-                        </tr>
-                        </tbody>
-                        </table>
-                        <div class="" style="border: 0.5px solid black; width: 128px;">
-                            {% if cart.quantity == 1 %}
-                            <!-- Remove -->
-                            <form method="POST" action="{% url "remove-item" cart.id %}" style="display:inline">
-                                {% csrf_token %}
-                                <button type="submit" class="qty-btn ps-1" data-bs-placement="top" title="Delete">
-                                    <svg class="bi m-2" width="23" height="23">
-                                        <use xlink:href="#delete"></use>
-                                    </svg>
-                                </button>
-                            </form>
-                            {% else %}
-                            <!-- Minus Button -->
-                            <form method="POST" action="{% url "update-quantity" cart.id %}" style="display:inline">
-                                {% csrf_token %}
-                                <input type="hidden" name="action" value="decrease" >
-                                <button type="submit" class="qty-btn" data-bs-placement="top" title="Minus">
-                                    <svg class="bi m-2" width="30" height="30">
-                                        <use xlink:href="#minus"></use>
-                                    </svg>
-                                </button>
-                            </form>
-                            {% endif %}
-
-                            <span class="mx-2">{{ cart.quantity }}</span>
-
-                            <!-- Plus Button -->
-                            <form method="POST" action="{% url "update-quantity" cart.id %}" style="display:inline">
-                                {% csrf_token %}
-                                <input type="hidden" name="action" value="increase">
-                                <button type="submit" class="qty-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Add">
-                                    <svg class="bi m-2" width="30" height="30">
-                                        <use xlink:href="#plus"></use>
-                                    </svg>
-                                </button>
-                            </form>
-                            {% comment %} </div> {% endcomment %}
-                        </div>
-                        
-                        
-                    </div>
-
-                    
+            <div class="card-body">
+                <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h4>Contact</h4>
+                <div class="form-floating mb-3">
+                    <input type="email" name="email" class="form-control" id="email" placeholder="Email" required>
+                    <label for="">Email Address</label>
+                    <input type="checkbox" name="" id="" onclick=""> Email me with news and offers
                 </div>
+
+                <h4>Delivery</h4>
+
+                <div class="form-floating mb-3">
+                   <select class="form-select" id="country">
+                        <option value="">-- Choose a Country --</option>
+                    </select>
+                    <label for="country">Country/Region</label>
+                </div>
+
+                
+
+                <div class="form-floating mb-3">
+                    <input type="text" name="firstName" class="form-control" id="firstname" placeholder="First Name" required>
+                    <label for="">First Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" name="lastName" class="form-control" id="lastname" placeholder="Last Name" required>
+                    <label for="">Last Name</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="text" name="address" class="form-control" id="address" placeholder="Address" required>
+                    <label for="">Address</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="text" name="district" class="form-control" id="district" placeholder="District" required>
+                    <label for="">Barangay, village, district, building, town, etc.</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="text" name="postalcode" class="form-control" id="postalcode" placeholder="Postal Code" required>
+                    <label for="">Postal Code</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="text" name="city" class="form-control" id="city" placeholder="City" required>
+                    <label for="">City</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                   <select class="form-select" id="region">
+                        <option value="">-- Choose a Region --</option>
+                    </select>
+                    <label for="country">Region</label>
+                </div>
+
+                <label class="">Phone Number</label>
+                <div class="form-floating mb-3">
+                    <input type="tel" name="phone" class="form-control" id="phone" required>
+                    <div class="invalid-feedback">
+                        Please enter a valid phone number.
+                    </div>
+                    <div class="valid-feedback">
+                        Phone number looks good!
+                    </div>
+                </div>
+                <input type="hidden" name="full_phone" id="full_phone">
+                <input type="checkbox" name="" id="" onclick=""> Save this information for next time
+                <br>
+                <br>
+                <h5>Delivery</h5>
+                <label for="">Enter your shipping address to view available shipping methods.</label>
+                <br>
+                <br>
+                <h4>Payment</h4>
+                <p>All transactions are secure and encrypted.</p>
+                
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            Accordion Item #1
+                        </button>
+                        </h2>
+                        <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item’s accordion body.</div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                            Accordion Item #2
+                        </button>
+                        </h2>
+                        <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item’s accordion body. Let’s imagine this being filled with some actual content.</div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="form-floating mb-3">
+                    <input type="text" name="username" class="form-control" id="username" placeholder="User Name" required>
+                    <label for="">Username</label>
+                </div>
+                
+                <div class="form-floating mb-3">
+                    <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
+                    <label for="">Password</label>
+                    <input type="checkbox" name="" id="" onclick="myFunction()"> Show Password
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="date" name="dateOfBirth" class="form-control" id="dateOfBirth" placeholder="Date of Birth" required>
+                    <label for="">Date of Birth</label>
+                </div>
+                
+                <br>
+
+                <!--Buttons Below-->
+                <button type="submit" class="btn btn-success">
+                    {% comment %} <svg class="bi m-2" width="18" height="18">
+                    <use xlink:href="#save"><!--Save--></use>
+                    </svg> {% endcomment %}
+                    Create Account
+                </button>
+                {% comment %} <button type="button" class="btn btn-danger px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ headers.id }}" >
+                        <svg class="bi m-2" width="16" height="16">
+                        <use xlink:href="#delete"></use>
+                        </svg>
+                        <!--Delete-->
+                </button> {% endcomment %}
+                    <!--Modal-->
+                    {% if messages %}
+                    <div class="modal fade" id="messageModal" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Message</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                {% for message in messages %}
+                                {% if message.tags == 'warning' %}
+                                    <div class="modal-body" id="modalMessageBody">
+                                        <svg class="bi m-2" width="24" height="24">
+                                            <use xlink:href="#warning"></use>
+                                        </svg> {{ message }}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                            Close
+                                        </button>
+                                    </div>
+                                {% else %}
+                                    <div class="modal-body" id="modalMessageBody">
+                                        <svg class="bi m-2" width="24" height="24">
+                                            <use xlink:href="#success"></use>
+                                        </svg> {{ message }}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                            Close
+                                        </button>
+                                        <a href="{% url "sign-in" %}" class="btn btn-success">Login</a>
+                                    </div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </form>
             </div>
-            {% endfor %}
         </div>
+
         
         <!-- Right Side  -->
         <div class="col">
@@ -186,10 +277,15 @@ th, td {
                     </div>
                     
                     <div class="col">
-                        One of three columns
+                        <div class="row">
+                            <p style="font-size: 13px; margin-bottom: 0px;">{{ cart.item.itemName }}</p>
+                        </div>
+                        <div class="row">
+                            <p style="font-size: 13px;">{{ cart.size }}</p>
+                        </div>
                     </div>
                     <div class="col">
-                        One of three columns
+                        <p style="font-size: 13px;">₱{{ cart.total_price }}</p>
                     </div>
                 </div>
                 <br>
@@ -220,12 +316,12 @@ th, td {
             </div>
         </div>
     </div>
-    
 </div>
 
-<script>
 
-</script>
+
+
+
 
 {% endblock %}
 
