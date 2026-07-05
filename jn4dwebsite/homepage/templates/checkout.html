@@ -9,6 +9,7 @@
     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" 
     crossorigin="anonymous">
 </script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
 {% comment %} <link
   href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
@@ -52,6 +53,15 @@
   <symbol id="plus" viewBox="0 0 16 16" fill="currentColor">
     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
   </symbol>
+  <symbol id="lock" viewBox="0 0 16 16" fill="currentColor">
+    <path fill-rule="evenodd" d="M8 0a4 4 0 0 1 4 4v2.05a2.5 2.5 0 0 1 2 2.45v5a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 2 13.5v-5a2.5 2.5 0 0 1 2-2.45V4a4 4 0 0 1 4-4M4.5 7A1.5 1.5 0 0 0 3 8.5v5A1.5 1.5 0 0 0 4.5 15h7a1.5 1.5 0 0 0 1.5-1.5v-5A1.5 1.5 0 0 0 11.5 7zM8 1a3 3 0 0 0-3 3v2h6V4a3 3 0 0 0-3-3"/>
+  </symbol>
+  <symbol id="circle" viewBox="0 0 16 16" fill="currentColor">
+    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+  </symbol>
+  <symbol id="circle-fill" viewBox="0 0 16 16" fill="currentColor">
+    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-8 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+  </symbol>
 </svg>
 
 <style>
@@ -83,7 +93,7 @@ th, td {
     <div class="row ">
         <!-- Left Side - Cart Items -->
         
-        <div class="col-md-8">
+        <div class="col">
             <div class="card-body">
                 <form action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -124,15 +134,25 @@ th, td {
                     <label for="">Barangay, village, district, building, town, etc.</label>
                 </div>
 
-                <div class="form-floating mb-3">
-                    <input type="text" name="postalcode" class="form-control" id="postalcode" placeholder="Postal Code" required>
-                    <label for="">Postal Code</label>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-floating mb-3">
+                            <input type="text" name="postalcode" class="form-control" id="postalcode" placeholder="Postal Code" required>
+                            <label for="">Postal Code</label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-floating mb-3">
+                            <input type="text" name="city" class="form-control" id="city" placeholder="City" required>
+                            <label for="">City</label>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="form-floating mb-3">
-                    <input type="text" name="city" class="form-control" id="city" placeholder="City" required>
-                    <label for="">City</label>
-                </div>
+                
+
+                
 
                 <div class="form-floating mb-3">
                    <select class="form-select" id="region">
@@ -165,27 +185,61 @@ th, td {
                 <div class="accordion accordion-flush" id="accordionFlushExample">
                     <div class="accordion-item">
                         <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                            Accordion Item #1
+                        <button class="accordion-button collapsed p-0" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            <i class="bi bi-circle text-primary m-2" id="circleIcon" width="25" height="25"></i>
+                            Credit/Debit Cards
                         </button>
                         </h2>
                         <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                        <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item’s accordion body.</div>
+                            <div class="accordion-body">
+                                <div class="form-floating mb-3">
+                                    <input type="text" name="username" class="form-control" id="username" placeholder="User Name" required>
+                                        <svg class="bi m-2" width="25" height="25">
+                                            <use xlink:href="#lock"></use>
+                                        </svg>
+                                    <label for="">Card number</label>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-floating mb-3">
+                                            <input type="date" name="dateOfBirth" class="form-control" id="dateOfBirth" placeholder="Date of Birth" required>
+                                            <label for="">Expiration Date (MM/YY)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="username" class="form-control" id="username" placeholder="User Name" required>
+                                            <label for="">Security Code</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                
+                                
+                                <div class="form-floating mb-3">
+                                    <input type="text" name="username" class="form-control" id="username" placeholder="User Name" required>
+                                    <label for="">Name of Card</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="accordion-item">
                         <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                            Accordion Item #2
+                        <button class="accordion-button collapsed p-0" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                            <i class="bi bi-circle text-primary m-2" id="circleIcon" width="25" height="25"></i>
+                            Cash on Delivery (COD)
                         </button>
                         </h2>
                         <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                        <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item’s accordion body. Let’s imagine this being filled with some actual content.</div>
+                            <div class="accordion-body">
+                                
+                            </div>
                         </div>
                     </div>
                 </div>
 
-
+                <br>
+                <br>
 
 
                 <div class="form-floating mb-3">
@@ -318,7 +372,21 @@ th, td {
     </div>
 </div>
 
+<script>
+  const collapseElement = document.getElementById('flush-collapseOne');
+  const icon = document.getElementById('circleIcon');
 
+  // Listen to Bootstrap collapse events
+  collapseElement.addEventListener('show.bs.collapse', function () {
+    icon.classList.remove('bi-circle');
+    icon.classList.add('bi-circle-fill');
+  });
+
+  collapseElement.addEventListener('hide.bs.collapse', function () {
+    icon.classList.remove('bi-circle-fill');
+    icon.classList.add('bi-circle');
+  });
+</script>
 
 
 
