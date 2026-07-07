@@ -13,6 +13,8 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import check_password
 from django.views.decorators.http import require_POST
+import requests
+from django_countries import countries
 
 # Create your views here.
 
@@ -195,6 +197,7 @@ def viewCheckout(request, pk):
     total = sum(cart.total_price()  for cart in cart_items)
     order_value = sum(cart.original_price() for cart in cart_items)
     discount = sum(cart.discount_price()  for cart in cart_items)
+    
 
     context = {
         'headers': headers,
@@ -202,6 +205,8 @@ def viewCheckout(request, pk):
         'total': total,
         'order_value': order_value,
         'discount': discount,
+        'countries': countries,
+        
     }
     return render(request, "checkout.html", context)
 
