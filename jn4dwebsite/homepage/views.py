@@ -193,6 +193,7 @@ def viewCart(request, pk):
 
 def viewCheckout(request, pk):
     headers = Header.objects.all()
+    userprofile = UserProfile.objects.get(user_id=pk)
     cart_items = Cart.objects.filter(user_id=pk).order_by('created_at')
     total = sum(cart.total_price()  for cart in cart_items)
     order_value = sum(cart.original_price() for cart in cart_items)
@@ -206,7 +207,7 @@ def viewCheckout(request, pk):
         'order_value': order_value,
         'discount': discount,
         'countries': countries,
-        
+        'userprofile': userprofile,
     }
     return render(request, "checkout.html", context)
 
