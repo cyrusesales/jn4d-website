@@ -104,327 +104,221 @@ th, td {
         <div class="col">
             <div class="card-body">
                 <form action="" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <h4>Contact</h4>
-                
-                <div class="form-floating mb-3">
-                    <input type="email" name="email" class="form-control" value="{{ userprofile.email }}" disabled style="background-color: white;">
-                    <label for="">Email Address</label>
-                    <input type="checkbox" name="" id="" onclick=""> Email me with news and offers
-                </div>
-                
-                <h4>Delivery</h4>
+                    {% csrf_token %}
+                    <h4>Contact</h4>
+                    
+                    <div class="form-floating mb-3">
+                        <input type="email" name="email" class="form-control" value="{{ userprofile.email }}" style="background-color: white;">
+                        <label for="">Email Address</label>
+                        <input type="checkbox" name="" id="" onclick=""> Email me with news and offers
+                    </div>
+                    
+                    <h4>Delivery</h4>
 
-                <div class="form-floating mb-3">
-                   <select class="form-select" id="country" name="country">
+                    <div class="form-floating mb-3">
+                    <select class="form-select" id="country" name="country">
                         <option value="PH">Philippines</option>
                         {% for code, name  in countries %}
                             <option value="{{ code }}">{{ name }}</option>
                         {% endfor %}
                     </select>
                     <label for="country">Country/Region</label>
-                </div>
+                    </div>
 
-                
+                    
 
-                <div class="form-floating mb-3">
-                    <input type="text" name="firstName" class="form-control" id="firstname" placeholder="First Name" required>
-                    <label for="">First Name</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <input type="text" name="lastName" class="form-control" id="lastname" placeholder="Last Name" required>
-                    <label for="">Last Name</label>
-                </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" name="firstName" class="form-control" value="{{ userprofile.firstName }}" id="firstname" placeholder="First Name" required>
+                        <label for="">First Name</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" name="lastName" class="form-control" value="{{ userprofile.lastName }}" id="lastname" placeholder="Last Name" required>
+                        <label for="">Last Name</label>
+                    </div>
 
-                <div class="form-floating mb-3">
-                    <input type="text" name="address" class="form-control" id="address" placeholder="Address" required>
-                    <label for="">Address</label>
-                </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" name="address" class="form-control" id="address" placeholder="Address" required>
+                        <label for="">Address</label>
+                    </div>
 
-                <div class="form-floating mb-3">
-                    <input type="text" name="district" class="form-control" id="district" placeholder="District" required>
-                    <label for="">Barangay, village, district, building, town, etc.</label>
-                </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" name="district" class="form-control" id="district" placeholder="District" required>
+                        <label for="">Barangay, village, district, building, town, etc.</label>
+                    </div>
 
-                <div class="row">
-                    <div class="col">
-                        <div class="form-floating mb-3">
-                            <input type="text" name="postalcode" class="form-control" id="postalcode" placeholder="Postal Code" required>
-                            <label for="">Postal Code</label>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                <input type="text" name="postalcode" class="form-control" id="postalcode" placeholder="Postal Code" required>
+                                <label for="">Postal Code</label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-floating mb-3">
-                            <input type="text" name="city" class="form-control" id="city" placeholder="City" required>
-                            <label for="">City</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-floating mb-3">
-                   <div class="form-floating mb-3">
-                        <input type="text" name="province" class="form-control" id="province" placeholder="Province" required>
-                        <label for="">Province</label>
-                    </div>
-                </div>
-
-                <label class="">Phone Number</label>
-                <div class="form-floating mb-3">
-                    <input type="tel" name="phone" class="form-control" id="phone" required>
-                    <div class="invalid-feedback">
-                        Please enter a valid phone number.
-                    </div>
-                    <div class="valid-feedback">
-                        Phone number looks good!
-                    </div>
-                </div>
-                <input type="hidden" name="full_phone" id="full_phone">
-                <input type="checkbox" name="" id="" onclick=""> Save this information for next time
-                <br>
-                <br>
-                <h5>Delivery</h5>
-                <label for="">Enter your shipping address to view available shipping methods.</label>
-                <br>
-                <br>
-                <h4>Payment</h4>
-                <p>All transactions are secure and encrypted.</p>
-                
-                <div class="accordion accordion-flush border" id="accordionFlushExample">
-
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed"
-                                    type="button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapseOne">
-
-                                <i class="bi bi-circle me-2 accordion-icon text-primary"></i>
-                                Credit/Debit Cards
-                            </button>
-                        </h2>
-                        <div id="flush-collapseOne"
-                            class="accordion-collapse collapse"
-                            data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body">
-                                <div class="form-floating mb-3">
-                                    <input type="text" name="username" class="form-control" id="username" placeholder="User Name" required>
-                                        <svg class="bi m-2 lock-icon" width="25" height="25">
-                                            <use xlink:href="#lock"></use>
-                                        </svg>
-                                    <label for="">Card number</label>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="form-floating mb-3">
-                                            <input type="date" name="dateOfBirth" class="form-control" id="dateOfBirth" placeholder="Date of Birth" required>
-                                            <label for="">Expiration Date (MM/YY)</label>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" name="username" class="form-control" id="username" placeholder="User Name" required>
-                                            <label for="">Security Code</label>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                
-                                
-                                <div class="form-floating mb-3">
-                                    <input type="text" name="username" class="form-control" id="username" placeholder="User Name" required>
-                                    <label for="">Name of Card</label>
-                                </div>
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                <input type="text" name="city" class="form-control" id="city" placeholder="City" required>
+                                <label for="">City</label>
                             </div>
                         </div>
                     </div>
-
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed"
-                                    type="button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapseTwo">
-
-                                <i class="bi bi-circle me-2 accordion-icon text-primary"></i>
-                                Cash on Delivery (COD)
-                            </button>
-                        </h2>
-                        <div id="flush-collapseTwo"
-                            class="accordion-collapse collapse"
-                            data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body">
-                                <p>This payment option is exclusively available for customers residing in The Philippines. If you are situated outside of the Philippines, please select Credit/Debit Cards as your payment method or your order will be cancelled.
-                                </p>
-                            </div>
+                    <div class="form-floating mb-3">
+                    <div class="form-floating mb-3">
+                            <input type="text" name="province" class="form-control" id="province" placeholder="Province" required>
+                            <label for="">Province</label>
                         </div>
                     </div>
 
-                </div>
-                <br>
-                <h5>Billing Address</h5>
-                <div class="accordion accordion-flush border" id="accordionFlushExample-2">
-
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed"
-                                    type="button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapseThree">
-
-                                <i class="bi bi-circle me-2 accordion-icon text-primary"></i>
-                                Same as shipping address
-                            </button>
-                        </h2>
-                        <div id="flush-collapseThree"
-                            class="accordion-collapse collapse"
-                            data-bs-parent="#accordionFlushExample-2">
-                            {% comment %} <div class="accordion-body">
-
-                            </div> {% endcomment %}
+                    {% comment %} <label class="">Phone Number</label> {% endcomment %}
+                    <div class="form-floating mb-3">
+                        <input type="tel" name="phone" class="form-control" value="{{ userprofile.phoneNumber }}" id="phone" required>
+                        <label class="">Phone Number</label>
+                        <div class="invalid-feedback">
+                            Please enter a valid phone number.
+                        </div>
+                        <div class="valid-feedback">
+                            Phone number looks good!
                         </div>
                     </div>
+                    <input type="hidden" name="full_phone" id="full_phone">
+                    <!--Save Address-->
+                    <input type="checkbox" id="saveAddress" name="save_address" onclick=""> Save this information for next time
+                    <br>
+                    <br>
+                    <h5>Delivery</h5>
+                    <label for="">Enter your shipping address to view available shipping methods.</label>
+                    <br>
+                    <br>
+                    <h4>Payment</h4>
+                    <p>All transactions are secure and encrypted.</p>
+                    
+                    <div class="accordion accordion-flush border" id="accordionFlushExample">
 
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed"
-                                    type="button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapseFour">
-
-                                <i class="bi bi-circle me-2 accordion-icon text-primary"></i>
-                                Use a different billing address
-                            </button>
-                        </h2>
-                        <div id="flush-collapseFour"
-                            class="accordion-collapse collapse"
-                            data-bs-parent="#accordionFlushExample-2">
-                            <div class="accordion-body">
-                                <div class="form-floating mb-3">
-                                    <select class="form-select" id="country" name="country">
-                                        <option value="PH">Philippines</option>
-                                        {% for code, name  in countries %}
-                                            <option value="{{ code }}">{{ name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <label for="country">Country/Region</label>
-                                </div>
-
-                                
-
-                                <div class="form-floating mb-3">
-                                    <input type="text" name="firstName" class="form-control" id="firstname" placeholder="First Name" required>
-                                    <label for="">First Name</label>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <input type="text" name="lastName" class="form-control" id="lastname" placeholder="Last Name" required>
-                                    <label for="">Last Name</label>
-                                </div>
-
-                                <div class="form-floating mb-3">
-                                    <input type="text" name="address" class="form-control" id="address" placeholder="Address" required>
-                                    <label for="">Address</label>
-                                </div>
-
-                                <div class="form-floating mb-3">
-                                    <input type="text" name="district" class="form-control" id="district" placeholder="District" required>
-                                    <label for="">Barangay, village, district, building, town, etc.</label>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" name="postalcode" class="form-control" id="postalcode" placeholder="Postal Code" required>
-                                            <label for="">Postal Code</label>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseOne">
+                                    <input type="radio" name="payment_method" value="card" class="me-2" hidden>
+                                    <i class="bi bi-circle me-2 accordion-icon text-primary"></i>
+                                    Credit/Debit Cards
+                                </button>
+                            </h2>
+                            <div id="flush-collapseOne"
+                                class="accordion-collapse collapse"
+                                data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" name="cardnumber" class="form-control" id="cardnumber" placeholder="Card Number" required>
+                                            <svg class="bi m-2 lock-icon" width="25" height="25">
+                                                <use xlink:href="#lock"></use>
+                                            </svg>
+                                        <label for="">Card number</label>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" name="expirydate" class="form-control" id="expirydate" placeholder="Expiry Date" required>
+                                                <label for="">Expiration Date (MM/YY)</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" name="city" class="form-control" id="city" placeholder="City" required>
-                                            <label for="">City</label>
+                                        <div class="col">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" name="securitycode" class="form-control" id="securitycode" placeholder="securitycode" required>
+                                                <label for="">Security Code</label>
+                                            </div>
                                         </div>
+
+                                    </div>
+                                    
+                                    
+                                    <div class="form-floating mb-3">
+                                        <input type="text" name="cardname" class="form-control" id="cardname" placeholder="cardname" required>
+                                        <label for="">Name of Card</label>
                                     </div>
                                 </div>
-                                <div class="form-floating mb-3">
-                                <div class="form-floating mb-3">
-                                        <input type="text" name="province" class="form-control" id="province" placeholder="Province" required>
-                                        <label for="">Province</label>
-                                    </div>
-                                </div>
-
-                                <label class="">Phone Number</label>
-                                <div class="form-floating mb-3">
-                                    <input type="tel" name="phone" class="form-control" id="phone" required>
-                                    <div class="invalid-feedback">
-                                        Please enter a valid phone number.
-                                    </div>
-                                    <div class="valid-feedback">
-                                        Phone number looks good!
-                                    </div>
-                                </div>
-                                <input type="hidden" name="full_phone" id="full_phone">
-
-
-
                             </div>
                         </div>
-                    </div>
 
-                </div>
-                <br>
-
-                <!--Buttons Below-->
-                <button type="submit" class="btn btn-success">
-                    {% comment %} <svg class="bi m-2" width="18" height="18">
-                    <use xlink:href="#save"><!--Save--></use>
-                    </svg> {% endcomment %}
-                    Complete Order
-                </button>
-                <br>
-                <br>
-                {% comment %} <button type="button" class="btn btn-danger px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ headers.id }}" >
-                        <svg class="bi m-2" width="16" height="16">
-                        <use xlink:href="#delete"></use>
-                        </svg>
-                        <!--Delete-->
-                </button> {% endcomment %}
-                    <!--Modal-->
-                    {% if messages %}
-                    <div class="modal fade" id="messageModal" tabindex="-1">
-                        <div class="modal-dialog modal-dialog-centered modal-sm">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Message</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseTwo">
+                                    <input type="radio" name="payment_method" value="cod" class="me-2" hidden>
+                                    <i class="bi bi-circle me-2 accordion-icon text-primary"></i>
+                                    Cash on Delivery (COD)
+                                </button>
+                            </h2>
+                            <div id="flush-collapseTwo"
+                                class="accordion-collapse collapse"
+                                data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    <p>This payment option is exclusively available for customers residing in The Philippines. If you are situated outside of the Philippines, please select Credit/Debit Cards as your payment method or your order will be cancelled.
+                                    </p>
                                 </div>
-                                {% for message in messages %}
-                                {% if message.tags == 'warning' %}
-                                    <div class="modal-body" id="modalMessageBody">
-                                        <svg class="bi m-2" width="24" height="24">
-                                            <use xlink:href="#warning"></use>
-                                        </svg> {{ message }}
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
-                                            Close
-                                        </button>
-                                    </div>
-                                {% else %}
-                                    <div class="modal-body" id="modalMessageBody">
-                                        <svg class="bi m-2" width="24" height="24">
-                                            <use xlink:href="#success"></use>
-                                        </svg> {{ message }}
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
-                                            Close
-                                        </button>
-                                        <a href="{% url "sign-in" %}" class="btn btn-success">Login</a>
-                                    </div>
-                                {% endif %}
-                                {% endfor %}
                             </div>
                         </div>
+
                     </div>
-                    {% endif %}
+                    <br>
+                    
+                    <br>
+
+                    <!--Buttons Below-->
+                    <button type="submit" class="btn btn-primary">
+                        {% comment %} <svg class="bi m-2" width="18" height="18">
+                        <use xlink:href="#save"><!--Save--></use>
+                        </svg> {% endcomment %}
+                        Place Order
+                    </button>
+                    <br>
+                    <br>
+                    {% comment %} <button type="button" class="btn btn-danger px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ headers.id }}" >
+                            <svg class="bi m-2" width="16" height="16">
+                            <use xlink:href="#delete"></use>
+                            </svg>
+                            <!--Delete-->
+                    </button> {% endcomment %}
+                        <!--Modal-->
+                        {% if messages %}
+                        <div class="modal fade" id="messageModal" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Message</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    {% for message in messages %}
+                                    {% if message.tags == 'warning' %}
+                                        <div class="modal-body" id="modalMessageBody">
+                                            <svg class="bi m-2" width="24" height="24">
+                                                <use xlink:href="#warning"></use>
+                                            </svg> {{ message }}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                Close
+                                            </button>
+                                        </div>
+                                    {% else %}
+                                        <div class="modal-body" id="modalMessageBody">
+                                            <svg class="bi m-2" width="24" height="24">
+                                                <use xlink:href="#success"></use>
+                                            </svg> {{ message }}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                Close
+                                            </button>
+                                            <a href="{% url "sign-in" %}" class="btn btn-success">Login</a>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
                 </form>
             </div>
         </div>

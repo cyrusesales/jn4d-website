@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
-from .models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, SizeTerm, Cart, User
+from .models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, SizeTerm, Cart, User, SavedAddress, Order
 from django.contrib import messages
 from django.template.exceptions import TemplateDoesNotExist
 import re
@@ -198,6 +198,50 @@ def viewCheckout(request, pk):
     total = sum(cart.total_price()  for cart in cart_items)
     order_value = sum(cart.original_price() for cart in cart_items)
     discount = sum(cart.discount_price()  for cart in cart_items)
+
+    if request.method == "POST":
+        email = request.POST.get("email")
+        country = request.POST.get("country")
+        firstName = request.POST.get("firstName")
+        lastName = request.POST.get("lastName")
+        address = request.POST.get("address")
+        district = request.POST.get("district")
+        postalcode = request.POST.get("postalcode")
+        city = request.POST.get("city")
+        province = request.POST.get("province")
+        phone = request.POST.get("phone")
+
+        save_address = request.POST.get("save_address")
+        payment_method = request.POST.get("payment_method")
+
+        #save address only if checkbox is checked
+        if save_address:
+            SavedAddress.objects.create(
+                email=email,
+                country=country,
+                firstName=firstName,
+                lastName=lastName,
+                address=address,
+                district=district,
+                postalcode=postalcode,
+                city=city,
+                province=province,
+                phone=phone,
+                payment_method=payment_method
+            )
+
+        #Card details if card is selected
+        if payment_method == 'card':
+            cardname = request.POST.get("cardname")
+            cardnumber = request.POST.get("cardnumber")
+            expirydate = request.POST.get("expirydate")
+            securitycode = request.POST.get("securitycode")
+
+            print(cardname)
+            print(cardnumber)
+            print(expirydate)
+            print(securitycode)
+
     
 
     context = {
