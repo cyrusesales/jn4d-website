@@ -140,13 +140,17 @@ class SizeTerm(models.Model):
 
 
 class SavedAddress(models.Model):
+    PAYMENT_CHOICES = (
+        ('card', 'Card'),
+        ('cod', 'Cash on Delivery'),
+    )
     phone_regex = RegexValidator(
         regex=r'^\+?1?\d{9,15}$',
         message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     email = models.EmailField(max_length=254, validators=[EmailValidator()], blank=True, null=True)
-    country = CountryField(name_only=True)
+    country = CountryField()
     firstName = models.CharField(max_length=100, blank=True, null=True)
     lastName = models.CharField(max_length=100, blank=True, null=True)
     address = models.CharField(max_length=100, blank=True, null=True)
@@ -155,6 +159,7 @@ class SavedAddress(models.Model):
     city = models.CharField(max_length=100, blank=True, null=True)
     province = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(validators=[phone_regex], max_length=20, blank=True, null=True)
+    payment_method = models.CharField(max_length=10, choices=PAYMENT_CHOICES, blank=True, null=True)
 
 
 class Order(models.Model):
@@ -169,7 +174,7 @@ class Order(models.Model):
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     email = models.EmailField(max_length=254, validators=[EmailValidator()], blank=True, null=True)
-    country = CountryField(name_only=True)
+    country = CountryField()
     firstName = models.CharField(max_length=100, blank=True, null=True)
     lastName = models.CharField(max_length=100, blank=True, null=True)
     address = models.CharField(max_length=100, blank=True, null=True)

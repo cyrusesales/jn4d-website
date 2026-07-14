@@ -200,6 +200,7 @@ def viewCheckout(request, pk):
     discount = sum(cart.discount_price()  for cart in cart_items)
 
     if request.method == "POST":
+        user = get_object_or_404(User, id=request.user.id)
         email = request.POST.get("email")
         country = request.POST.get("country")
         firstName = request.POST.get("firstName")
@@ -217,6 +218,7 @@ def viewCheckout(request, pk):
         #save address only if checkbox is checked
         if save_address:
             SavedAddress.objects.create(
+                user=user,
                 email=email,
                 country=country,
                 firstName=firstName,
@@ -230,6 +232,22 @@ def viewCheckout(request, pk):
                 payment_method=payment_method
             )
 
+        #Create Order
+        Order.objects.create(
+            user=user,
+            email=email,
+            country=country,
+            firstName=firstName,
+            lastName=lastName,
+            address=address,
+            district=district,
+            postalcode=postalcode,
+            city=city,
+            province=province,
+            phone=phone,
+            payment_method=payment_method
+        )
+
         #Card details if card is selected
         if payment_method == 'card':
             cardname = request.POST.get("cardname")
@@ -241,6 +259,8 @@ def viewCheckout(request, pk):
             print(cardnumber)
             print(expirydate)
             print(securitycode)
+
+        return redirect("order-status-page", request.user.id)
 
     
 
@@ -254,6 +274,17 @@ def viewCheckout(request, pk):
         'userprofile': userprofile,
     }
     return render(request, "checkout.html", context)
+
+def orderStatusPage(request, pk):
+    headers = Header.objects.all()
+    userprofile = UserProfile.objects.get(user_id=pk)
+
+    context = {
+        'headers': headers,
+        'userprofile': userprofile,
+    }
+
+    return render(request, "order_status_page.html", context)
 
 @require_POST
 def updateQuantity(request, pk):
