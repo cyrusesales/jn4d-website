@@ -746,7 +746,7 @@ def getSizeTerm(request):
 
 def viewVouchers(request):
     headers = Header.objects.all()
-    vouchers = Voucher.objects.all()
+    vouchers = Voucher.objects.all().order_by('id')
 
     context = {
         'headers': headers,
@@ -780,15 +780,23 @@ def editVoucher(request, pk):
     headers = Header.objects.all()
     vouchers = Voucher.objects.get(id=pk)
 
+    status_choices = [
+        ('active', 'Active'),
+        ('inactive', 'Inactive')
+    ]
+
+
     if request.method == "POST":
         vouchers.code = request.POST.get('code')
-        vouchers.amount = request.POST.get('amount')
+        vouchers.amount = Decimal(request.POST.get('amount').replace(',', ''))
+        vouchers.status = request.POST.get('status_dropdown')
         vouchers.save()
         messages.success(request, f"{vouchers.code} updated successfully!")
         return redirect('view-vouchers')
 
     context = {
         'headers': headers,
+        'status_choices': status_choices,
         'vouchers': vouchers,
     }
 

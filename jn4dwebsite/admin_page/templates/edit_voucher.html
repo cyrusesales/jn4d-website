@@ -45,7 +45,25 @@
               </div>
               <div class="mb-3">
                 <label for="" class="form-label">Amount</label>
-                <input type="text" name="amount" value="{{ vouchers.code }}" class="form-control" />
+                <input type="text" name="amount" value="{{ vouchers.amount|floatformat:2  }}" class="form-control" />
+              </div>
+              <div class="mb-3">
+                <div class="row">
+                  <label for="" class="form-label">Status</label>
+                </div>
+                <div class="row">
+                {% if user.is_superuser %}
+                  <select name="status_dropdown" id="status_dropdown" class="form-control">
+                    {% for value, label in status_choices %}
+                    <option value="{{ value }}" {% if value == vouchers.status %}selected{% endif %}>
+                      {{ label }}
+                    </option>
+                    {% endfor %}
+                  </select>
+                {% else %}
+                  <input type="text" name="status" value="{{ vouchers.status }}" class="form-control" disabled style="background-color: white;"/>
+                {% endif %}
+                </div>
               </div>
               <button type="submit" class="btn btn-primary">
                 <svg class="bi m-1" width="15" height="15">
