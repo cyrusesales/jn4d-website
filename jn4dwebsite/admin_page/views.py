@@ -2,7 +2,7 @@ from django.template import loader
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from homepage.forms import HeaderForm
-from homepage.models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, User, ProductSize, SizeTerm
+from homepage.models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, User, ProductSize, SizeTerm, Voucher
 from django.contrib import messages
 import os
 from decimal import Decimal
@@ -742,3 +742,61 @@ def getSizeTerm(request):
         return JsonResponse({'terms': []})
     terms = SizeTerm.objects.filter(productSize__id=size_id).values_list("acronym","description")
     return JsonResponse({'terms': list(terms)})
+
+
+def viewVouchers(request):
+    headers = Header.objects.all()
+    vouchers = Voucher.objects.all()
+
+    context = {
+        'headers': headers,
+        'vouchers': vouchers,
+    }
+
+    return render(request, 'manage_voucher.html', context)
+
+
+def addVoucher(request):
+    headers = Header.objects.all()
+    vouchers = Voucher.objects.all()
+
+    if request.method == "POST":
+        vouchers = Voucher()
+        vouchers.code = request.POST.get("code")
+        vouchers.amount = request.POST.get("amount")
+        vouchers.save()
+        messages.success(request, f"{vouchers.code} successfully added!")
+        return redirect('view-vouchers')
+
+    context = {
+        'headers': headers,
+        'vouchers': vouchers,
+    }
+
+    return render(request, "add_voucher.html", context)
+
+
+def editVoucher(request, pk):
+    headers = Header.objects.all()
+    vouchers = Voucher.objects.get(id=pk)
+
+    if request.method == "POST":
+        vouchers.code = request.POST.get('code')
+        vouchers.amount = request.POST.get('amount')
+        vouchers.save()
+        messages.success(request, f"{vouchers.code} updated successfully!")
+        return redirect('view-vouchers')
+
+    context = {
+        'headers': headers,
+        'vouchers': vouchers,
+    }
+
+    return render(request, 'edit_voucher.html', context)
+
+
+def deleteVoucher(request, pk):
+    voucher = Voucher.objects.get(id=pk)
+    voucher.delete()
+    messages.success(request, f"{voucher.code} has been deleted.")
+    return redirect('view-vouchers')

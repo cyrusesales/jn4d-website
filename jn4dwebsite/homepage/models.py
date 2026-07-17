@@ -190,3 +190,10 @@ class Order(models.Model):
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Voucher(models.Model):
+    code = models.CharField(max_length=100, blank=True, null=True)
+    amount = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    status = models.CharField(max_length=20, default='active', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)

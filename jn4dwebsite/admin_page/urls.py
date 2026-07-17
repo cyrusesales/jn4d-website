@@ -48,4 +48,9 @@ urlpatterns = [
     path('edit-size-term/<str:pk>', views.editSizeTerm, name='edit-size-term'),
     path('delete-size-term/<str:pk>', views.deleteSizeTerm, name='delete-size-term'),
     path('get-size-term/', views.getSizeTerm, name='get_size_term'),
+
+    path('voucher-page/', views.viewVouchers, name='view-vouchers'),
+    path('add-voucher/', views.addVoucher, name='add-voucher'),
+    path('edit-voucher/<str:pk>', views.editVoucher, name='edit-voucher'),
+    path('delete-voucher/<str:pk>', views.deleteVoucher, name='delete-voucher'),
 ]
