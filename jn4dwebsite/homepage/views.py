@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
-from .models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, SizeTerm, Cart, User, SavedAddress, Order
+from .models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, SizeTerm, Cart, User, SavedAddress, Order, Voucher
 from django.contrib import messages
 from django.template.exceptions import TemplateDoesNotExist
 import re
@@ -15,6 +15,7 @@ from django.contrib.auth.hashers import check_password
 from django.views.decorators.http import require_POST
 import requests
 from django_countries import countries
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 
@@ -195,9 +196,13 @@ def viewCheckout(request, pk):
     headers = Header.objects.all()
     userprofile = UserProfile.objects.get(user_id=pk)
     cart_items = Cart.objects.filter(user_id=pk).order_by('created_at')
+    # voucher = Voucher.objects.all()
+
     total = sum(cart.total_price()  for cart in cart_items)
     order_value = sum(cart.original_price() for cart in cart_items)
     discount = sum(cart.discount_price()  for cart in cart_items)
+
+    
 
     if request.method == "POST":
         user = get_object_or_404(User, id=request.user.id)
@@ -285,6 +290,23 @@ def orderStatusPage(request, pk):
     }
 
     return render(request, "order_status_page.html", context)
+
+
+def manageVoucher(request, pk):
+    if request.method == "POST":
+        search_code = request.POST.get('discountcode')
+        
+
+        try:
+            search_record = Voucher.objects.get(code=search_code)
+            messages.success(request, f"This { search_code } code exist!")
+        except Voucher.DoesNotExist:
+            messages.warning(request, f"This voucher code { search_code } does not exist!")
+            
+        # userprofile = UserProfile.objects.get(user_id=pk)
+        # userprofile.status = status
+        # userprofile.save()
+        return redirect("checkout", pk)
 
 @require_POST
 def updateQuantity(request, pk):

@@ -15,6 +15,8 @@ urlpatterns = [
     path('remove-item/<str:pk>', views.removeItem, name="remove-item"),
     path('checkout/<str:pk>', views.viewCheckout, name="checkout"),
     path('order-status-page/<str:pk>', views.orderStatusPage, name="order-status-page"),
+    path('manage-voucher/<str:pk>', views.manageVoucher, name="manage-voucher"),
+
 
     path('sign-up', views.signUp, name="sign-up"),
     path('sign-in', views.signIn, name="sign-in"),
