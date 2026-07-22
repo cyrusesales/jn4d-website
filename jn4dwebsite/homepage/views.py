@@ -294,14 +294,20 @@ def orderStatusPage(request, pk):
 
 def manageVoucher(request, pk):
     if request.method == "POST":
-        search_code = request.POST.get('discountcode')
-        
+        search_code = request.POST.get('discountcode', '').strip()
 
-        try:
-            search_record = Voucher.objects.get(code=search_code)
-            messages.success(request, f"This { search_code } code exist!")
-        except Voucher.DoesNotExist:
-            messages.warning(request, f"This voucher code { search_code } does not exist!")
+        # try:
+        #     voucher = Voucher.objects.get(code=search_code)
+
+        #     if voucher.is_
+        
+        # if voucher_code:
+        #     # user = UserProfile.objects.get(user_id=pk)
+        #     voucher = Voucher.objects.get(code=search_code)
+        #     voucher.user_id = pk
+        #     messages.success(request, f"This { search_code } code exist in {voucher.user.username } amount is ₱{ voucher.amount }")
+        # else:
+        #     messages.warning(request, f"This voucher code { search_code } does not exist!")        
             
         # userprofile = UserProfile.objects.get(user_id=pk)
         # userprofile.status = status

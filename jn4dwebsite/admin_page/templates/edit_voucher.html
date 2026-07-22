@@ -47,6 +47,10 @@
                 <label for="" class="form-label">Amount</label>
                 <input type="text" name="amount" value="{{ vouchers.amount|floatformat:2  }}" class="form-control" />
               </div>
+              <div class="form mb-3">
+                <label class="" for="" style="text: bold;">Expiration Date</label>
+                <input type="date" name="expiry_date" class="form-control" value="{{ vouchers.expiry_date | date:'Y-m-d' }}" style="background-color: white;">
+              </div>
               <div class="mb-3">
                 <div class="row">
                   <label for="" class="form-label">Status</label>

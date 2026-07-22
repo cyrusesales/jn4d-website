@@ -3,6 +3,7 @@ from django.core.validators import RegexValidator, EmailValidator
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django_countries.fields import CountryField
+from django.utils import timezone
 
 
 class Header(models.Model):
@@ -197,3 +198,8 @@ class Voucher(models.Model):
     amount = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
     status = models.CharField(max_length=20, default='active', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    expiry_date = models.DateTimeField(blank=True, null=True)
+
+    def is_valid(self):
+        return self.status and self.expiry_date > timezone.now()
