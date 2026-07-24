@@ -413,13 +413,15 @@ th, td {
                             <th scope="row">Discount</th>
                             <td style="color: red;">- ₱{{ discount }}</td>
                         </tr>
+                        {% if voucher_total_discount %}
                         <tr>
                             <th scope="row">Voucher</th>
-                            <td style="color: red;">- ₱</td>
+                            <td style="color: red;">- ₱{{ voucher_total_discount }}</td>
                         </tr>
+                        {% endif %}
                         <tr>
                             <th scope="row">Estimated shipping fee</th>
-                            <td></td>
+                            <td style="color: red;">- ₱{{ shippingFee }}</td>
                         </tr>
                         <tr>
                             <th scope="row">TOTAL</th>

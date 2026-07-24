@@ -16,6 +16,7 @@ from django.views.decorators.http import require_POST
 import requests
 from django_countries import countries
 from django.core.exceptions import ObjectDoesNotExist
+from decimal import Decimal
 
 # Create your views here.
 
@@ -179,7 +180,8 @@ def addToCart(request, pk):
 def viewCart(request, pk):
     headers = Header.objects.all()
     cart_items = Cart.objects.filter(user_id=pk).order_by('created_at')
-    total = sum(cart.total_price() for cart in cart_items)
+    shippingFee = Decimal('50.00')
+    total = sum(cart.total_price() for cart in cart_items) - shippingFee
     order_value = sum(cart.original_price() for cart in cart_items)
     discount = sum(cart.discount_price() for cart in cart_items)
 
@@ -189,6 +191,7 @@ def viewCart(request, pk):
         'total': total,
         'order_value': order_value,
         'discount': discount,
+        'shippingFee': shippingFee,
     }
     return render(request, "add_to_cart.html", context)
 
@@ -197,11 +200,14 @@ def viewCheckout(request, pk):
     userprofile = UserProfile.objects.get(user_id=pk)
     cart_items = Cart.objects.filter(user_id=pk).order_by('created_at')
     # voucher = Voucher.objects.all()
+    applied_codes = request.session.get('applied_vouchers', [])
+    active_vouchers = Voucher.objects.filter(code__in=applied_codes, status='active')
+    voucher_total_discount = sum(v.amount for v in active_vouchers)
+    shippingFee = Decimal('50.00')
 
-    total = sum(cart.total_price()  for cart in cart_items)
     order_value = sum(cart.original_price() for cart in cart_items)
     discount = sum(cart.discount_price()  for cart in cart_items)
-
+    total = sum(cart.total_price()  for cart in cart_items) - voucher_total_discount - shippingFee
     
 
     if request.method == "POST":
@@ -234,7 +240,8 @@ def viewCheckout(request, pk):
                 city=city,
                 province=province,
                 phone=phone,
-                payment_method=payment_method
+                payment_method=payment_method,
+                
             )
 
         #Create Order
@@ -250,8 +257,17 @@ def viewCheckout(request, pk):
             city=city,
             province=province,
             phone=phone,
-            payment_method=payment_method
+            payment_method=payment_method,
+            value=order_value,
+            discount=discount,
+            voucher=voucher_total_discount,
+            shippingFee=shippingFee,
+            total=total,
         )
+
+        applied_codes = request.session.get('applied_vouchers', [])
+        if 'applied_vouchers' in request.session:
+            del request.session['applied_vouchers']
 
         #Card details if card is selected
         if payment_method == 'card':
@@ -277,6 +293,9 @@ def viewCheckout(request, pk):
         'discount': discount,
         'countries': countries,
         'userprofile': userprofile,
+        'active_vouchers': active_vouchers,
+        'voucher_total_discount': voucher_total_discount,
+        'shippingFee': shippingFee,
     }
     return render(request, "checkout.html", context)
 
@@ -296,11 +315,30 @@ def manageVoucher(request, pk):
     if request.method == "POST":
         search_code = request.POST.get('discountcode', '').strip()
 
-        # try:
-        #     voucher = Voucher.objects.get(code=search_code)
+        try:
+            voucher = Voucher.objects.get(code=search_code)
 
-        #     if voucher.is_
-        
+            if voucher.is_valid():
+                # Initialize the voucher list in session if it doesn't exist
+                if 'applied_vouchers' not in request.session:
+                    request.session['applied_vouchers'] = []
+
+                # Fetch current list
+                vouchers_in_session = request.session['applied_vouchers']
+
+                # Prevent adding the exact same voucher twice
+                if search_code not in vouchers_in_session:
+                    vouchers_in_session.append(search_code)
+                    request.session['applied_vouchers'] = vouchers_in_session # svae back to session
+                    messages.success(request,f"Voucher '{search_code} applied successfully!")
+                else:
+                    messages.warning(request, "This voucher is already applied.")    
+
+            else:
+                messages.error(request, "This voucher has expired or is valid.")
+
+        except Voucher.DoesNotExist:
+            messages.error(request, "Voucher code does not")
         # if voucher_code:
         #     # user = UserProfile.objects.get(user_id=pk)
         #     voucher = Voucher.objects.get(code=search_code)
@@ -312,7 +350,7 @@ def manageVoucher(request, pk):
         # userprofile = UserProfile.objects.get(user_id=pk)
         # userprofile.status = status
         # userprofile.save()
-        return redirect("checkout", pk)
+    return redirect("checkout", pk)
 
 @require_POST
 def updateQuantity(request, pk):

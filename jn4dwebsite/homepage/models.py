@@ -184,6 +184,11 @@ class Order(models.Model):
     city = models.CharField(max_length=100, blank=True, null=True)
     province = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(validators=[phone_regex], max_length=20, blank=True, null=True)
+    value = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    discount = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    voucher = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    shippingFee = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    total = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
 
     payment_method = models.CharField(
         max_length=10,
