@@ -181,13 +181,15 @@ th, td {
                             <th scope="row">Order value</th>
                             <td>₱{{ order_value }}</td>
                         </tr>
+                        {% if discount %}
                         <tr>
                             <th scope="row">Discount</th>
                             <td style="color: red;">- ₱{{ discount }}</td>
                         </tr>
+                        {% endif %}
                         <tr>
                             <th scope="row">Estimated shipping fee</th>
-                            <td style="color: red;">- ₱{{ shippingFee }}</td>
+                            <td>₱{{ shippingFee }}</td>
                         </tr>
                         <tr>
                             <th scope="row">TOTAL</th>

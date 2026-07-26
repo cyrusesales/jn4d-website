@@ -51,7 +51,9 @@
                   <th>Status</th>
                   <th>Created Date</th>
                   <th>Expiration Date</th>
+                  {% if user.is_superuser %}
                   <th>Actions</th>
+                  {% endif %}
                 </tr>
               </thead>
               <tbody>
@@ -62,14 +64,8 @@
                   <td>{{ voucher.status }}</td>
                   <td>{{ voucher.created_at }}</td>
                   <td>{{ voucher.expiry_date }}</td>
-
+                  {% if user.is_superuser %}
                   <td>
-                    {% comment %} <a href="" class="btn" style="background-color: rgb(129, 65, 65); color: white;" data-bs-toggle="tooltip" data-bs-placement="top" title="View Product">
-                      <svg class="bi m-1" width="15" height="15">
-                        <use xlink:href="#view"><!--Edit--></use>
-                      </svg>
-                      View
-                    </a> {% endcomment %}
                     <a href="{% url "edit-voucher" voucher.id %}" class="btn btn-success">
                       <svg class="bi m-1" width="15" height="15">
                         <use xlink:href="#edit"><!--Edit--></use>
@@ -112,16 +108,19 @@
                     </div>
                     
                   </td>
+                  {% endif %}
                 </tr>
                 {% endfor %}
               </tbody>
             </table>
+            {% if user.is_superuser %}
             <a href="{% url "add-voucher" %}" class="btn btn-primary">
               <svg class="bi m-1" width="15" height="15">
                 <use xlink:href="#add"><!--Add--></use>
               </svg>
               Add Voucher
             </a>
+            {% endif %}
           </div>
         </div>
       </div>

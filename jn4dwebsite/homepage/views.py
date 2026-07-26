@@ -181,7 +181,7 @@ def viewCart(request, pk):
     headers = Header.objects.all()
     cart_items = Cart.objects.filter(user_id=pk).order_by('created_at')
     shippingFee = Decimal('50.00')
-    total = sum(cart.total_price() for cart in cart_items) - shippingFee
+    total = sum(cart.total_price() for cart in cart_items) + shippingFee
     order_value = sum(cart.original_price() for cart in cart_items)
     discount = sum(cart.discount_price() for cart in cart_items)
 
@@ -207,7 +207,7 @@ def viewCheckout(request, pk):
 
     order_value = sum(cart.original_price() for cart in cart_items)
     discount = sum(cart.discount_price()  for cart in cart_items)
-    total = sum(cart.total_price()  for cart in cart_items) - voucher_total_discount - shippingFee
+    total = sum(cart.total_price()  for cart in cart_items) - voucher_total_discount + shippingFee
     
 
     if request.method == "POST":
@@ -264,6 +264,11 @@ def viewCheckout(request, pk):
             shippingFee=shippingFee,
             total=total,
         )
+
+        for v in active_vouchers:
+            v.user = user
+            v.status = 'inactive'
+            v.save()
 
         applied_codes = request.session.get('applied_vouchers', [])
         if 'applied_vouchers' in request.session:
@@ -327,10 +332,12 @@ def manageVoucher(request, pk):
                 vouchers_in_session = request.session['applied_vouchers']
 
                 # Prevent adding the exact same voucher twice
-                if search_code not in vouchers_in_session:
+                if search_code not in vouchers_in_session and voucher.status == 'active':
                     vouchers_in_session.append(search_code)
                     request.session['applied_vouchers'] = vouchers_in_session # svae back to session
-                    messages.success(request,f"Voucher '{search_code} applied successfully!")
+                    messages.success(request,f"Voucher {search_code} applied successfully!")
+                # elif voucher.status == 'inactive':
+                #     messages.warning(request, "This voucher is not active or already used.")    
                 else:
                     messages.warning(request, "This voucher is already applied.")    
 
@@ -338,7 +345,7 @@ def manageVoucher(request, pk):
                 messages.error(request, "This voucher has expired or is valid.")
 
         except Voucher.DoesNotExist:
-            messages.error(request, "Voucher code does not")
+            messages.error(request, "Voucher code does not exist")
         # if voucher_code:
         #     # user = UserProfile.objects.get(user_id=pk)
         #     voucher = Voucher.objects.get(code=search_code)
