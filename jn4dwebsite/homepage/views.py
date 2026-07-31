@@ -307,10 +307,12 @@ def viewCheckout(request, pk):
 def orderStatusPage(request, pk):
     headers = Header.objects.all()
     userprofile = UserProfile.objects.get(user_id=pk)
+    latest_order = Order.objects.latest('created_at')
 
     context = {
         'headers': headers,
         'userprofile': userprofile,
+        'latest_order': latest_order,
     }
 
     return render(request, "order_status_page.html", context)

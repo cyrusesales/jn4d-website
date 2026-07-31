@@ -99,6 +99,27 @@ th, td {
     </div>
     <br>
     <div class="row ">
+      <table class="table table-sm">
+        <tbody>
+            <tr>
+                <th scope="row">Name</th>
+                <td>{{ latest_order.firstName }} {{ latest_order.lastName }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Address</th>
+                <td>{{latest_order.address}} {{latest_order.district}}, {{latest_order.city}}, {{latest_order.province}}</td>
+            </tr>
+
+            <tr>
+                <th scope="row">Phone Number</th>
+                <td>{{ latest_order.phone }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Email Address</th>
+                <td>{{ latest_order.email}}</td>
+            </tr>
+        </tbody>
+    </table>
         
     </div>
 </div>
