@@ -65,6 +65,12 @@ th, td {
 .qty-btn:focus {
     outline: none;
 }
+
+
+#placeholder-image {
+    width: 250px;
+}
+
 </style>
 
 <div class="container" style="margin-top: 100px; padding-left: 0px;padding-right: 0px; ">
@@ -74,7 +80,7 @@ th, td {
     <br>
     <div class="row ">
         <!-- Left Side - Cart Items -->
-        
+        {% if cart_items %}
         <div class="col-md-8">
             {% for cart in cart_items %}
             <div class="card mb-3 p-3 border-0">
@@ -213,6 +219,14 @@ th, td {
                 </div>
             </div>
         </div>
+        {% else %}
+            {% for placeholder in placeholders %}
+                <div class="row mt-5">
+                    <p class="text-center">{{ placeholder.label }}</p>
+                    <img src="{{ placeholder.image.url }}" alt="Image Here" class="img-fluid mx-auto d-block" id="placeholder-image" width="10" height="25" />
+                </div>
+            {% endfor %}
+        {% endif %}
     </div>
     
 </div>

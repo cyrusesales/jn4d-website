@@ -110,6 +110,7 @@ class Cart(models.Model):
     size = models.CharField(max_length=20)
     quantity = models.PositiveIntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, default='cart', blank=True, null=True)
 
     def total_price(self):
         return self.item.selling_price * self.quantity
@@ -189,6 +190,7 @@ class Order(models.Model):
     voucher = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
     shippingFee = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
     total = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    
 
     payment_method = models.CharField(
         max_length=10,

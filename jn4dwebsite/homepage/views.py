@@ -179,7 +179,8 @@ def addToCart(request, pk):
 
 def viewCart(request, pk):
     headers = Header.objects.all()
-    cart_items = Cart.objects.filter(user_id=pk).order_by('created_at')
+    placeholders = Placeholder.objects.all()
+    cart_items = Cart.objects.filter(user_id=pk).order_by('created_at').filter(status='cart')
     shippingFee = Decimal('50.00')
     total = sum(cart.total_price() for cart in cart_items) + shippingFee
     order_value = sum(cart.original_price() for cart in cart_items)
@@ -192,13 +193,14 @@ def viewCart(request, pk):
         'order_value': order_value,
         'discount': discount,
         'shippingFee': shippingFee,
+        'placeholders': placeholders,
     }
     return render(request, "add_to_cart.html", context)
 
 def viewCheckout(request, pk):
     headers = Header.objects.all()
     userprofile = UserProfile.objects.get(user_id=pk)
-    cart_items = Cart.objects.filter(user_id=pk).order_by('created_at')
+    cart_items = Cart.objects.filter(user_id=pk).order_by('created_at').filter(status='cart')
     # voucher = Voucher.objects.all()
     applied_codes = request.session.get('applied_vouchers', [])
     active_vouchers = Voucher.objects.filter(code__in=applied_codes, status='active')
@@ -270,6 +272,10 @@ def viewCheckout(request, pk):
             v.status = 'inactive'
             v.save()
 
+        for cart in cart_items:
+            cart.status = 'ordered'
+            cart.save()
+
         applied_codes = request.session.get('applied_vouchers', [])
         if 'applied_vouchers' in request.session:
             del request.session['applied_vouchers']
@@ -307,7 +313,7 @@ def viewCheckout(request, pk):
 def orderStatusPage(request, pk):
     headers = Header.objects.all()
     userprofile = UserProfile.objects.get(user_id=pk)
-    latest_order = Order.objects.latest('created_at')
+    latest_order = Order.objects.filter(user_id=pk).latest('created_at')
 
     context = {
         'headers': headers,
