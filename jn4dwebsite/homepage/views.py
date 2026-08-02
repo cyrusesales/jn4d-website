@@ -159,6 +159,7 @@ def addToCart(request, pk):
         cart_item = Cart.objects.filter(
             item=item,
             size=selected_size,
+            status='cart',
         ).first()
 
         if cart_item:
@@ -272,8 +273,10 @@ def viewCheckout(request, pk):
             v.status = 'inactive'
             v.save()
 
+        new_order = Order.objects.latest('created_at')
         for cart in cart_items:
             cart.status = 'ordered'
+            cart.order_id = new_order.id
             cart.save()
 
         applied_codes = request.session.get('applied_vouchers', [])
@@ -314,11 +317,26 @@ def orderStatusPage(request, pk):
     headers = Header.objects.all()
     userprofile = UserProfile.objects.get(user_id=pk)
     latest_order = Order.objects.filter(user_id=pk).latest('created_at')
+    cart_items = Cart.objects.filter(order_id=latest_order.id)
+    # voucher = Voucher.objects.all()
+    applied_codes = request.session.get('applied_vouchers', [])
+    active_vouchers = Voucher.objects.filter(code__in=applied_codes, status='active')
+    voucher_total_discount = sum(v.amount for v in active_vouchers)
+    shippingFee = Decimal('50.00')
+
+    order_value = sum(cart.original_price() for cart in cart_items)
+    discount = sum(cart.discount_price()  for cart in cart_items)
+    total = sum(cart.total_price()  for cart in cart_items) - voucher_total_discount + shippingFee
 
     context = {
         'headers': headers,
         'userprofile': userprofile,
         'latest_order': latest_order,
+        'cart_items': cart_items,
+        'order_value': order_value,
+        'discount': discount,
+        'total': total,
+        'shippingFee': shippingFee,
     }
 
     return render(request, "order_status_page.html", context)
@@ -369,7 +387,7 @@ def manageVoucher(request, pk):
 
 @require_POST
 def updateQuantity(request, pk):
-    cart_item = get_object_or_404(Cart, id=pk, user=request.user)
+    cart_item = get_object_or_404(Cart, id=pk, user=request.user, status='cart')
     action = request.POST.get('action') # 'increase' or 'decrease'
 
     if action == 'increase':
@@ -387,7 +405,7 @@ def updateQuantity(request, pk):
     
 @require_POST
 def removeItem(request, pk):
-    cart_item = get_object_or_404(Cart, id=pk, user=request.user)
+    cart_item = get_object_or_404(Cart, id=pk, user=request.user, status='cart')
     cart_item.delete()
     return redirect('view-cart', request.user.id)
 

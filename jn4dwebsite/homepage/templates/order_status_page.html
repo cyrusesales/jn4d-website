@@ -62,6 +62,10 @@
   <symbol id="circle-fill" viewBox="0 0 16 16" fill="currentColor">
     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-8 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
   </symbol>
+  <symbol id="geo" viewBox="0 0 16 16" fill="currentColor">
+    <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+    <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+  </symbol>
 </svg>
 
 <style>
@@ -94,34 +98,112 @@ th, td {
 </style>
 
 <div class="container" style="margin-top: 100px; padding-left: 0px;padding-right: 0px; ">
-    <div class="header">
-        <h2 class="fw-bold">Order Status Page</h2>
+  <div class="header">
+    <h2 class="fw-bold">Order Status Page</h2>
+  </div>
+  <br>
+  <div class="row ">
+    <div class="col">
+
     </div>
-    <br>
-    <div class="row ">
+    <div class="col-md-6">
+      <div class="d-flex align-items-center">
+        <svg class="bi flex-shrink-0 mb-2 me-2" role="img" aria-label="Success:" width="30" height="30" >
+          <use xlink:href="#geo" />
+          <h4 class="fw-bold">Delivery Details</h4>
+        </svg>
+      </div>
       <table class="table table-sm">
         <tbody>
-            <tr>
-                <th scope="row">Name</th>
-                <td>{{ latest_order.firstName }} {{ latest_order.lastName }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Address</th>
-                <td>{{latest_order.address}} {{latest_order.district}}, {{latest_order.city}}, {{latest_order.province}}</td>
-            </tr>
+          <tr>
+            <th scope="row">Name :</th>
+            <td>{{ latest_order.firstName }} {{ latest_order.lastName }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Address :</th>
+            <td>{{latest_order.address}} {{latest_order.district}}, {{latest_order.city}}, {{latest_order.province}}</td>
+          </tr>
 
-            <tr>
-                <th scope="row">Phone Number</th>
-                <td>{{ latest_order.phone }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Email Address</th>
-                <td>{{ latest_order.email}}</td>
-            </tr>
+          <tr>
+            <th scope="row">Phone Number :</th>
+            <td>{{ latest_order.phone }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Email Address :</th>
+            <td>{{ latest_order.email}}</td>
+          </tr>
         </tbody>
-    </table>
-        
+      </table>
+      <br>
+      <br>
+
+      <div class="container">
+        {% for cart in cart_items %}
+        <div class="row">
+          <div class="col">
+            <div class="position-relative d-inline-block">
+              <img src="{{ cart.item.image.url }}" alt="" class="img-fluid" style="max-height: 100px;" />
+              <span class="position-absolute top-0 start-100 translate-middle badge bg-dark">
+              {{ cart.quantity }}
+              </span>
+            </div>
+          </div>
+          
+          <div class="col">
+            <div class="row">
+              <p style=" margin-bottom: 0px;">{{ cart.item.itemName }}</p>
+            </div>
+            <div class="row">
+              <p style="">{{ cart.size }}</p>
+            </div>
+            <div class="row">
+              <p style="">₱{{ cart.total_price }}</p>
+            </div>
+            <div class="row">
+              <p style="">Quantity: {{ cart.quantity }}</p>
+            </div>
+          </div>
+        </div>
+        <br>
+        {% endfor %}
+        <br>
+        <br>
+
+        <table class="table table-sm">
+          <tbody>
+            <tr>
+              <th scope="row">Order value</th>
+              <td>₱{{ order_value }}</td>
+            </tr>
+            {% if discount %}
+            <tr>
+              <th scope="row">Discount</th>
+              <td style="color: red;">- ₱{{ discount }}</td>
+            </tr>
+            {% endif %}
+            
+            {% if voucher_total_discount %}
+            <tr>
+              <th scope="row">Voucher</th>
+              <td style="color: red;">- ₱{{ voucher_total_discount }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+              <th scope="row">Estimated shipping fee</th>
+              <td>₱{{ shippingFee }}</td>
+            </tr>
+            <tr>
+              <th scope="row">TOTAL</th>
+              <td>₱{{ total }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+    <div class="col">
+
+    </div>
+  </div>
 </div>
 
 

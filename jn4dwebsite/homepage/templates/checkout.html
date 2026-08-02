@@ -368,7 +368,7 @@ th, td {
                     {% if msg.tags == 'success' %}
                     <div class="alert alert-success alert-dismissible d-flex align-items-center fade show" role="alert">
                         <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:" width="20" height="20" >
-                        <use xlink:href="#message-success" />
+                            <use xlink:href="#message-success" />
                         </svg>
                         <div>{{ msg }}</div>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
@@ -386,19 +386,17 @@ th, td {
                 <form method="POST" action="{% url "manage-voucher" user.id %}" id="status_form">
                     {% csrf_token %}
                 <div class="row">
-                    
-                        <div class="col-8">
-                            <div class="form-floating ">
-                                <input type="text" name="discountcode" class="form-control" id="discountcode" placeholder="Discount Code" required>
-                                <label for="">Discount Code</label>
-                            </div>
+                    <div class="col-8">
+                        <div class="form-floating ">
+                            <input type="text" name="discountcode" class="form-control" id="discountcode" placeholder="Discount Code" required>
+                            <label for="">Discount Code</label>
                         </div>
-                        <div class="col-2">
-                            <button class="btn btn-secondary" style="margin-top: 12px;" onchange="this.form.submit()">
-                                Apply
-                            </button>
-                        </div>
-                    
+                    </div>
+                    <div class="col-2">
+                        <button class="btn btn-secondary" style="margin-top: 12px;" onchange="this.form.submit()">
+                            Apply
+                        </button>
+                    </div>
                 </div>
                 </form>
                 <br>
