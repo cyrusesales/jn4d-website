@@ -104,9 +104,28 @@ th, td {
   <br>
   <div class="row ">
     <div class="col">
-
+      
     </div>
     <div class="col-md-6">
+      <div class="col">
+        <div class="row ">
+          <h5 class="">Thanks for shopping with us!</h5>
+        </div>
+        <br>
+        <div class="row">
+          <span>Hi {{ latest_order.firstName }} {{ latest_order.lastName }},</span>
+        </div>
+        <br>
+        <div class="row">
+          <span>We received your order <strong>#{{latest_order.id}}</strong> on <strong>{{latest_order.created_at}}</strong> and 
+            {% if latest_order.payment_method == 'card' %}you've paid{% else %}you’ll be paying{% endif %} for this via  
+            <strong>{{latest_order.payment_method}}</strong>. 
+            We’re getting your order ready and will let you know once it’s on the way. 
+            We wish you enjoy shopping with us and hope to see you again real soon!</span>
+        </div>
+      </div>
+      <br>
+      <br>
       <div class="d-flex align-items-center">
         <svg class="bi flex-shrink-0 mb-2 me-2" role="img" aria-label="Success:" width="30" height="30" >
           <use xlink:href="#geo" />
