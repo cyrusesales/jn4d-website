@@ -118,7 +118,7 @@ th, td {
         <br>
         <div class="row">
           <span>We received your order <strong>#{{latest_order.id}}</strong> on <strong>{{latest_order.created_at}}</strong> and 
-            {% if latest_order.payment_method == 'card' %}you've paid{% else %}you’ll be paying{% endif %} for this via  
+            {% if latest_order.payment_method == 'Credit or Debit Card' %}you've paid{% else %}you’ll be paying{% endif %} for this via  
             <strong>{{latest_order.payment_method}}</strong>. 
             We’re getting your order ready and will let you know once it’s on the way. 
             We wish you enjoy shopping with us and hope to see you again real soon!</span>

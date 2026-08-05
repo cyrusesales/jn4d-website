@@ -142,7 +142,7 @@ class SavedAddress(models.Model):
 
 class Order(models.Model):
     PAYMENT_CHOICES = (
-        ('card', 'Card'),
+        ('card', 'Credit or Debit Card'),
         ('cod', 'Cash on Delivery'),
     )
 
@@ -169,7 +169,7 @@ class Order(models.Model):
     
 
     payment_method = models.CharField(
-        max_length=10,
+        max_length=100,
         choices=PAYMENT_CHOICES
     )
 
