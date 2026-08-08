@@ -148,7 +148,6 @@ def viewSpecifications(request, pk):
     
 
 def addToCart(request, pk):
-    
     if request.method == 'POST':
         user = get_object_or_404(User, id=request.user.id)
         item = get_object_or_404(Item, id=pk)
@@ -174,8 +173,7 @@ def addToCart(request, pk):
                 size=selected_size,
                 quantity=quantity,
             )
-
-    return redirect ('view-cart', request.user.id)
+    return redirect ('view-specifications', item.id)
 
 
 def viewCart(request, pk):
