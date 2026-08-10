@@ -17,6 +17,7 @@ import requests
 from django_countries import countries
 from django.core.exceptions import ObjectDoesNotExist
 from decimal import Decimal
+from django.db.models import OuterRef, Subquery
 
 # Create your views here.
 
@@ -93,8 +94,8 @@ def viewItems(request, pk):
         product = Product.objects.get(id=pk)
         category = Category.objects.get(id=product.category.id)
         placeholders = Placeholder.objects.all()
-        wishlist = Wishlist.objects.all()
-        
+        wishlist = set(Wishlist.objects.values_list('item_id', flat=True))
+
         context = {
             'headers': headers,
             'items': items,
@@ -102,7 +103,6 @@ def viewItems(request, pk):
             'category': category,
             'placeholders': placeholders,
             'wishlist': wishlist,
-            
         }
         return render(request, 'item_section.html', context)
     else:

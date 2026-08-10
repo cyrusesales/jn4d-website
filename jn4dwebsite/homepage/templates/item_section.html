@@ -74,6 +74,7 @@
                                             </div>
 
                                             <h5 class="text-start" >{{ item.itemName }}</h5>
+                                            <h5 class="text-start" >{{ item.id }}</h5>
                                             {% comment %} <h5 class="text-start" style="font-size: 15px; font-weight: normal;">{{ item.description }}</h5> {% endcomment %}
                                         </a>
                                             <div class="row">
@@ -87,10 +88,10 @@
                                                 </div>
                                                 
                                                 <div class="col-2">
-                                                    {% if item.id == wishlist.item_id %}
-                                                        <form method="POST" action="{% url "add-to-wishlist" item.id %}">
+                                                    {% if item.id in wishlist %}
+                                                        <form method="POST" action="{% url "view-wishlist" user.id %}">
                                                         {% csrf_token %}
-                                                        <button type="submit" class="btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove to Wishlist">
+                                                        <button type="submit" class="btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Go to Wishlist">
                                                             <svg class="bi m-2" width="18" height="18" >
                                                                 <use xlink:href="#box-fill"></use>
                                                             </svg>
@@ -104,9 +105,8 @@
                                                                 <use xlink:href="#wishlist-unselected"></use>
                                                             </svg>
                                                         </button>
-                                                        </form>
-                                                    {% endif %}
-                                                    
+                                                        </form>    
+                                                    {% endif %}  
                                                 </div>
                                                 
                                             </div>
