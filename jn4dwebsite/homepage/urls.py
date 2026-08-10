@@ -17,6 +17,10 @@ urlpatterns = [
     path('order-status-page/<str:pk>', views.orderStatusPage, name="order-status-page"),
     path('manage-voucher/<str:pk>', views.manageVoucher, name="manage-voucher"),
 
+    path('add-to-wishlist/<str:pk>', views.addToWishlist, name="add-to-wishlist"),
+    path('view-wishlist/<str:pk>', views.viewWishlist, name="view-wishlist"),
+    path('remove-to-wishlist/<str:pk>', views.removeToWishlist, name="remove-to-wishlist"),
+
 
     path('sign-up', views.signUp, name="sign-up"),
     path('sign-in', views.signIn, name="sign-in"),

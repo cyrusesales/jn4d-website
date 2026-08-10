@@ -24,6 +24,9 @@
   <symbol id="wishlist-unselected" viewBox="0 0 16 16" fill="currentColor">
     <path d="M2.95.4a1 1 0 0 1 .8-.4h8.5a1 1 0 0 1 .8.4l2.85 3.8a.5.5 0 0 1 .1.3V15a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V4.5a.5.5 0 0 1 .1-.3zM7.5 1H3.75L1.5 4h6zm1 0v3h6l-2.25-3zM15 5H1v10h14z"/>
   </symbol>
+  <symbol id="delete" viewBox="0 0 16 16" fill="currentColor">
+    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+  </symbol>
   <symbol id="box-fill" viewBox="0 0 16 16" fill="currentColor">
       <path d="M3.75 0a1 1 0 0 0-.8.4L.1 4.2a.5.5 0 0 0-.1.3V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4.5a.5.5 0 0 0-.1-.3L13.05.4a1 1 0 0 0-.8-.4zM15 4.667V5H1v-.333L1.5 4h6V1h1v3h6z"/>
   </symbol>
@@ -37,15 +40,9 @@
 
 
 <div class="container" style="margin-top: 100px;">
-
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url "homepage" %}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{% url "view-products" category.id %}">{{ category.name }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
-        </ol>
-    </nav>
-
+    <div class="header">
+        <h2 class="fw-bold">Wishlist</h2>
+    </div>
     <div class="row">
         
         <div class="col-md-12">
@@ -62,51 +59,67 @@
                 </div>
             {% endfor %}
             <div class="row">
-                {% if items %}
-                    {% for item in items %}
+                {% if wish_items %}
+                    {% for wish in wish_items %}
                         <div class="col-md-3">
                             <div class="card mb-3 border-0">
                             
                                     <div class="card-body" >
-                                        <a href="{% url "view-specifications" item.id %}" style="text-decoration: none; color: inherit; font-weight: normal;">
+                                        <div style="text-decoration: none; color: inherit; font-weight: normal;">
                                             <div class="category-image">
-                                                <img src="{{ item.image.url }}" alt="Product image" class="w-100 mb-5" style="height: 250px;"/>
+                                                <img src="{{ wish.item.image.url }}" alt="Product image" class="w-100 mb-5" style="height: 250px;"/>
                                             </div>
 
-                                            <h5 class="text-start" >{{ item.itemName }}</h5>
+                                            <h5 class="text-start" >{{ wish.item.itemName }}</h5>
                                             {% comment %} <h5 class="text-start" style="font-size: 15px; font-weight: normal;">{{ item.description }}</h5> {% endcomment %}
-                                        </a>
+                                        </div>
                                             <div class="row">
-                                                <div class="col-8">
-                                                    <h5 class="text-start pt-2" style="font-weight: bold;">
-                                                        <svg class="bi m-2" width="18" height="18">
-                                                            <use xlink:href="#price"></use>
-                                                        </svg>
-                                                        &#x20B1;{{ item.selling_price |floatformat:2}}
-                                                    </h5>
+                                                <div class="row">
+                                                    {% if wish.item.original_price > 0 %}
+                                                    <div class="col">
+                                                        <h5 class="text-start pt-2" style="font-weight: bold; color: red">
+                                                            &#x20B1;{{ wish.item.selling_price |floatformat:2}}
+                                                        </h5>
+                                                    </div>
+                                                    <div class="col">
+                                                        <h6 class="text-start pt-2" style="text-decoration: line-through;">₱{{ wish.item.original_price }}</h6>
+                                                    </div>
+                                                    {% else %}
+                                                    <div class="col">
+                                                        <h5 class="text-start pt-2" style="font-weight: bold;">
+                                                            &#x20B1;{{ wish.item.selling_price |floatformat:2}}
+                                                        </h5>
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="container">
+
+                                                
+                                                <div class="row d-flex justify-content-center">
+                                                    <div class="col border">
+                                                        <a href="{% url "view-specifications" wish.item.id %}">
+                                                            <div class="col-2">
+                                                                <button type="button" class="btn " style="padding-left: 36px; padding-right: 36px;" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Wishlist">
+                                                                    <svg class="bi m-2" width="22" height="22" >
+                                                                        <use xlink:href="#cart"></use>
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col border">
+                                                        <a href="{% url "remove-to-wishlist" wish.id %}">
+                                                            <div class="col-2">
+                                                                <button type="button" class="btn " style="padding-left: 36px; padding-right: 36px;" data-bs-toggle="tooltip" data-bs-placement="top" title="delete to Wishlist">
+                                                                    <svg class="bi m-2" width="22" height="22" >
+                                                                        <use xlink:href="#box-fill"></use>
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
+                                                        </a>
+                                                    </div>
                                                 </div>
                                                 
-                                                <div class="col-2">
-                                                    {% if item.id == wishlist.item_id %}
-                                                        <form method="POST" action="{% url "add-to-wishlist" item.id %}">
-                                                        {% csrf_token %}
-                                                        <button type="submit" class="btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove to Wishlist">
-                                                            <svg class="bi m-2" width="18" height="18" >
-                                                                <use xlink:href="#box-fill"></use>
-                                                            </svg>
-                                                        </button>
-                                                        </form>
-                                                    {% else %}
-                                                        <form method="POST" action="{% url "add-to-wishlist" item.id %}">
-                                                        {% csrf_token %}
-                                                        <button type="submit" class="btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Wishlist">
-                                                            <svg class="bi m-2" width="18" height="18" >
-                                                                <use xlink:href="#wishlist-unselected"></use>
-                                                            </svg>
-                                                        </button>
-                                                        </form>
-                                                    {% endif %}
-                                                    
                                                 </div>
                                                 
                                             </div>
@@ -114,11 +127,11 @@
                                             
                                         
                                     </div>
-                                    {% if item.original_price > 0 %}
+                                    {% if wish.item.original_price > 0 %}
                                     <h5>
                                     <span class="position-absolute top-0 start-90 translate-middle badge bg-danger">
                                         
-                                        {% widthratio item.selling_price item.original_price 100 as discount %}
+                                        {% widthratio wish.item.selling_price wish.item.original_price 100 as discount %}
                                         Save {{ discount|add:"-100"|cut:"-" }}%
                                     </span>
                                     </h5>

@@ -202,6 +202,16 @@ class Cart(models.Model):
     def __str__(self):
         return self.item.itemName
 
+class Wishlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, blank=True, null=True)
+
+    def __str__(self):
+        return self.item.itemName
+    
+
 
 class Voucher(models.Model):
     code = models.CharField(max_length=100, blank=True, null=True)

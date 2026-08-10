@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
-from .models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, SizeTerm, Cart, User, SavedAddress, Order, Voucher
+from .models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, SizeTerm, Cart, User, SavedAddress, Order, Voucher, Wishlist
 from django.contrib import messages
 from django.template.exceptions import TemplateDoesNotExist
 import re
@@ -24,9 +24,11 @@ from decimal import Decimal
 def base(request):
     headers = Header.objects.all()
     userpro = UserProfile.objects.all()
+    item_count = Cart.objects.filter(user_id=request.user.id, status='cart').count()
     context = {
         'headers': headers,
         'userpro': userpro,
+        'item_count': item_count,
     }
     return render(request, 'base.html', context)
 
@@ -91,12 +93,16 @@ def viewItems(request, pk):
         product = Product.objects.get(id=pk)
         category = Category.objects.get(id=product.category.id)
         placeholders = Placeholder.objects.all()
+        wishlist = Wishlist.objects.all()
+        
         context = {
             'headers': headers,
             'items': items,
             'product': product,
             'category': category,
             'placeholders': placeholders,
+            'wishlist': wishlist,
+            
         }
         return render(request, 'item_section.html', context)
     else:
@@ -407,6 +413,41 @@ def removeItem(request, pk):
     cart_item.delete()
     return redirect('view-cart', request.user.id)
 
+def addToWishlist(request, pk):
+    if request.method == 'POST':
+        user = get_object_or_404(User, id=request.user.id)
+        item = get_object_or_404(Item, id=pk)
+
+        wish_item = Wishlist.objects.filter(
+            item=item,
+            status='wishlist',
+        ).first()
+
+        if wish_item:
+            wish_item.save()
+        else:
+            Wishlist.objects.create(
+                user=user,
+                item=item,
+                status='wishlist',
+            )
+    return redirect('view-items', item.product_id)
+
+def viewWishlist(request, pk):
+    headers = Header.objects.all()
+    placeholders = Placeholder.objects.all()
+    wish_items = Wishlist.objects.filter(user_id=pk, status='wishlist').order_by('created_at')
+    context = {
+        'headers': headers,
+        'placeholders': placeholders,
+        'wish_items': wish_items,
+    }
+    return render(request, "view_wishlist.html", context)
+
+def removeToWishlist(request, pk):
+    wish_item = get_object_or_404(Wishlist, id=pk, user=request.user, status='wishlist')
+    wish_item.delete()
+    return redirect('view-wishlist', request.user.id)
 
 
 def signUp(request):
