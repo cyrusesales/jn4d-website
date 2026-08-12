@@ -206,6 +206,7 @@ def viewCheckout(request, pk):
     headers = Header.objects.all()
     userprofile = UserProfile.objects.get(user_id=pk)
     cart_items = Cart.objects.filter(user_id=pk).order_by('created_at').filter(status='cart')
+    
     # voucher = Voucher.objects.all()
     applied_codes = request.session.get('applied_vouchers', [])
     active_vouchers = Voucher.objects.filter(code__in=applied_codes, status='active')
@@ -282,6 +283,7 @@ def viewCheckout(request, pk):
             cart.status = 'ordered'
             cart.order_id = new_order.id
             cart.save()
+            Wishlist.objects.filter(user_id=pk, item_id=cart.item_id).delete()
 
         applied_codes = request.session.get('applied_vouchers', [])
         if 'applied_vouchers' in request.session:
