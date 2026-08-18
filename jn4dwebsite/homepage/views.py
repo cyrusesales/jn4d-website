@@ -25,11 +25,10 @@ from django.db.models import OuterRef, Subquery
 def base(request):
     headers = Header.objects.all()
     userpro = UserProfile.objects.all()
-    item_count = Cart.objects.filter(user_id=request.user.id, status='cart').count()
+    
     context = {
         'headers': headers,
         'userpro': userpro,
-        'item_count': item_count,
     }
     return render(request, 'base.html', context)
 

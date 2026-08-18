@@ -129,7 +129,7 @@
                                     </div>
                                     {% if wish.item.original_price > 0 %}
                                     <h5>
-                                    <span class="position-absolute top-0 start-90 translate-middle badge bg-danger">
+                                    <span class="position-absolute top-0 start-100 translate-middle badge bg-danger">
                                         
                                         {% widthratio wish.item.selling_price wish.item.original_price 100 as discount %}
                                         Save {{ discount|add:"-100"|cut:"-" }}%

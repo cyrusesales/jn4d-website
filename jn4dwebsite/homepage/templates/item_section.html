@@ -71,10 +71,16 @@
                                         <a href="{% url "view-specifications" item.id %}" style="text-decoration: none; color: inherit; font-weight: normal;">
                                             <div class="category-image">
                                                 <img src="{{ item.image.url }}" alt="Product image" class="w-100 mb-5" style="height: 250px;"/>
+                                                {% if item.original_price > 0 %}
+                                                <span class="position-absolute top-0 start-90 translate-middle badge bg-danger">
+                                                    {% widthratio item.selling_price item.original_price 100 as discount %}
+                                                    Save {{ discount|add:"-100"|cut:"-" }}%
+                                                </span>
+                                                {% endif %}
                                             </div>
 
                                             <h5 class="text-start" >{{ item.itemName }}</h5>
-                                            <h5 class="text-start" >{{ item.id }}</h5>
+                                            {% comment %} <h5 class="text-start" >{{ item.id }}</h5> {% endcomment %}
                                             {% comment %} <h5 class="text-start" style="font-size: 15px; font-weight: normal;">{{ item.description }}</h5> {% endcomment %}
                                         </a>
                                             <div class="row">
@@ -114,15 +120,7 @@
                                             
                                         
                                     </div>
-                                    {% if item.original_price > 0 %}
-                                    <h5>
-                                    <span class="position-absolute top-0 start-90 translate-middle badge bg-danger">
-                                        
-                                        {% widthratio item.selling_price item.original_price 100 as discount %}
-                                        Save {{ discount|add:"-100"|cut:"-" }}%
-                                    </span>
-                                    </h5>
-                                    {% endif %}
+                                    
                                     
                                 
                             </div>
