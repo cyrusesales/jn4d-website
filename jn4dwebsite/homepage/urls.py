@@ -21,6 +21,8 @@ urlpatterns = [
     path('view-wishlist/<str:pk>', views.viewWishlist, name="view-wishlist"),
     path('remove-to-wishlist/<str:pk>', views.removeToWishlist, name="remove-to-wishlist"),
 
+    path('view-my-orders/<str:pk>', views.viewMyOrders, name='view-my-orders'),
+
 
     path('sign-up', views.signUp, name="sign-up"),
     path('sign-in', views.signIn, name="sign-in"),

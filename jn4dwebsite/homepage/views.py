@@ -18,6 +18,7 @@ from django_countries import countries
 from django.core.exceptions import ObjectDoesNotExist
 from decimal import Decimal
 from django.db.models import OuterRef, Subquery
+from django.utils import timezone
 
 # Create your views here.
 
@@ -449,6 +450,19 @@ def removeToWishlist(request, pk):
     wish_item = get_object_or_404(Wishlist, id=pk, user=request.user, status='wishlist')
     wish_item.delete()
     return redirect('view-wishlist', request.user.id)
+
+def viewMyOrders(request, pk):
+    headers = Header.objects.all()
+    placeholders = Placeholder.objects.all()
+    all_orders = Cart.objects.filter(user_id=pk, status='ordered').order_by('-created_at')
+
+
+    context = {
+        'headers': headers,
+        'placeholders': placeholders,
+        'all_orders': all_orders,
+    }
+    return render(request, "view_my_orders.html", context)
 
 
 def signUp(request):

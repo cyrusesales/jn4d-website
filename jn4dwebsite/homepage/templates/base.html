@@ -137,7 +137,7 @@ crossorigin="anonymous">
                           Hello, {{ user.username }}
                         </button>
                         
-                        <ul class="dropdown-menu dropdown-menu-dark" style="min-width: 0; width: auto;" aria-labelledby="dropdownMenuButton1">
+                        <ul class="dropdown-menu dropdown-menu-dark" style="min-width: 0; width: 140px;" aria-labelledby="dropdownMenuButton1">
                           <li class="ms-3">
                             {% comment %} <a class="dropdown-item" href="{% url "view-user-profile" user.id %}"></a> {% endcomment %}
                             <a type="button" class="btn px-0 py-0 dropdown-item" href="{% url "view-user-profile" user.id %}">
@@ -161,6 +161,17 @@ crossorigin="anonymous">
                           </li>
                           {% endif %}
                           <li class="ms-3">
+                            {% comment %} <button type="button" class="btn px-0 py-0 dropdown-item" > {% endcomment %}
+                              <a href="{% url "view-my-orders" user.id %}" class="btn px-0 py-0 dropdown-item">
+                              <svg class="bi m-1" width="20" height="20" style="color: white;">
+                                <use xlink:href="#orders"></use>
+                              </svg>
+                              My Orders
+                              </a>
+                            {% comment %} </button> {% endcomment %}
+                          </li>
+                          <li><a class="dropdown-item" href="#"></a></li>
+                          <li class="ms-3">
                             <button type="button" class="btn px-0 py-0 dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ user.id }}">
                               <svg class="bi m-1" width="20" height="20" style="color: white;">
                                 <use xlink:href="#logout"></use>
@@ -168,15 +179,7 @@ crossorigin="anonymous">
                               Logout
                             </button>
                           </li>
-                          <li class="ms-3">
-                            <button type="button" class="btn px-0 py-0 dropdown-item" >
-                              <svg class="bi m-1" width="20" height="20" style="color: white;">
-                                <use xlink:href="#orders"></use>
-                              </svg>
-                              My Orders
-                            </button>
-                          </li>
-                          <li><a class="dropdown-item" href="#"></a></li>
+                          
 
 
                         </ul>
