@@ -62,18 +62,80 @@
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">To review</button>
         </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Refund/Return</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Cancellation</button>
+        </li>
         </ul>
         <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
             <br>
+            <form method="GET" action="{% url "view-my-orders" user.id %}" class="d-flex mb-4" enctype="multipart/form-data">
+                <input type="text" name="q" value="{{ keyword }}" class="form-control me-2">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+            {% if keyword %}
+            <div class="row">
+                
+                {% regroup carts by order.created_at as order_groups %}
+                {% regroup carts by status as order_status %}
+                
+                {% for group in order_groups %}
+                {% for status in order_status %}
+                <div class="row">
+                    <div class="col">{% timezone "Asia/Manila" %}<h6>{{ group.grouper }}</h6>{% endtimezone %}</div>
+                    <div class="col"><h6 class="text-end">{{ status.grouper }}</h6></div>
+                </div>
+                {% endfor %}
+                <div class="mb-5 border col">
+                    {% for cart in group.list %}
+                    <div class="row mx-5 my-3">
+                    
+                        <div class="col">
+                            <div class="position-relative d-inline-block">
+                                <img src="{{ cart.item.image.url }}" alt="" class="img-fluid mx-5" style="max-height: 75px;" />
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="col">
+                            <div class="row">
+                                <p style="font-size: 15px; margin-bottom: 0px;">{{ cart.item.itemName }}</p>
+                            </div>
+                            
+                            <div class="row">
+                                <p style="font-size: 15px;">{{ cart.size }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col">
+                            <p style="font-size: 15px;">₱{{ cart.total_price }}</p>
+                        </div>
+
+                        <div class="col">
+                            <p style="font-size: 15px;">Quantity: {{ cart.quantity }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+                
+            </div>
+            {% else %}
+            <br>
             {% regroup all_orders by order.created_at as order_groups %}
-
+            {% regroup all_orders by status as order_status %}
+            
             {% for group in order_groups %}
-
-            {% timezone "Asia/Manila" %}<h6>{{ group.grouper }}</h6>{% endtimezone %}
+            {% for status in order_status %}
+            <div class="row">
+                <div class="col">{% timezone "Asia/Manila" %}<h6>{{ group.grouper }}</h6>{% endtimezone %}</div>
+                <div class="col"><h6 class="text-end">{{ status.grouper }}</h6></div>
+            </div>
+            {% endfor %}
             <div class="mb-5 border col">
-                
-                
                 {% for cart in group.list %}
                 <div class="row mx-5 my-3">
                     <div class="col">
@@ -104,9 +166,11 @@
                 
             </div>
             {% endfor %}
-            
+            {% endif %}
         </div>
         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>

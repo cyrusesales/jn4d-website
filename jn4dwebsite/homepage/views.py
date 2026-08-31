@@ -19,6 +19,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from decimal import Decimal
 from django.db.models import OuterRef, Subquery
 from django.utils import timezone
+from django.db.models import Q
 
 # Create your views here.
 
@@ -456,11 +457,23 @@ def viewMyOrders(request, pk):
     placeholders = Placeholder.objects.all()
     all_orders = Cart.objects.filter(user_id=pk, status='ordered').order_by('-created_at')
 
+    keyword = request.GET.get('q', '').strip()
+
+    carts = Cart.objects.filter(status='ordered')
+   
+
+    if keyword:
+        carts = carts.filter(
+            Q(size__icontains=keyword) |
+            Q(item__itemName__icontains=keyword) 
+        )
 
     context = {
         'headers': headers,
         'placeholders': placeholders,
         'all_orders': all_orders,
+        'keyword': keyword,
+        'carts': carts,
     }
     return render(request, "view_my_orders.html", context)
 
