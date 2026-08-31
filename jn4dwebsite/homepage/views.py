@@ -95,7 +95,7 @@ def viewItems(request, pk):
         product = Product.objects.get(id=pk)
         category = Category.objects.get(id=product.category.id)
         placeholders = Placeholder.objects.all()
-        wishlist = set(Wishlist.objects.values_list('item_id', flat=True))
+        wishlist = set(Wishlist.objects.filter(user_id=request.user.id).values_list('item_id', flat=True))
 
         context = {
             'headers': headers,
@@ -281,7 +281,10 @@ def viewCheckout(request, pk):
 
         new_order = Order.objects.latest('created_at')
         for cart in cart_items:
-            cart.status = 'ordered'
+            if new_order.payment_method == 'Credit or Debit Card':
+                cart.status = 'To ship'
+            else:
+                cart.status = 'To pay'
             cart.order_id = new_order.id
             cart.save()
             Wishlist.objects.filter(user_id=pk, item_id=cart.item_id).delete()
@@ -455,12 +458,16 @@ def removeToWishlist(request, pk):
 def viewMyOrders(request, pk):
     headers = Header.objects.all()
     placeholders = Placeholder.objects.all()
-    all_orders = Cart.objects.filter(user_id=pk, status='ordered').order_by('-created_at')
+    all_orders = Cart.objects.filter(Q(status='ordered') | 
+                                     Q(status='To pay') |
+                                     Q(status='To ship'),
+                                     user_id=pk).order_by('-created_at')
 
     keyword = request.GET.get('q', '').strip()
-
-    carts = Cart.objects.filter(status='ordered')
-   
+    carts = Cart.objects.filter(Q(status='ordered') | 
+                                Q(status='To pay') |
+                                Q(status='To ship'),
+                                user_id=pk).order_by('-created_at')
 
     if keyword:
         carts = carts.filter(
