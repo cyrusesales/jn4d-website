@@ -20,6 +20,7 @@ from decimal import Decimal
 from django.db.models import OuterRef, Subquery
 from django.utils import timezone
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -458,16 +459,24 @@ def removeToWishlist(request, pk):
 def viewMyOrders(request, pk):
     headers = Header.objects.all()
     placeholders = Placeholder.objects.all()
+    #used in blank search bar
     all_orders = Cart.objects.filter(Q(status='ordered') | 
                                      Q(status='To pay') |
                                      Q(status='To ship'),
                                      user_id=pk).order_by('-created_at')
+    paginator = Paginator(all_orders, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
+    # used in search bar
     keyword = request.GET.get('q', '').strip()
     carts = Cart.objects.filter(Q(status='ordered') | 
                                 Q(status='To pay') |
                                 Q(status='To ship'),
                                 user_id=pk).order_by('-created_at')
+    paginator = Paginator(carts, 5)
+    page_number = request.GET.get('page')
+    page_obj_search = paginator.get_page(page_number)
 
     if keyword:
         carts = carts.filter(
@@ -481,6 +490,8 @@ def viewMyOrders(request, pk):
         'all_orders': all_orders,
         'keyword': keyword,
         'carts': carts,
+        'page_obj': page_obj,
+        'page_obj_search': page_obj_search,
     }
     return render(request, "view_my_orders.html", context)
 
