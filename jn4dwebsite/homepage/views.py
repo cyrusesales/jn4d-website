@@ -21,7 +21,7 @@ from django.db.models import OuterRef, Subquery
 from django.utils import timezone
 from django.db.models import Q
 from django.core.paginator import Paginator
-
+from itertools import groupby
 # Create your views here.
 
 
@@ -463,8 +463,24 @@ def viewMyOrders(request, pk):
     all_orders = Cart.objects.filter(Q(status='ordered') | 
                                      Q(status='To pay') |
                                      Q(status='To ship'),
-                                     user_id=pk).order_by('-created_at')
-    paginator = Paginator(all_orders, 5)
+                                     user_id=pk).order_by('-order_id', 'status')
+    #Group cart records by order_id
+    grouped_orders = []
+
+    # group_key = lambda x: (x['order_id'], x['status'])
+    group_key = lambda x: (x.order_id, x.status)
+
+    for (order_id, status), items in groupby(
+        all_orders,
+        key=group_key,
+    ):
+        grouped_orders.append({
+            'order_id': order_id,
+            'items': list(items),
+            'status': status,
+        })
+
+    paginator = Paginator(grouped_orders, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -473,16 +489,33 @@ def viewMyOrders(request, pk):
     carts = Cart.objects.filter(Q(status='ordered') | 
                                 Q(status='To pay') |
                                 Q(status='To ship'),
-                                user_id=pk).order_by('-created_at')
-    paginator = Paginator(carts, 5)
-    page_number = request.GET.get('page')
-    page_obj_search = paginator.get_page(page_number)
-
+                                user_id=pk).order_by('-order_id', 'status')
     if keyword:
         carts = carts.filter(
             Q(size__icontains=keyword) |
             Q(item__itemName__icontains=keyword) 
         )
+    #Group cart records by order_id
+    grouped_orders_search = []
+
+    group_key = lambda x: (x.order_id, x.status)
+
+    for (order_id, status), items in groupby(
+        carts,
+        key=group_key,
+    ):
+        grouped_orders_search.append({
+            'order_id': order_id,
+            'items': list(items),
+            'status': status,
+        })
+
+    
+    paginator2 = Paginator(grouped_orders_search, 5)
+    page_number2 = request.GET.get('page')
+    page_obj_search = paginator2.get_page(page_number2)
+
+    
 
     context = {
         'headers': headers,
