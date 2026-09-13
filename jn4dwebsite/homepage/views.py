@@ -519,7 +519,6 @@ def viewMyOrders(request, pk):
     page_obj_search = paginator2.get_page(page_number2)
 
     #-------------- used in To pay order status
-    #-------------used in All orders
     topay_orders = Cart.objects.filter(status='To pay', user_id=pk).order_by('-order_id', 'status')
     #Group cart records by order_id
     grouped_orders = []
@@ -541,6 +540,28 @@ def viewMyOrders(request, pk):
     page_number = request.GET.get('page')
     page_obj_topay = paginator.get_page(page_number)
 
+    #-------------- used in To ship order status
+    toship_orders = Cart.objects.filter(status='To ship', user_id=pk).order_by('-order_id', 'status')
+    #Group cart records by order_id
+    grouped_orders = []
+
+    # group_key = lambda x: (x['order_id'], x['status'])
+    group_key = lambda x: (x.order_id, x.status)
+
+    for (order_id, status), items in groupby(
+        toship_orders,
+        key=group_key,
+    ):
+        grouped_orders.append({
+            'order_id': order_id,
+            'items': list(items),
+            'status': status,
+        })
+
+    paginator = Paginator(grouped_orders, 5)
+    page_number = request.GET.get('page')
+    page_obj_toship = paginator.get_page(page_number)
+
     context = {
         'headers': headers,
         'placeholders': placeholders,
@@ -550,6 +571,7 @@ def viewMyOrders(request, pk):
         'page_obj': page_obj,
         'page_obj_search': page_obj_search,
         'page_obj_topay': page_obj_topay,
+        'page_obj_toship': page_obj_toship,
     }
     return render(request, "view_my_orders.html", context)
 

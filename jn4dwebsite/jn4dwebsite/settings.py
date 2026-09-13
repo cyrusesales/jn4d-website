@@ -66,6 +66,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'homepage.context_processors.cart_item_count',
                 'homepage.context_processors.wish_item_count',
+                'homepage.context_processors.topay_item_count',
+                'homepage.context_processors.toship_item_count',
             ],
         },
     },

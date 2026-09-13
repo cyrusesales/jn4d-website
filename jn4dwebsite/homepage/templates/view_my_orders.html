@@ -68,10 +68,14 @@
             <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">All</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="topay-tab" data-bs-toggle="tab" data-bs-target="#topay" type="button" role="tab" aria-controls="topay" aria-selected="false">To pay</button>
+            <button class="nav-link" id="topay-tab" data-bs-toggle="tab" data-bs-target="#topay" type="button" role="tab" aria-controls="topay" aria-selected="false">
+                To pay {% if topay_item_count > 0 %}<p class="badge bg-primary" style="color: white;">{{ topay_item_count }}</p>{% endif %}
+            </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">To ship</button>
+            <button class="nav-link" id="toship-tab" data-bs-toggle="tab" data-bs-target="#toship" type="button" role="tab" aria-controls="toship" aria-selected="false">
+                To ship {% if toship_item_count > 0 %}<p class="badge bg-primary" style="color: white;">{{ toship_item_count }}</p>{% endif %}
+            </button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">To receive</button>
@@ -534,7 +538,151 @@
             </nav>
         
         </div>
-        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+        <div class="tab-pane fade" id="toship" role="tabpanel" aria-labelledby="toship-tab">
+            <br>
+            {% for order in page_obj_toship  %}
+            <div class="row">
+                <div class="col">
+                    <h6>
+                    <svg class="bi m-1 ms-0" width="20" height="20">
+                        <use xlink:href="#order_box"></use>
+                    </svg>
+                    Order Number: {{ order.order_id }}</h6>
+                </div>
+                <div class="col">
+                    <h6 class="text-end">
+                    <svg class="bi m-1 ms-0" width="20" height="20">
+                        <use xlink:href="#status"></use>
+                    </svg>
+                    Status: {{ order.status }}</h6>
+                </div>
+            </div>
+            
+            <div class="mb-5 border col order">
+                
+                {% for cart in order.items %}
+                <div class="row mx-5 my-3">
+                    <div class="col">
+                        <div class="position-relative d-inline-block">
+                            <img src="{{ cart.item.image.url }}" alt="" class="img-fluid mx-5" style="max-height: 75px;" />
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="col">
+                        <div class="row">
+                            <p style="font-size: 15px; margin-bottom: 0px;">{{ cart.item.itemName }}</p>
+                        </div>
+                        <div class="row">
+                            <p style="font-size: 15px;">{{ cart.size }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col">
+                        <p style="font-size: 15px;">₱{{ cart.total_price }}</p>
+                    </div>
+
+                    <div class="col">
+                        <p style="font-size: 15px;">Quantity: {{ cart.quantity }}</p>
+                    </div>
+
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+
+            <!--Pagination-->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-end">
+
+                    <!-- Previous -->
+                    {% if page_obj_toship.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link"
+                            href="?page={{ page_obj_toship.previous_page_number }}">
+                                Previous
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Previous</span>
+                        </li>
+                    {% endif %}
+
+
+                    <!-- First page -->
+                    {% if page_obj_toship.number > 3 %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">1</a>
+                        </li>
+
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    {% endif %}
+
+
+                    <!-- Pages around current page -->
+                    {% for num in page_obj_toship.paginator.page_range %}
+
+                        {% if num >= page_obj_toship.number|add:"-1" and num <= page_obj_toship.number|add:"1" %}
+
+                            {% if num == page_obj_toship.number %}
+                                <li class="page-item active">
+                                    <span class="page-link">
+                                        {{ num }}
+                                    </span>
+                                </li>
+                            {% else %}
+                                <li class="page-item">
+                                    <a class="page-link"
+                                    href="?page={{ num }}">
+                                        {{ num }}
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                        {% endif %}
+
+                    {% endfor %}
+
+
+                    <!-- Last page -->
+                    {% if page_obj_toship.number < page_obj_toship.paginator.num_pages|add:"-2" %}
+
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+
+                        <li class="page-item">
+                            <a class="page-link"
+                            href="?page={{ page_obj_toship.paginator.num_pages }}">
+                                {{ page_obj_toship.paginator.num_pages }}
+                            </a>
+                        </li>
+
+                    {% endif %}
+
+
+                    <!-- Next -->
+                    {% if page_obj_toship.has_next %}
+                        <li class="page-item">
+                            <a class="page-link"
+                            href="?page={{ page_obj_toship.next_page_number }}">
+                                Next
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Next</span>
+                        </li>
+                    {% endif %}
+
+                </ul>
+            </nav>
+
+        </div>
         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
