@@ -160,6 +160,9 @@ def addToCart(request, pk):
         user = get_object_or_404(User, id=request.user.id)
         item = get_object_or_404(Item, id=pk)
         selected_size = request.POST.get('selected_size')
+        if not selected_size:
+            messages.error(request, "Please select size before adding to cart.")
+            return redirect('view-specifications', item.id)
         quantity = int(request.POST.get('quantity',1))
 
         # check if item already exist in cart
@@ -459,7 +462,7 @@ def removeToWishlist(request, pk):
 def viewMyOrders(request, pk):
     headers = Header.objects.all()
     placeholders = Placeholder.objects.all()
-    #used in blank search bar
+    #-------------used in All orders
     all_orders = Cart.objects.filter(Q(status='ordered') | 
                                      Q(status='To pay') |
                                      Q(status='To ship'),
@@ -484,7 +487,7 @@ def viewMyOrders(request, pk):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    # used in search bar
+    #-------------- used in search bar
     keyword = request.GET.get('q', '').strip()
     carts = Cart.objects.filter(Q(status='ordered') | 
                                 Q(status='To pay') |
@@ -515,7 +518,28 @@ def viewMyOrders(request, pk):
     page_number2 = request.GET.get('page')
     page_obj_search = paginator2.get_page(page_number2)
 
-    
+    #-------------- used in To pay order status
+    #-------------used in All orders
+    topay_orders = Cart.objects.filter(status='To pay', user_id=pk).order_by('-order_id', 'status')
+    #Group cart records by order_id
+    grouped_orders = []
+
+    # group_key = lambda x: (x['order_id'], x['status'])
+    group_key = lambda x: (x.order_id, x.status)
+
+    for (order_id, status), items in groupby(
+        topay_orders,
+        key=group_key,
+    ):
+        grouped_orders.append({
+            'order_id': order_id,
+            'items': list(items),
+            'status': status,
+        })
+
+    paginator = Paginator(grouped_orders, 5)
+    page_number = request.GET.get('page')
+    page_obj_topay = paginator.get_page(page_number)
 
     context = {
         'headers': headers,
@@ -525,6 +549,7 @@ def viewMyOrders(request, pk):
         'carts': carts,
         'page_obj': page_obj,
         'page_obj_search': page_obj_search,
+        'page_obj_topay': page_obj_topay,
     }
     return render(request, "view_my_orders.html", context)
 

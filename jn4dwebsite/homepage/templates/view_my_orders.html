@@ -68,7 +68,7 @@
             <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">All</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">To pay</button>
+            <button class="nav-link" id="topay-tab" data-bs-toggle="tab" data-bs-target="#topay" type="button" role="tab" aria-controls="topay" aria-selected="false">To pay</button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">To ship</button>
@@ -99,33 +99,6 @@
             </form>
             {% if keyword %}
             <div class="row">
-                
-                {% comment %} {% regroup carts by order.created_at as order_groups %}
-                {% regroup carts by status as order_status %}
-                
-                {% for group in order_groups %}
-                <div class="row">
-                    <div class="col">{% timezone "Asia/Manila" %}<h6>
-                        <svg class="bi m-1 ms-0" width="20" height="20">
-                            <use xlink:href="#calendar"></use>
-                        </svg>
-                        
-                        {% with group.list|dictsort:"created_at"|last as latest %}
-                        {{latest.created_at}}
-                        {% endwith %}
-                    </h6>{% endtimezone %}
-                    </div>
-                    <div class="col"><h6 class="text-end">
-                        <svg class="bi m-1 ms-0" width="20" height="20">
-                            <use xlink:href="#status"></use>
-                        </svg>
-                        {% with group.list|dictsort:"created_at"|last as latest %}
-                        {{latest.status}}
-                        {% endwith %}
-                        </h6>
-                        
-                    </div>
-                </div> {% endcomment %}
                 {% for order in page_obj_search  %}
                 <div class="row">
                     <div class="col">
@@ -146,7 +119,6 @@
 
 
                 <div class="mb-5 border col">
-                    {% comment %} {% for cart in group.list %} {% endcomment %}
                     {% for cart in order.items %}
                     <div class="row mx-5 my-3">
                     
@@ -175,10 +147,8 @@
                             <p style="font-size: 15px;">Quantity: {{ cart.quantity }}</p>
                         </div>
                     </div>
-                    {% comment %} {% endfor %} {% endcomment %}
                     {% endfor %}
                 </div>
-                {% comment %} {% endfor %} {% endcomment %}
                 {% endfor %}
 
                 <!--Pagination-->
@@ -274,31 +244,8 @@
             </div>
             {% else %}
 
-            <!--this is the defaul order page if search bar is blank-->
+            <!--this is the default order page if search bar is blank-->
             <br>
-            {% comment %} {% regroup all_orders by order.created_at as order_groups %}
-            {% regroup all_orders by status as order_status %}
-            
-            {% for group in order_groups %} {% endcomment %}
-            {% comment %} <div class="row">
-                <div class="col">{% timezone "Asia/Manila" %}<h6>
-                    <svg class="bi m-1 ms-0" width="20" height="20">
-                        <use xlink:href="#calendar"></use>
-                    </svg>
-                    {% with group.list|dictsort:"created_at"|last as latest %}
-                    {{latest.created_at}}
-                    {% endwith %}
-                    </h6>{% endtimezone %}</div>
-                <div class="col"><h6 class="text-end">
-                    <svg class="bi m-1 ms-0" width="20" height="20">
-                        <use xlink:href="#status"></use>
-                    </svg>
-                    {% with group.list|dictsort:"created_at"|last as latest %}
-                    {{latest.status}}
-                    {% endwith %}
-                    </h6>
-                </div>
-            </div> {% endcomment %}
             {% for order in page_obj  %}
             <div class="row">
                 <div class="col">
@@ -317,10 +264,7 @@
                 </div>
             </div>
             
-            
-            {% comment %} {% timezone "Asia/Manila" %}<h5>Date: {{ order.created_at }}</h5>{% endtimezone %} {% endcomment %}
             <div class="mb-5 border col order">
-                {% comment %} {% for cart in group.list %} {% endcomment %}
                 
                 {% for cart in order.items %}
                 <div class="row mx-5 my-3">
@@ -349,10 +293,8 @@
                     </div>
 
                 </div>
-                {% comment %} {% endfor %} {% endcomment %}
                 {% endfor %}
             </div>
-            {% comment %} {% endfor %} {% endcomment %}
             {% endfor %}
 
 
@@ -447,7 +389,151 @@
             </nav>
             {% endif %}
         </div>
-        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+        <div class="tab-pane fade" id="topay" role="tabpanel" aria-labelledby="topay-tab">
+            <br>
+            {% for order in page_obj_topay  %}
+            <div class="row">
+                <div class="col">
+                    <h6>
+                    <svg class="bi m-1 ms-0" width="20" height="20">
+                        <use xlink:href="#order_box"></use>
+                    </svg>
+                    Order Number: {{ order.order_id }}</h6>
+                </div>
+                <div class="col">
+                    <h6 class="text-end">
+                    <svg class="bi m-1 ms-0" width="20" height="20">
+                        <use xlink:href="#status"></use>
+                    </svg>
+                    Status: {{ order.status }}</h6>
+                </div>
+            </div>
+            
+            <div class="mb-5 border col order">
+                
+                {% for cart in order.items %}
+                <div class="row mx-5 my-3">
+                    <div class="col">
+                        <div class="position-relative d-inline-block">
+                            <img src="{{ cart.item.image.url }}" alt="" class="img-fluid mx-5" style="max-height: 75px;" />
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="col">
+                        <div class="row">
+                            <p style="font-size: 15px; margin-bottom: 0px;">{{ cart.item.itemName }}</p>
+                        </div>
+                        <div class="row">
+                            <p style="font-size: 15px;">{{ cart.size }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col">
+                        <p style="font-size: 15px;">₱{{ cart.total_price }}</p>
+                    </div>
+
+                    <div class="col">
+                        <p style="font-size: 15px;">Quantity: {{ cart.quantity }}</p>
+                    </div>
+
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+
+            <!--Pagination-->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-end">
+
+                    <!-- Previous -->
+                    {% if page_obj_topay.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link"
+                            href="?page={{ page_obj_topay.previous_page_number }}">
+                                Previous
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Previous</span>
+                        </li>
+                    {% endif %}
+
+
+                    <!-- First page -->
+                    {% if page_obj_topay.number > 3 %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">1</a>
+                        </li>
+
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    {% endif %}
+
+
+                    <!-- Pages around current page -->
+                    {% for num in page_obj_topay.paginator.page_range %}
+
+                        {% if num >= page_obj_topay.number|add:"-1" and num <= page_obj_topay.number|add:"1" %}
+
+                            {% if num == page_obj_topay.number %}
+                                <li class="page-item active">
+                                    <span class="page-link">
+                                        {{ num }}
+                                    </span>
+                                </li>
+                            {% else %}
+                                <li class="page-item">
+                                    <a class="page-link"
+                                    href="?page={{ num }}">
+                                        {{ num }}
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                        {% endif %}
+
+                    {% endfor %}
+
+
+                    <!-- Last page -->
+                    {% if page_obj_topay.number < page_obj_topay.paginator.num_pages|add:"-2" %}
+
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+
+                        <li class="page-item">
+                            <a class="page-link"
+                            href="?page={{ page_obj_topay.paginator.num_pages }}">
+                                {{ page_obj_topay.paginator.num_pages }}
+                            </a>
+                        </li>
+
+                    {% endif %}
+
+
+                    <!-- Next -->
+                    {% if page_obj_topay.has_next %}
+                        <li class="page-item">
+                            <a class="page-link"
+                            href="?page={{ page_obj_topay.next_page_number }}">
+                                Next
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Next</span>
+                        </li>
+                    {% endif %}
+
+                </ul>
+            </nav>
+        
+        </div>
         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
