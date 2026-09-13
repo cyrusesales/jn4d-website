@@ -242,36 +242,7 @@
 
 
 
-<!--Toast-->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100;">
-      {% if messages %}
-          {% for message in messages %}
-              <div class="toast align-items-center text-black bg-{{ message.tags|default:'primary' }} border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
-                  <div class="d-flex">
-                      <div class="toast-body">
-                          {{ message }}
-                      </div>
-                      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                  </div>
-              </div>
 
-              <div aria-live="polite" aria-atomic="true" class="bg-body-secondary position-relative bd-example-toasts rounded-3">
-                <div class="toast-container p-3" id="toastPlacement">
-                    <div class="toast">
-                        <div class="toast-header">
-                            <img src="..." class="rounded me-2" alt="...">
-                            <strong class="me-auto">Warning</strong>
-                            {% comment %} <small>11 mins ago</small> {% endcomment %}
-                        </div>
-                        <div class="toast-body">
-                            {{ message }}
-                        </div>
-                    </div>
-                </div>
-             </div>
-          {% endfor %}
-      {% endif %}
-    </div>
 </div>
 
 <script>
@@ -295,14 +266,6 @@ const selectedSizeInput = document.getElementById('selected_size');
 
 </script>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    var toastElList = [].slice.call(document.querySelectorAll('.toast'))
-    var toastList = toastElList.map(function (toastEl) {
-        return new bootstrap.Toast(toastEl)
-    });
-    toastList.forEach(toast => toast.show());
-});
-</script>
+
 {% endblock %}
 
