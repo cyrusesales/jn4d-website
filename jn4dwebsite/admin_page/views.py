@@ -555,17 +555,18 @@ def manageUsers(request):
     headers = Header.objects.all()
     userprofile = UserProfile.objects.all().order_by('user_id')
     # user = User.objects.all()
+    role_choices = Role.objects.all()
 
     status_choices = [
         ('active', 'Active'),
         ('inactive', 'Inactive')
     ]
 
-    role_choices = [
-        ('admin', 'Admin'),
-        ('employee', 'Employee'),
-        ('customer', 'Customer')
-    ]
+    # role_choices = [
+    #     ('admin', 'Admin'),
+    #     ('employee', 'Employee'),
+    #     ('customer', 'Customer')
+    # ]
 
     context = {
         'headers': headers,
@@ -598,11 +599,11 @@ def changeUserRole(request, pk):
         userprofile = UserProfile.objects.get(user_id=pk)
         user = User.objects.get(id=pk)
         userprofile.role = role
-        if role == "admin":
+        if role == "Admin":
             user.is_staff = "t"
             user.is_superuser = "t"
             user.save()
-        elif role == "employee":
+        elif role == "Employee":
             user.is_staff = "t"
             user.is_superuser = "f"
             user.save()

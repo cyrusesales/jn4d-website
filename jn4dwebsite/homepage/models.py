@@ -98,7 +98,7 @@ class UserProfile(models.Model):
     # password = models.CharField(max_length=128, blank=True, null=True)
     dateOfBirth = models.DateField(max_length=8, blank=True, null=True)
     phoneNumber = models.CharField(validators=[phone_regex], max_length=20, blank=True, null=True)
-    role = models.CharField(max_length=20, default='customer', blank=True, null=True)
+    role = models.CharField(max_length=20, default='Customer', blank=True, null=True)
     status = models.CharField(max_length=20, default='active', blank=True, null=True)
 
     def __str__(self):

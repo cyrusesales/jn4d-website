@@ -80,12 +80,17 @@
                     {% if user.is_superuser %}
                     <form method="POST" action="{% url "change-user-role" userpro.user_id %}" id="status_form">
                       {% csrf_token %}
-                      <select name="role_dropdown" id="role_dropdown" onchange="this.form.submit()">
+                      {% comment %} <select name="role_dropdown" id="role_dropdown" onchange="this.form.submit()">
                         {% for value, label in role_choices %}
                         <option value="{{ value }}" {% if value == userpro.role %}selected{% endif %}>
                           {{ label }}
                         </option>
                         {% endfor %}
+                      </select> {% endcomment %}
+                      <select name="role_dropdown" id="role_dropdown" onchange="this.form.submit()">
+                      {% for role in role_choices %}
+                        <option value="{{ role.name }}" {% if role.name == userpro.role %}selected{% endif %} >{{ role.name }}</option>
+                      {% endfor %}
                       </select>
                     </form>
                     {% else %}
