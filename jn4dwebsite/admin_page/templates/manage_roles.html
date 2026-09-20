@@ -58,7 +58,9 @@
                 <tr>
                   <th>Name</th>
                   <th>Description</th>
+                  {% if user.is_superuser %}
                   <th>Actions</th>
+                  {% endif %}
                 </tr>
               </thead>
               <tbody>
@@ -66,7 +68,7 @@
                 <tr>
                   <td>{{ role.name }}</td>
                   <td>{{ role.description }}</td>
-                  
+                  {% if user.is_superuser %}
                   <td>
                     <a href="{% url 'edit-roles' role.id %}" class="btn btn-success px-0 py-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Role">
                       <svg class="bi m-2" width="16" height="16">
@@ -110,18 +112,20 @@
                       </div>
                     </div>
                   </td>
+                  {% endif %}
                 </tr>
                 {% endfor %}
               </tbody>
             </table>
             <!--Below Buttons-->
+            {% if user.is_superuser %}
             <a href="{% url "add-roles" %}" class="btn btn-primary">
               <svg class="bi m-1" width="15" height="15">
                 <use xlink:href="#add"><!--Add--></use>
               </svg>
               Add Role
             </a>
-
+            {% endif %}
             
 
 

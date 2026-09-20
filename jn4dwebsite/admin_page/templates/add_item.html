@@ -92,15 +92,7 @@ select {
           <div class="card-body">
             <form action="" method="POST" enctype="multipart/form-data">
               {% csrf_token %}
-              {% for msg in messages %}
-                <div class="alert alert-success alert-dismissible d-flex align-items-center fade show" role="alert" >
-                  <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:" width="20" height="20" >
-                    <use xlink:href="#warning" />
-                  </svg>
-                  <div>{{ msg }}</div>
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
-                </div>
-              {% endfor %}
+              
               <div class="mb-3">
                 <label for="" class="form-label">Image</label>
                 <input type="file" name="image" class="form-control" />

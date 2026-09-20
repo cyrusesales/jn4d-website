@@ -168,6 +168,7 @@
                 Dashboard
               </a>
             </li>
+            {% if user.is_superuser %}
             <li class="nav-item">
               <a href="{% url "manage-header" %}" class="nav-link text-white" aria-current="page">
                 <svg class="bi me-2" width="16" height="16">
@@ -176,6 +177,7 @@
                 Header
               </a>
             </li>
+            {% endif %}
             <li class="nav-item">
               <a href="{% url "manage-carousel" %}" class="nav-link text-white" aria-current="page">
                 <svg class="bi me-2" width="16" height="16">
@@ -217,6 +219,7 @@
                 Users
               </a>
             </li>
+            {% if user.is_superuser %}
             <li class="nav-item">
               <a href="{% url "manage-roles" %}" class="nav-link text-white" aria-current="page">
                 <svg class="bi me-2" width="16" height="16">
@@ -225,6 +228,7 @@
                 Role
               </a>
             </li>
+            {% endif %}
           </ul>
 
         </div>
