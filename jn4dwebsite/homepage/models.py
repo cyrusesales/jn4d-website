@@ -223,3 +223,11 @@ class Voucher(models.Model):
 
     def is_valid(self):
         return self.status and self.expiry_date > timezone.now()
+
+
+class Role(models.Model):
+    name = models.CharField(max_length=100, blank=True, null=True)
+    description = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.name)

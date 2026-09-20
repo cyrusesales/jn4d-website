@@ -53,4 +53,9 @@ urlpatterns = [
     path('add-voucher/', views.addVoucher, name='add-voucher'),
     path('edit-voucher/<str:pk>', views.editVoucher, name='edit-voucher'),
     path('delete-voucher/<str:pk>', views.deleteVoucher, name='delete-voucher'),
+
+    path('manage-roles/', views.manageRoles, name='manage-roles'),
+    path('edit-roles/<str:pk>', views.editRoles, name='edit-roles'),
+    path('add-roles/', views.addRoles, name='add-roles'),
+    path('delete-roles/<str:pk>', views.deleteRoles, name="delete-roles"),
 ]

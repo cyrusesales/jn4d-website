@@ -2,7 +2,7 @@ from django.template import loader
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from homepage.forms import HeaderForm
-from homepage.models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, User, ProductSize, SizeTerm, Voucher
+from homepage.models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, User, ProductSize, SizeTerm, Voucher, Role
 from django.contrib import messages
 import os
 from decimal import Decimal
@@ -810,3 +810,66 @@ def deleteVoucher(request, pk):
     voucher.delete()
     messages.success(request, f"{voucher.code} has been deleted.")
     return redirect('view-vouchers')
+
+
+def manageRoles(request):
+    headers = Header.objects.all()
+    roles = Role.objects.all().order_by('id')
+
+    context = {
+        'headers': headers,
+        'roles': roles,
+    }
+
+    return render(request, 'manage_roles.html', context)
+
+def editRoles(request, pk):
+    headers = Header.objects.all()
+    roles = Role.objects.get(id=pk)
+
+    if request.method == "POST":
+        roles.name = request.POST.get("name")
+        roles.description = request.POST.get("description")
+        if Role.objects.filter(name=roles.name).exists():
+            messages.warning(request, "This role already exist!")
+            return redirect('edit-roles', roles.id)
+        else:
+            roles.save()
+            messages.success(request, "Role updated successfully!")
+            return redirect('manage-roles')
+
+    context = {
+        'headers': headers,
+        'roles': roles,
+    }
+
+    return render(request, 'edit_roles.html', context)
+
+def addRoles(request):
+    headers = Header.objects.all()
+    roles = Role.objects.all()
+
+    if request.method == "POST":
+        role = Role()
+        role.name = request.POST.get("name")
+        role.description = request.POST.get("description")
+        if Role.objects.filter(name=role.name).exists():
+            messages.warning(request, "This role already exist!")
+            return redirect('add-roles')
+        else:
+            role.save()
+            messages.success(request, "New role has been added!")
+            return redirect('manage-roles')
+
+    context = {
+        'headers': headers,
+        'roles': roles,
+    }
+
+    return render(request, 'add_roles.html', context)
+
+def deleteRoles(request, pk):
+    roles = Role.objects.get(id=pk)
+    roles.delete()
+    messages.success(request, f"{roles.name} has been deleted!")
+    return redirect('manage-roles')
