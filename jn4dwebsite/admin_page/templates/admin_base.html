@@ -83,6 +83,16 @@
       <symbol id="success" viewBox="0 0 16 16" fill="currentColor">
         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
       </symbol>
+      <symbol id="orders" viewBox="0 0 16 16" fill="currentColor">
+        <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+        <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+      </symbol>
+      <symbol id="logistic" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5zm1.294 7.456A2 2 0 0 1 4.732 11h5.536a2 2 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456M12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
+      </symbol>
+      <symbol id="cart" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l.84 4.479 9.144-.459L13.89 4zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+      </symbol>
     </svg>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -229,6 +239,33 @@
               </a>
             </li>
             {% endif %}
+            <li class="nav-item">
+              <a href="{% url "manage-cart" %}" class="nav-link text-white" aria-current="page">
+                <svg class="bi me-2" width="16" height="16">
+                  <use xlink:href="#cart"></use>
+                </svg>
+                Cart
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url "manage-users" %}" class="nav-link text-white" aria-current="page">
+                <svg class="bi me-2" width="16" height="16">
+                  <use xlink:href="#orders"></use>
+                </svg>
+                Orders
+              </a>
+            </li>
+            
+            <li class="nav-item">
+              <a href="{% url "manage-users" %}" class="nav-link text-white" aria-current="page">
+                <svg class="bi me-2" width="16" height="16">
+                  <use xlink:href="#logistic"></use>
+                </svg>
+                Logistic
+              </a>
+            </li>
+
+
           </ul>
 
         </div>

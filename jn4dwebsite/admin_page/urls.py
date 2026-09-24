@@ -58,4 +58,6 @@ urlpatterns = [
     path('edit-roles/<str:pk>', views.editRoles, name='edit-roles'),
     path('add-roles/', views.addRoles, name='add-roles'),
     path('delete-roles/<str:pk>', views.deleteRoles, name="delete-roles"),
+
+    path('manage-carts/', views.manageCart, name='manage-cart'),
 ]

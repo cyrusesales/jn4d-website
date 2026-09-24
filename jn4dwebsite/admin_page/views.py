@@ -2,7 +2,7 @@ from django.template import loader
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from homepage.forms import HeaderForm
-from homepage.models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, User, ProductSize, SizeTerm, Voucher, Role
+from homepage.models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, User, ProductSize, SizeTerm, Voucher, Role, Cart
 from django.contrib import messages
 import os
 from decimal import Decimal
@@ -874,3 +874,16 @@ def deleteRoles(request, pk):
     roles.delete()
     messages.success(request, f"{roles.name} has been deleted!")
     return redirect('manage-roles')
+
+
+def manageCart(request):
+    headers = Header.objects.all()
+    carts = Cart.objects.filter(status='cart').order_by('id')
+
+    context = {
+        'headers': headers,
+        'carts': carts,
+    }
+
+
+    return render(request, 'manage_cart.html', context)
