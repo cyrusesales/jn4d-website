@@ -7,7 +7,9 @@ from django.contrib import messages
 import os
 from decimal import Decimal
 from django.contrib.auth.decorators import login_required
-
+from django.db.models import Q
+from django.core.paginator import Paginator
+from itertools import groupby
 
 
 def adminBase(request):
@@ -895,3 +897,68 @@ def manageWishlists(request):
         'wishlists': wishlists,
     }
     return render(request, 'manage_wishlists.html', context)
+
+def manageOrders(request):
+    headers = Header.objects.all()
+    all_orders = Cart.objects.filter(Q(status='ordered') | 
+                                    Q(status='To pay') |
+                                    Q(status='To ship')).order_by('-order_id', 'status', 'user')
+    #Group cart records by order_id
+    grouped_orders = []
+
+    # group_key = lambda x: (x['order_id'], x['status'])
+    group_key = lambda x: (x.order_id, x.status, x.user)
+
+    for (order_id, status, user), items in groupby(
+        all_orders,
+        key=group_key,
+    ):
+        grouped_orders.append({
+            'order_id': order_id,
+            'items': list(items),
+            'status': status,
+            'user': user,
+        })
+
+    paginator = Paginator(grouped_orders, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    #-------------- used in search bar
+    keyword = request.GET.get('q', '').strip()
+    carts = Cart.objects.filter(Q(status='ordered') | 
+                                Q(status='To pay') |
+                                Q(status='To ship')).order_by('-order_id', 'status', 'user')
+    if keyword:
+        carts = carts.filter(
+            Q(size__icontains=keyword) |
+            Q(item__itemName__icontains=keyword) 
+        )
+    #Group cart records by order_id
+    grouped_orders_search = []
+
+    group_key = lambda x: (x.order_id, x.status, x.user)
+
+    for (order_id, status, user), items in groupby(
+        carts,
+        key=group_key,
+    ):
+        grouped_orders_search.append({
+            'order_id': order_id,
+            'items': list(items),
+            'status': status,
+            'user': user,
+        })
+
+    
+    paginator2 = Paginator(grouped_orders_search, 5)
+    page_number2 = request.GET.get('page')
+    page_obj_search = paginator2.get_page(page_number2)
+
+    context = {
+        'headers': headers,
+        'keyword': keyword,
+        'page_obj': page_obj,
+        'page_obj_search': page_obj_search,
+    }
+    return render(request, 'manage_orders.html', context)

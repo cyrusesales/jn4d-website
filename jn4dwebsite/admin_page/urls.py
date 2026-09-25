@@ -61,4 +61,5 @@ urlpatterns = [
 
     path('manage-carts/', views.manageCart, name='manage-cart'),
     path('manage-wishlists/', views.manageWishlists, name='manage-wishlists'),
+    path('manage-orders/', views.manageOrders, name='manage-orders'),
 ]
