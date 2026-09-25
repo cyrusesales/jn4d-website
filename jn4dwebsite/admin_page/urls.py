@@ -60,4 +60,5 @@ urlpatterns = [
     path('delete-roles/<str:pk>', views.deleteRoles, name="delete-roles"),
 
     path('manage-carts/', views.manageCart, name='manage-cart'),
+    path('manage-wishlists/', views.manageWishlists, name='manage-wishlists'),
 ]

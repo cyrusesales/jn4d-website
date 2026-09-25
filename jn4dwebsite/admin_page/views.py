@@ -2,7 +2,7 @@ from django.template import loader
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from homepage.forms import HeaderForm
-from homepage.models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, User, ProductSize, SizeTerm, Voucher, Role, Cart
+from homepage.models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, User, ProductSize, SizeTerm, Voucher, Role, Cart, Wishlist
 from django.contrib import messages
 import os
 from decimal import Decimal
@@ -884,6 +884,14 @@ def manageCart(request):
         'headers': headers,
         'carts': carts,
     }
-
-
     return render(request, 'manage_cart.html', context)
+
+def manageWishlists(request):
+    headers = Header.objects.all()
+    wishlists = Wishlist.objects.all()
+
+    context = {
+        'headers': headers,
+        'wishlists': wishlists,
+    }
+    return render(request, 'manage_wishlists.html', context)

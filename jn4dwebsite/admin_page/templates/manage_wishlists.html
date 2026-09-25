@@ -1,4 +1,4 @@
-{% extends "admin_base.html" %} {% block title %}Manage Carts{%endblock %} {% block content %}
+{% extends "admin_base.html" %} {% block title %}Manage Wishlists{%endblock %} {% block content %}
 <link
   href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
   rel="stylesheet"
@@ -40,30 +40,41 @@
 
         <div class="card" style="width: 1000px">
           <div class="card-header">
-            <h2 class="fw-bold">Manage Carts</h2>
+            <h2 class="fw-bold">Manage Wishlists</h2>
           </div>
           <div class="card-body">
             {% csrf_token %}
             <table class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Cart ID</th>
-                  <th>Size</th>
-                  <th>Quantity</th>
+                  <th>Wishlist ID</th>
                   <th>Date</th>
                   <th>Item</th>
+                  <th>Original Price</th>
+                  <th>Selling Price</th>
+                  <th>Discount</th>
                   <th>Customer</th>
                 </tr>
               </thead>
               <tbody>
-                {% for cart in carts %}
+                {% for wish in wishlists %}
                 <tr>
-                  <td>{{ cart.id }}</td>
-                  <td>{{ cart.size}}</td>
-                  <td>{{ cart.quantity }}</td>
-                  <td>{{ cart.created_at }}</td>
-                  <td style="width: 300px;">{{ cart.item.itemName }}</td>
-                  <td>{{ cart.user.username }}</td>
+                  <td>{{ wish.id }}</td>
+                  <td>{{ wish.created_at }}</td>
+                  <td style="width: 300px;">{{ wish.item.itemName }}</td>
+                  <td>₱{{ wish.item.original_price}}</td>
+                  <td>₱{{ wish.item.selling_price }}</td>
+                  {% if wish.item.original_price > 0 %}
+                  <td>
+                    {% widthratio wish.item.selling_price wish.item.original_price 100 as discount %}
+                    {{ discount|add:"-100"|cut:"-" }}%
+                  </td>
+                  {% else %}
+                  <td>
+                    No Discount
+                  </td>
+                  {% endif %}
+                  <td>{{ wish.user.username }}</td>
                   
                   
                  
