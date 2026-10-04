@@ -63,7 +63,9 @@
                   <th>Date and Time</th>
                   <th>Status</th>
                   <th>Total</th>
+                  {% if user.is_superuser %}
                   <th>Action</th>
+                  {% endif %}
                 </tr>
               </thead>
               <tbody>
@@ -77,8 +79,10 @@
             
                   <td>{{ order.cart_status }}</td>
                 
-                  <td>{{ order.total }}</td>
+                  <td>₱{{ order.total }}</td>
+                  {% if user.is_superuser %}
                   <td></td>
+                  {% endif %}
                 </tr>
                 {% endfor %}
               </tbody>

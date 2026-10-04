@@ -89,9 +89,15 @@ def display_header_logo(request):
 def manageCarousel(request):
     headers = Header.objects.all()
     carousels = Carousel.objects.all().order_by('id')
+
+    paginator = Paginator(carousels, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
     context = {
         'carousels': carousels,
-        'headers': headers
+        'headers': headers,
+        'page_obj': page_obj,
     }
     return render(request, 'manage_carousel.html', context)
 
@@ -156,10 +162,16 @@ def manageCategories(request):
     categories = Category.objects.all().order_by('id')
     headers = Header.objects.all()
     placeholders = Placeholder.objects.all()
+
+    paginator = Paginator(categories, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
         'categories': categories,
         'headers': headers,
         'placeholders': placeholders,
+        'page_obj': page_obj
     }
     return render(request, 'manage_categories.html', context)
 
@@ -267,10 +279,16 @@ def manageProducts(request, pk):
         headers = Header.objects.all()
         products = Product.objects.filter(category__id=pk).order_by('id')
         category = Category.objects.get(id=pk)
+
+        paginator = Paginator(products, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
         context = {
             'headers': headers,
             'products': products,
             'category': category,
+            'page_obj': page_obj,
         }
         return render(request, 'manage_products.html', context)
     else:
@@ -331,10 +349,15 @@ def manageItem(request, pk):
         items = Item.objects.filter(product__id=pk).order_by('id')
         product = Product.objects.get(id=pk)
 
+        paginator = Paginator(items, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
         context = {
             'headers': headers,
             'items': items,
             'product': product,
+            'page_obj': page_obj
         }
 
         return render(request, "manage_item.html", context)
@@ -570,12 +593,17 @@ def manageUsers(request):
     #     ('customer', 'Customer')
     # ]
 
+    paginator = Paginator(userprofile, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
         'headers': headers,
         'userprofile': userprofile,
         'status_choices': status_choices,
         'role_choices': role_choices,
         # 'user': user,
+        'page_obj': page_obj,
     }
 
     return render(request, 'manage_users.html', context)
@@ -621,9 +649,14 @@ def manageProductSize(request):
     headers = Header.objects.all()
     productSize = ProductSize.objects.all().order_by('id')
 
+    paginator = Paginator(productSize, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
         'headers': headers,
         'productSize': productSize,
+        'page_obj': page_obj,
     }
 
     return render(request, 'manage_product_size.html', context)
@@ -751,9 +784,14 @@ def viewVouchers(request):
     headers = Header.objects.all()
     vouchers = Voucher.objects.all().order_by('id')
 
+    paginator = Paginator(vouchers, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
         'headers': headers,
         'vouchers': vouchers,
+        'page_obj': page_obj,
     }
 
     return render(request, 'manage_voucher.html', context)
@@ -819,9 +857,14 @@ def manageRoles(request):
     headers = Header.objects.all()
     roles = Role.objects.all().order_by('id')
 
+    paginator = Paginator(roles, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
         'headers': headers,
         'roles': roles,
+        'page_obj': page_obj,
     }
 
     return render(request, 'manage_roles.html', context)
@@ -882,9 +925,14 @@ def manageCart(request):
     headers = Header.objects.all()
     carts = Cart.objects.filter(status='cart').order_by('id')
 
+    paginator = Paginator(carts, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
         'headers': headers,
         'carts': carts,
+        'page_obj': page_obj,
     }
     return render(request, 'manage_cart.html', context)
 
@@ -892,9 +940,14 @@ def manageWishlists(request):
     headers = Header.objects.all()
     wishlists = Wishlist.objects.all()
 
+    paginator = Paginator(wishlists, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
         'headers': headers,
         'wishlists': wishlists,
+        'page_obj': page_obj,
     }
     return render(request, 'manage_wishlists.html', context)
 
