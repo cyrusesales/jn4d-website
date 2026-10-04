@@ -1,4 +1,4 @@
-{% extends "admin_base.html" %} {% block title %}Manage Orders{%endblock %} {% block content %}
+{% extends "admin_base.html" %} {% block title %}Orders{%endblock %} {% block content %}
 <link
   href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
   rel="stylesheet"
@@ -49,234 +49,40 @@
 
         <div class="card" style="width: 1000px">
           <div class="card-header">
-            <h2 class="fw-bold">Manage Orders</h2>
+            <h2 class="fw-bold">Orders</h2>
           </div>
           <div class="card-body">
             {% csrf_token %}
-            <br>
-            <form method="GET" action="{% url "manage-orders" %}" class="d-flex mb-4" enctype="multipart/form-data" style="justify-content: flex-end;">
-                <input type="text" name="q" value="{{ keyword }}" class="form-control me-2" style="width: 300px;">
-                <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Search">
-                    <svg class="bi m-1" width="20" height="20" style="color: white;">
-                        <use xlink:href="#search"></use>
-                    </svg>
-                </button>
-            </form>
-            {% if keyword %}
-            <div class="row">
-                {% for order in page_obj_search  %}
-                <div class="row">
-                    <div class="col">
-                        <h6>
-                        <svg class="bi m-1 ms-0" width="20" height="20">
-                            <use xlink:href="#order_box"></use>
-                        </svg>
-                        Order Number: {{ order.order_id }}</h6>
-                    </div>
-                    <div class="col">
-                        <h6>
-                        <svg class="bi m-1 ms-0" width="20" height="20">
-                            <use xlink:href="#order_box"></use>
-                        </svg>
-                        Customer: {{ order.user.username}}</h6>
-                    </div>
-                    <div class="col">
-                        <h6 class="text-end">
-                        <svg class="bi m-1 ms-0" width="20" height="20">
-                            <use xlink:href="#status"></use>
-                        </svg>
-                        Status: {{ order.status }}</h6>
-                    </div>
-                </div>
-
-
-                <div class="mb-5 border col">
-                    {% for cart in order.items %}
-                    <div class="row mx-5 my-3">
-                    
-                        <div class="col">
-                            <div class="position-relative d-inline-block">
-                                <img src="{{ cart.item.image.url }}" alt="" class="img-fluid mx-5" style="max-height: 75px;" />
-                                
-                            </div>
-                        </div>
-                        
-                        <div class="col">
-                            <div class="row">
-                                <p style="font-size: 15px; margin-bottom: 0px;">{{ cart.item.itemName }}</p>
-                            </div>
-                            
-                            <div class="row">
-                                <p style="font-size: 15px;">{{ cart.size }}</p>
-                            </div>
-                        </div>
-                        
-                        <div class="col">
-                            <p style="font-size: 15px;">₱{{ cart.total_price }}</p>
-                        </div>
-
-                        <div class="col">
-                            <p style="font-size: 15px;">Quantity: {{ cart.quantity }}</p>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% endfor %}
-
-                <!--Pagination-->
-                <nav aria-label="Page navigation d-flex justify-content-end">
-                    <ul class="pagination justify-content-end">
-
-                        <!-- Previous -->
-                        {% if page_obj_search.has_previous %}
-                            <li class="page-item">
-                                <a class="page-link"
-                                href="?q={{keyword}}&page={{ page_obj_search.previous_page_number }}">
-                                    Previous
-                                </a>
-                            </li>
-                        {% else %}
-                            <li class="page-item disabled">
-                                <span class="page-link">Previous</span>
-                            </li>
-                        {% endif %}
-
-
-                        <!-- First page -->
-                        {% if page_obj_search.number > 3 %}
-                            <li class="page-item">
-                                <a class="page-link" href="?q={{keyword}}&page=1">1</a>
-                            </li>
-
-                            <li class="page-item disabled">
-                                <span class="page-link">...</span>
-                            </li>
-                        {% endif %}
-
-
-                        <!-- Pages around current page -->
-                        {% for num in page_obj_search.paginator.page_range %}
-
-                            {% if num >= page_obj_search.number|add:"-1" and num <= page_obj_search.number|add:"1" %}
-
-                                {% if num == page_obj_search.number %}
-                                    <li class="page-item active">
-                                        <span class="page-link">
-                                            {{ num }}
-                                        </span>
-                                    </li>
-                                {% else %}
-                                    <li class="page-item">
-                                        <a class="page-link"
-                                        href="?q={{keyword}}&page={{ num }}">
-                                            {{ num }}
-                                        </a>
-                                    </li>
-                                {% endif %}
-
-                            {% endif %}
-
-                        {% endfor %}
-
-
-                        <!-- Last page -->
-                        {% if page_obj_search.number < page_obj_search.paginator.num_pages|add:"-2" %}
-
-                            <li class="page-item disabled">
-                                <span class="page-link">...</span>
-                            </li>
-
-                            <li class="page-item">
-                                <a class="page-link"
-                                href="?q={{keyword}}&page={{ page_obj_search.paginator.num_pages }}">
-                                    {{ page_obj_search.paginator.num_pages }}
-                                </a>
-                            </li>
-
-                        {% endif %}
-
-
-                        <!-- Next -->
-                        {% if page_obj_search.has_next %}
-                            <li class="page-item">
-                                <a class="page-link"
-                                href="?q={{keyword}}&page={{ page_obj_search.next_page_number }}">
-                                    Next
-                                </a>
-                            </li>
-                        {% else %}
-                            <li class="page-item disabled">
-                                <span class="page-link">Next</span>
-                            </li>
-                        {% endif %}
-
-                    </ul>
-                </nav>
-                
-            </div>
-            {% else %}
-
-            <!--this is the default order page if search bar is blank-->
-            <br>
-            {% for order in page_obj  %}
-            <div class="row">
-                <div class="col">
-                    <h6>
-                    <svg class="bi m-1 ms-0" width="20" height="20">
-                        <use xlink:href="#order_box"></use>
-                    </svg>
-                    Order Number: {{ order.order_id }}</h6>
-                </div>
-                <div class="col">
-                    <h6>
-                    <svg class="bi m-1 ms-0" width="20" height="20">
-                        <use xlink:href="#order_box"></use>
-                    </svg>
-                    Customer: {{ order.user.username}}</h6>
-                </div>
-                <div class="col">
-                    <h6 class="text-end">
-                    <svg class="bi m-1 ms-0" width="20" height="20">
-                        <use xlink:href="#status"></use>
-                    </svg>
-                    Status: {{ order.status }}</h6>
-                </div>
-            </div>
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer Name</th>
+                  <th>Address</th>
+                  <th>Payment</th>
+                  <th>Date and Time</th>
+                  <th>Status</th>
+                  <th>Total</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in page_obj %}
+                <tr>
+                  <td>{{ order.id }}</td>
+                  <td>{{ order.firstName }} {{ order.lastName }}</td>
+                  <td>{{ order.address }} {{order.district}}, {{order.city}}, {{order.province}} {{order.postalcode|stringformat:"d"}}</td>
+                  <td>{{ order.payment_method }}</td>
+                  <td>{{ order.created_at }}</td>
             
-            <div class="mb-5 border col order">
+                  <td>{{ order.cart_status }}</td>
                 
-                {% for cart in order.items %}
-                <div class="row mx-5 my-3">
-                    <div class="col">
-                        <div class="position-relative d-inline-block">
-                            <img src="{{ cart.item.image.url }}" alt="" class="img-fluid mx-5" style="max-height: 75px;" />
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="col">
-                        <div class="row">
-                            <p style="font-size: 15px; margin-bottom: 0px;">{{ cart.item.itemName }}</p>
-                        </div>
-                        <div class="row">
-                            <p style="font-size: 15px;">{{ cart.size }}</p>
-                        </div>
-                    </div>
-                    
-                    <div class="col">
-                        <p style="font-size: 15px;">₱{{ cart.total_price }}</p>
-                    </div>
-
-                    <div class="col">
-                        <p style="font-size: 15px;">Quantity: {{ cart.quantity }}</p>
-                    </div>
-
-                </div>
+                  <td>{{ order.total }}</td>
+                  <td></td>
+                </tr>
                 {% endfor %}
-            </div>
-            {% endfor %}
-
-
+              </tbody>
+            </table>
             <!--Pagination-->
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-end">
@@ -366,9 +172,6 @@
 
                 </ul>
             </nav>
-            {% endif %}
-
-
 
           </div>
         </div>

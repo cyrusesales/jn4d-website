@@ -2,7 +2,7 @@ from django.template import loader
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from homepage.forms import HeaderForm
-from homepage.models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, User, ProductSize, SizeTerm, Voucher, Role, Cart, Wishlist
+from homepage.models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, User, ProductSize, SizeTerm, Voucher, Role, Cart, Wishlist, Order
 from django.contrib import messages
 import os
 from decimal import Decimal
@@ -900,29 +900,7 @@ def manageWishlists(request):
 
 def manageOrders(request):
     headers = Header.objects.all()
-    all_orders = Cart.objects.filter(Q(status='ordered') | 
-                                    Q(status='To pay') |
-                                    Q(status='To ship')).order_by('-order_id', 'status', 'user')
-    #Group cart records by order_id
-    grouped_orders = []
-
-    # group_key = lambda x: (x['order_id'], x['status'])
-    group_key = lambda x: (x.order_id, x.status, x.user)
-
-    for (order_id, status, user), items in groupby(
-        all_orders,
-        key=group_key,
-    ):
-        grouped_orders.append({
-            'order_id': order_id,
-            'items': list(items),
-            'status': status,
-            'user': user,
-        })
-
-    paginator = Paginator(grouped_orders, 5)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    
 
     #-------------- used in search bar
     keyword = request.GET.get('q', '').strip()
@@ -955,10 +933,21 @@ def manageOrders(request):
     page_number2 = request.GET.get('page')
     page_obj_search = paginator2.get_page(page_number2)
 
+    orders = Order.objects.all().order_by('id')
+    for order in orders:
+        order.cart_status = Cart.objects.filter(
+            order_id=order.id
+        ).values_list('status', flat=True).first()
+
+    paginator = Paginator(orders, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
         'headers': headers,
         'keyword': keyword,
         'page_obj': page_obj,
         'page_obj_search': page_obj_search,
+        'orders': orders,
     }
     return render(request, 'manage_orders.html', context)
