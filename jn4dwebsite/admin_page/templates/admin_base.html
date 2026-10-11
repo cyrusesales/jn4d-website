@@ -114,9 +114,28 @@
         {% if user.is_authenticated %}
           <div class="dropdown">
             <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-              Hello, {{ user.username }}
+              {% comment %} Hello, {{ user.username }} {% endcomment %}
+              {% if userpro %}
+              <div class="container">
+                <div class="row">
+                  <div class="col-12 col-md-5 custom-30 px-0 py-0" style="">
+                    {% if userpro.image %}
+                    <img src="{{ userpro.image.url }}" alt="" width="50" height="50" style="margin-right: 20px;"/>
+                    {% endif %}
+                  </div>
+                  <div class="col-12 col-md-7 custom-70 px-0 py-0" style="margin-left: 0px;">
+                    <div class="row" >
+                      <p class="" style="color: white; margin-bottom: 0px; font-size:15px;">{{userpro.firstName}} {{userpro.lastName}}</p>
+                    </div>
+                    <div class="row" style=""> 
+                      <p class="" style="color: white; margin-bottom: 0px; font-size:15px; font-style: italic;">{{userpro.role}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
             </button>
-            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
+            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
               <li class="ms-3">
                 <a type="button" class="btn px-0 py-0 dropdown-item" href="{% url "view-user-profile" user.id %}">
                   <svg class="bi m-1" width="20" height="20" style="color: white;">

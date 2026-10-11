@@ -68,6 +68,7 @@ TEMPLATES = [
                 'homepage.context_processors.wish_item_count',
                 'homepage.context_processors.topay_item_count',
                 'homepage.context_processors.toship_item_count',
+                'homepage.context_processors.userpro',
             ],
         },
     },

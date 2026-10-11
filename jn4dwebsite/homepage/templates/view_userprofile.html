@@ -85,7 +85,18 @@
           <div class="card-body">
             <form action="" method="POST" enctype="multipart/form-data">
               {% csrf_token %}
-
+              <div class="form mb-3">
+                <label class="" for="" style="text: bold;">Profile Image</label>
+                {% if userprofile.image %}
+                <div class="form-control">
+                  <img src="{{ userprofile.image.url }}" alt="Profile image" class="" style="height: 100px; width: 100px;"/>
+                </div>
+                {% else %}
+                <div>
+                  <p>No Image Available</p>
+                </div>
+                {% endif %}
+              </div>
               <div class="form mb-3">
                 <label class="" for="" style="text: bold;">Username</label>
                 <input type="text" class="form-control" value="{{ user.username }}" disabled style="background-color: white;">

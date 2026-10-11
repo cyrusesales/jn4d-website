@@ -83,23 +83,23 @@ crossorigin="anonymous">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" href="{% url "homepage" %}#category-section">{{ header.menu_item1 }}</a>
+              <a class="nav-link active" style="padding-top: 25px;" href="{% url "homepage" %}#category-section">{{ header.menu_item1 }}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="#">{{ header.menu_item2 }}</a>
+              <a class="nav-link active" style="padding-top: 25px;" href="#">{{ header.menu_item2 }}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="#">{{ header.menu_item3 }}</a>
+              <a class="nav-link active" style="padding-top: 25px;" href="#">{{ header.menu_item3 }}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="#">{{ header.menu_item4 }}</a>
+              <a class="nav-link active" style="padding-top: 25px;" href="#">{{ header.menu_item4 }}</a>
             </li>
 
             <hr />
             
             <!--cart-->
             {% if user.is_authenticated %}
-            <li class="nav-item">
+            <li class="nav-item" style="padding-top: 15px;">
               <a href="{% url "view-cart" user.id %}" class="btn">
                 <div class="d-inline-flex align-items-center">
                   <svg class="bi m-1" width="20" height="20" style="color: white;">
@@ -115,7 +115,7 @@ crossorigin="anonymous">
               </a>
             </li>
             
-            <li class="nav-item">
+            <li class="nav-item" style="padding-top: 15px;">
               
               <a href="{% url "view-wishlist" user.id %}" class="btn">
                 <div class="d-inline-flex align-items-center">
@@ -136,15 +136,47 @@ crossorigin="anonymous">
 
               {% if user.is_authenticated %}
                 <!--Show username and logout-->
+              <li class="nav-item pt-2">
                 <div class="row">
                   <div class="col">
                     <span style="color: white;">
                       <div class="dropdown">
                         <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                          Hello, {{ user.username }}
+                          {% comment %} Hello, {{ user.username }} {% endcomment %}
+                          {% if userpro %}
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-12 col-md-5 custom-30 px-0 py-0" style="">
+                                {% if userpro.image %}
+                                <img src="{{ userpro.image.url }}" alt="" width="40" height="40" />
+                                {% endif %}
+                              </div>
+                              
+                            </div>
+                          </div>
+                          {% endif %}
                         </button>
                         
-                        <ul class="dropdown-menu dropdown-menu-dark" style="min-width: 0; width: 140px;" aria-labelledby="dropdownMenuButton1">
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" style="min-width: 0; width: 145px;" aria-labelledby="dropdownMenuButton1">
+                          {% if userpro %}
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-12 col-md-5 custom-30 px-0 py-0" style="">
+                                {% if userpro.image %}
+                                <img src="{{ userpro.image.url }}" alt="" width="40" height="40" style="margin-left: 10px;"/>
+                                {% endif %}
+                              </div>
+                              <div class="col-12 col-md-7 custom-70 px-0 py-0" style="margin-left: 0px;">
+                                <div class="row" >
+                                  <p class="" style="color: white; margin-bottom: 0px; font-size:15px; margin-top: 10px;">{{userpro.firstName}} {{userpro.lastName}}</p>
+                                </div>
+                                
+                              </div>
+                            </div>
+                          </div>
+                          {% endif %}
+                          <hr>
+
                           <li class="ms-3">
                             {% comment %} <a class="dropdown-item" href="{% url "view-user-profile" user.id %}"></a> {% endcomment %}
                             <a type="button" class="btn px-0 py-0 dropdown-item" href="{% url "view-user-profile" user.id %}">
@@ -196,17 +228,20 @@ crossorigin="anonymous">
                   </div>
  
                 </div>
+              </li>
               {% else %}
+              <li class="nav-item pt-2 " style="margin-top: 15px;">
                 <!--Show Login/Register Buttons-->
-                <a href="{% url "sign-in" %}">
+                <a href="{% url "sign-in" %}" class="text-decoration-none" >
                   <svg class="bi m-1" width="20" height="20" style="color: white;">
                       <use xlink:href="#user"></use>
                   </svg>
+                  Log In
                 </a>
                 {% comment %} <a href="{% url "sign-up" %}">Sign Up</a> {% endcomment %}
               {% endif %}
 
-            </li>
+              </li>
 
 
           </ul>

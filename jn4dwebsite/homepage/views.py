@@ -22,6 +22,7 @@ from django.utils import timezone
 from django.db.models import Q
 from django.core.paginator import Paginator
 from itertools import groupby
+import os
 # Create your views here.
 
 
@@ -590,7 +591,8 @@ def signUp(request):
         dateOfBirth = request.POST.get('dateOfBirth')
         phoneNumber = request.POST.get('full_phone')
 
-        
+        if len(request.FILES) != 0:
+            image = request.FILES['image']
 
         validator = EmailValidator()
 
@@ -639,6 +641,7 @@ def signUp(request):
                 email=email,
                 dateOfBirth=dateOfBirth,
                 phoneNumber=phoneNumber,
+                image=image,
             )
 
             messages.success(request, "Sign Up Completed!")
@@ -705,6 +708,10 @@ def editUserProfile(request, pk):
     userprofile = UserProfile.objects.get(user_id=pk)
 
     if request.method == 'POST':
+        if len(request.FILES) != 0:
+            if len(userprofile.image) > 0:
+                os.remove(userprofile.image.path)
+            userprofile.image = request.FILES['image']
         user.username = request.POST.get("username")
         userprofile.firstName = request.POST.get("firstName")
         userprofile.lastName = request.POST.get("lastName")
@@ -712,22 +719,22 @@ def editUserProfile(request, pk):
         userprofile.dateOfBirth = request.POST.get("dateOfBirth")
         userprofile.phoneNumber = request.POST.get("phoneNumber")
 
-        # Username validator
-        if User.objects.filter(username=user.username).exists():
-            messages.warning(request, 'Username already exists!')
-        # Email validatiom
-        elif UserProfile.objects.filter(email=userprofile.email).exists():
-            messages.warning(request, 'Email already exists!')
-        # Phone Number validation
-        elif UserProfile.objects.filter(phoneNumber=userprofile.phoneNumber).exists():
-            messages.warning(request, 'Phone number already exists!')
-        # Phone validation
-        elif not userprofile.phoneNumber or not re.match(r'^\+\d{8,15}$', userprofile.phoneNumber):
-            messages.warning(request, "Invalid phone number")
-        else:
-            user.save()
-            userprofile.save()
-            messages.success(request, "User Profile successfully update!")
+        # # Username validator
+        # if User.objects.filter(username=user.username).exists():
+        #     messages.warning(request, 'Username already exists!')
+        # # Email validatiom
+        # elif UserProfile.objects.filter(email=userprofile.email).exists():
+        #     messages.warning(request, 'Email already exists!')
+        # # Phone Number validation
+        # elif UserProfile.objects.filter(phoneNumber=userprofile.phoneNumber).exists():
+        #     messages.warning(request, 'Phone number already exists!')
+        # # Phone validation
+        # elif not userprofile.phoneNumber or not re.match(r'^\+\d{8,15}$', userprofile.phoneNumber):
+        #     messages.warning(request, "Invalid phone number")
+        # else:
+        user.save()
+        userprofile.save()
+        messages.success(request, "User Profile successfully update!")
 
     context = {
         'headers': headers,

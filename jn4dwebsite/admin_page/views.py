@@ -11,11 +11,13 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from itertools import groupby
 
-
+@login_required
 def adminBase(request):
     headers = Header.objects.all()
+    # userpro = UserProfile.objects.filter(user_id=request.user.id).first()
     context = {
-        'headers': headers
+        'headers': headers,
+        # 'userpro': userpro,
     }
     return render(request, 'admin_base.html', context)
 
@@ -711,10 +713,15 @@ def manageSizeTerm(request, pk):
         sizeTerm = SizeTerm.objects.filter(productSize__id=pk).order_by('id')
         productSize = ProductSize.objects.get(id=pk)
 
+        paginator = Paginator(sizeTerm, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        
         context = {
             'headers': headers,
             'sizeTerm': sizeTerm,
-            'productSize': productSize
+            'productSize': productSize,
+            'page_obj': page_obj,
         }
 
         return render(request, 'manage_size_term.html', context)

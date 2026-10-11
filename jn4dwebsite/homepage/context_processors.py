@@ -1,4 +1,4 @@
-from .models import Cart, Wishlist
+from .models import Cart, Wishlist, UserProfile
 from itertools import groupby
 
 def cart_item_count(request):
@@ -76,3 +76,11 @@ def toship_item_count(request):
     return {
         'toship_item_count': toship_item_count
     }
+
+
+def userpro(request):
+    if request.user.is_authenticated:
+        return {'userpro': UserProfile.objects.filter(
+            user_id=request.user.id
+        ).first()}
+    return {'userpro': None}

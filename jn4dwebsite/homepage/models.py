@@ -100,6 +100,7 @@ class UserProfile(models.Model):
     phoneNumber = models.CharField(validators=[phone_regex], max_length=20, blank=True, null=True)
     role = models.CharField(max_length=20, default='Customer', blank=True, null=True)
     status = models.CharField(max_length=20, default='active', blank=True, null=True)
+    image = models.ImageField(upload_to='profile/', blank=True, null=True)
 
     def __str__(self):
         return str(self.user.username or self.id)
@@ -133,7 +134,7 @@ class SavedAddress(models.Model):
     lastName = models.CharField(max_length=100, blank=True, null=True)
     address = models.CharField(max_length=100, blank=True, null=True)
     district = models.CharField(max_length=100, blank=True, null=True)
-    postalcode = models.IntegerField(max_length=4, blank=True, null=True)
+    postalcode = models.IntegerField( blank=True, null=True)
     city = models.CharField(max_length=100, blank=True, null=True)
     province = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(validators=[phone_regex], max_length=20, blank=True, null=True)
@@ -157,7 +158,7 @@ class Order(models.Model):
     lastName = models.CharField(max_length=100, blank=True, null=True)
     address = models.CharField(max_length=100, blank=True, null=True)
     district = models.CharField(max_length=100, blank=True, null=True)
-    postalcode = models.IntegerField(max_length=4, blank=True, null=True)
+    postalcode = models.IntegerField( blank=True, null=True)
     city = models.CharField(max_length=100, blank=True, null=True)
     province = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(validators=[phone_regex], max_length=20, blank=True, null=True)
