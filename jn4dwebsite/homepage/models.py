@@ -66,11 +66,20 @@ class ProductSize(models.Model):
 
     def __str__(self):
         return str(self.name or self.id)
+
+class SizeTerm(models.Model):
+    productSize = models.ForeignKey(ProductSize, on_delete=models.CASCADE, blank=True, null=True)
+    name=models.CharField(max_length=100, blank=True, null=True)
+    description=models.CharField(max_length=100, blank=True, null=True)
+    acronym=models.CharField(max_length=5, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.name or self.id)
     
 class Item(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    size = models.ForeignKey(ProductSize, on_delete=models.CASCADE, blank=True, null=True)
+    size = models.ForeignKey(SizeTerm, on_delete=models.CASCADE, blank=True, null=True)
     itemName = models.CharField(max_length=100, blank=True, null=True)
     description = models.CharField(max_length=300, blank=True, null=True)
     image = models.ImageField(upload_to='items/',blank=True, null=True)
@@ -108,14 +117,7 @@ class UserProfile(models.Model):
 
 
 
-class SizeTerm(models.Model):
-    productSize = models.ForeignKey(ProductSize, on_delete=models.CASCADE, blank=True, null=True)
-    name=models.CharField(max_length=100, blank=True, null=True)
-    description=models.CharField(max_length=100, blank=True, null=True)
-    acronym=models.CharField(max_length=5, blank=True, null=True)
 
-    def __str__(self):
-        return str(self.name or self.id)
 
 
 class SavedAddress(models.Model):
@@ -232,3 +234,14 @@ class Role(models.Model):
 
     def __str__(self):
         return str(self.name)
+
+class Inventory(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, blank=True, null=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
+    quantity = models.PositiveIntegerField(default=0)
+    location = models.CharField(max_length=200, blank=True, null=True)
+    status = models.CharField(max_length=20, default='In Stock', blank=True, null=True)
+
+    def __str__(self):
+        return str(self.item.itemName)

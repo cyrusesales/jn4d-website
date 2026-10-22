@@ -420,7 +420,7 @@ def editItem(request, pk):
     headers = Header.objects.all()
     item = Item.objects.get(id=pk)
     sizes = ProductSize.objects.all()
-    sizeSelect = ProductSize.objects.get(name=item.size)
+    # sizeSelect = ProductSize.objects.get(name=item.size.name)
 
 
     if request.method == 'POST':
@@ -473,7 +473,7 @@ def editItem(request, pk):
         'headers': headers,
         'item': item,
         'sizes': sizes,
-        'sizeSelect': sizeSelect,
+        # 'sizeSelect': sizeSelect,
     }
     return render(request, 'edit_item.html', context)
 
@@ -1011,3 +1011,19 @@ def manageOrders(request):
         'orders': orders,
     }
     return render(request, 'manage_orders.html', context)
+
+
+def manageInventory(request):
+    headers = Header.objects.all()
+    item = Item.objects.all()
+
+    paginator = Paginator(item, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'headers': headers,
+        'page_obj': page_obj,
+    }
+
+    return render(request, 'manage_inventory.html', context)
