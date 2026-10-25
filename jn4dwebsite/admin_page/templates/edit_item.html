@@ -183,10 +183,14 @@ select {
                 <div class="row" class="form-control ms-2" style="width: 685px;" >
                   <select name="size" id="size-select" style="width: 685px; margin-left: 10px;">
 
-                    <option value="{{ sizeSelect.id }}" selected disabled hidden>{{ sizeSelect.name }}</option>
+                    {% comment %} <option value="{{ sizeSelect.id }}" selected disabled hidden>{{ sizeSelect.name }}</option> {% endcomment %}
 
                     {% for size in sizes %}
-                      <option value="{{ size.id }}" >
+                      <option value="{{ size.id }}" 
+                        {% if sizeSelect and size.id == sizeSelect.id %}
+                          selected
+                        {% endif %}
+                      >
                         {{ size.name }}
                       </option>
                     {% endfor %}

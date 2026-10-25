@@ -7,7 +7,7 @@ from django.contrib import messages
 import os
 from decimal import Decimal
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
+from django.db.models import Q, F
 from django.core.paginator import Paginator
 from itertools import groupby
 
@@ -418,9 +418,10 @@ def addItem(request, pk):
 
 def editItem(request, pk):
     headers = Header.objects.all()
-    item = Item.objects.get(id=pk)
+    item = get_object_or_404(Item, id=pk)
     sizes = ProductSize.objects.all()
-    # sizeSelect = ProductSize.objects.get(name=item.size.name)
+
+    sizeSelect = item.size
 
 
     if request.method == 'POST':
@@ -461,11 +462,16 @@ def editItem(request, pk):
         item.description = request.POST.get('description')
         item.original_price = Decimal(request.POST.get('original_price').replace(',', ''))
         item.selling_price = Decimal(request.POST.get('selling_price').replace(',', ''))
+
+        # HTML sends the ProductSize ID
         size_id = request.POST.get("size")
-        selected_size = ProductSize.objects.get(id=size_id)
-        item.size = selected_size
+
+        if size_id:
+            selected_size = get_object_or_404(ProductSize, id=size_id)
+            item.size.name = selected_size
 
         item.save()
+
         messages.success(request, f"{item} is edited successfully!")
         return redirect('manage-item', item.product_id)
     
@@ -473,7 +479,7 @@ def editItem(request, pk):
         'headers': headers,
         'item': item,
         'sizes': sizes,
-        # 'sizeSelect': sizeSelect,
+        'sizeSelect': sizeSelect,
     }
     return render(request, 'edit_item.html', context)
 
@@ -1015,7 +1021,14 @@ def manageOrders(request):
 
 def manageInventory(request):
     headers = Header.objects.all()
-    item = Item.objects.all()
+    product = Product.objects.all().order_by('id')
+    item = (Item.objects.select_related('size', 'product', 'category')
+        .annotate(
+            sizeterm_pk=F('size__sizeterm__id'),
+            term_acronym=F('size__sizeterm__acronym'),
+        )
+        .order_by('id', 'sizeterm_pk')
+    )
 
     paginator = Paginator(item, 10)
     page_number = request.GET.get('page')
@@ -1023,6 +1036,8 @@ def manageInventory(request):
 
     context = {
         'headers': headers,
+        'item': item,
+        'product': product,
         'page_obj': page_obj,
     }
 

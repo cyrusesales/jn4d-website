@@ -79,7 +79,7 @@ class SizeTerm(models.Model):
 class Item(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    size = models.ForeignKey(SizeTerm, on_delete=models.CASCADE, blank=True, null=True)
+    size = models.ForeignKey(ProductSize, on_delete=models.CASCADE, blank=True, null=True)
     itemName = models.CharField(max_length=100, blank=True, null=True)
     description = models.CharField(max_length=300, blank=True, null=True)
     image = models.ImageField(upload_to='items/',blank=True, null=True)

@@ -57,10 +57,13 @@
               <thead>
                 <tr>
                   <th>Item ID</th>
-                  <th>Product Name</th>
-                  <th>Size</th>
-                  <th>Image</th>
                   <th>Category</th>
+                  <th>Product Name</th>
+                  <th>Item Name</th>
+                  <th>Size</th>
+                  <th>Size Term</th>
+                  <th>Image</th>
+                  
                   <th>Quantity</th>
                   <th>Location</th>
                   <th>Status</th>
@@ -71,12 +74,16 @@
               </thead>
               <tbody>
                 {% for order in page_obj %}
+                  
                 <tr>
                   <td>{{ order.id }}</td>
+                  <td>{{ order.category.name }}</td>
                   <td>{{ order.product.name}}</td>
+                  <td>{{ order.itemName}}</td>
                   <td>{{ order.size.name}}</td>
+                  <td>{{ order.term_acronym|default_if_none:"" }}</td>
                   
-                    {% if order.image %}
+                  {% if order.image %}
                   <td>
                     <img src="{{ order.image.url }}" alt="" width="50" height="50" />
                   </td>
@@ -86,7 +93,7 @@
                   </td>
                   {% endif %}
                   
-                  <td>{{ order.category.name }}</td>
+                  
             
                   <td>{{ order.cart_status }}</td>
                 
@@ -95,6 +102,7 @@
                   <td></td>
                   {% endif %}
                 </tr>
+                  
                 {% endfor %}
               </tbody>
             </table>
