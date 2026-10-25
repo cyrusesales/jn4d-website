@@ -47,7 +47,7 @@
     <div class="row justify-content-center">
       <div class="col-md-8 mt-4">
 
-        <div class="card" style="width: 1000px">
+        <div class="card" style="width: 1100px">
           <div class="card-header">
             <h2 class="fw-bold">Inventory</h2>
           </div>
@@ -60,10 +60,11 @@
                   <th>Category</th>
                   <th>Product Name</th>
                   <th>Item Name</th>
+                  <th>Image</th>
                   <th>Size</th>
                   <th>Size Term</th>
-                  <th>Image</th>
-                  
+                  <th>Stocks</th>
+                  <th>Ordered</th>
                   <th>Quantity</th>
                   <th>Location</th>
                   <th>Status</th>
@@ -79,10 +80,7 @@
                   <td>{{ order.id }}</td>
                   <td>{{ order.category.name }}</td>
                   <td>{{ order.product.name}}</td>
-                  <td>{{ order.itemName}}</td>
-                  <td>{{ order.size.name}}</td>
-                  <td>{{ order.term_acronym|default_if_none:"" }}</td>
-                  
+                  <td style="font-size: 14px;">{{ order.itemName}}</td>
                   {% if order.image %}
                   <td>
                     <img src="{{ order.image.url }}" alt="" width="50" height="50" />
@@ -92,9 +90,10 @@
                     <p>No Image Available</p>
                   </td>
                   {% endif %}
-                  
-                  
-            
+                  <td>{{ order.size.name}}</td>
+                  <td>{{ order.term_acronym|default_if_none:"" }}</td>
+                  <td></td>
+                  <td>{{ order.ordered }}</td>
                   <td>{{ order.cart_status }}</td>
                 
                   <td>{{ order.total }}</td>

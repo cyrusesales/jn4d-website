@@ -7,9 +7,10 @@ from django.contrib import messages
 import os
 from decimal import Decimal
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q, F
+from django.db.models import Q, F, Sum, OuterRef, Subquery, Value
 from django.core.paginator import Paginator
 from itertools import groupby
+from django.db.models.functions import Coalesce
 
 @login_required
 def adminBase(request):
@@ -1022,11 +1023,27 @@ def manageOrders(request):
 def manageInventory(request):
     headers = Header.objects.all()
     product = Product.objects.all().order_by('id')
-    item = (Item.objects.select_related('size', 'product', 'category')
+
+    ordered_qty = (
+        Cart.objects
+        .filter(
+            item=OuterRef('pk'),
+            size=OuterRef('term_acronym'),
+            order__isnull=False,
+        )
+        .values('item')
+        .annotate(total=Sum('quantity'))
+        .values('total')
+    )
+    
+    item = (
+        Item.objects
+        .select_related('size', 'product', 'category')
         .annotate(
             sizeterm_pk=F('size__sizeterm__id'),
-            term_acronym=F('size__sizeterm__acronym'),
+            term_acronym=F('size__sizeterm__acronym'),  
         )
+        .annotate(ordered=Coalesce(Subquery(ordered_qty), Value(0)))
         .order_by('id', 'sizeterm_pk')
     )
 
