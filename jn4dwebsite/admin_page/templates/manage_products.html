@@ -87,6 +87,7 @@
                   {% comment %} <td>{{ product.one_size }}</td> {% endcomment %}
                   <td>
                     <!-- Action Buttons -->
+                    {% if user.is_superuser %}
                     <a href=" {% url 'edit-products' product.id %}" class="btn btn-success px-0 py-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Product">
                       <svg class="bi m-2" width="16" height="16">
                         <use xlink:href="#edit"><!--Edit--></use>
@@ -121,10 +122,11 @@
                         </div>
                       </div>
                     </div>
+                    {% endif %}
                     <!--Items Button-->
                     <a href="{% url 'manage-item' product.id %}" class="btn px-0 py-0" style="background-color: rgb(75, 0, 130); color: white;" data-bs-toggle="tooltip" data-bs-placement="top" title="Manage Product Items">
                       <svg class="bi m-2" width="16" height="16">
-                        <use xlink:href="#item"><!--Edit--></use>
+                        <use xlink:href="#item"></use>
                       </svg>
                     </a>  
                   </td>
@@ -222,13 +224,14 @@
 
                 </ul>
             </nav>
-
+            {% if user.is_superuser %}
             <a href="{% url "add-products" category.id %}" class="btn btn-primary">
               <svg class="bi m-1" width="15" height="15">
                 <use xlink:href="#add"><!--Add--></use>
               </svg>
               Add Product
             </a>
+            {% endif %}
             <a href="{% url "manage-categories" %}" class="btn btn-dark">
               <svg class="bi m-1" width="15" height="15">
                 <use xlink:href="#back"><!--Back--></use>

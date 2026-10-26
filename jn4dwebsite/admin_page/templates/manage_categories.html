@@ -73,6 +73,7 @@ Categories{%endblock %} {% block content %}
                         <use xlink:href="#view"><!--View--></use>
                       </svg>
                     </a>
+                    {% if user.is_superuser %}
                     <a href="{% url 'edit-categories' category.id %}" class="btn btn-success px-0 py-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Category">
                       <svg class="bi m-2" width="16" height="16">
                         <use xlink:href="#edit"><!--Edit--></use>
@@ -114,6 +115,7 @@ Categories{%endblock %} {% block content %}
                         </div>
                       </div>
                     </div>
+                    {% endif %}
                   </td>
                 </tr>
                 {% endfor %}
@@ -211,6 +213,7 @@ Categories{%endblock %} {% block content %}
             </nav>
 
             <!--Below Buttons-->
+            {% if user.is_superuser %}
             <a href="{% url "add-categories" %}" class="btn btn-primary">
               <svg class="bi m-1" width="15" height="15">
                 <use xlink:href="#add"><!--Add--></use>
@@ -299,7 +302,7 @@ Categories{%endblock %} {% block content %}
                 </div>
               </div>
             </div>
-
+            {% endif %}
 
           </div>
         </div>
