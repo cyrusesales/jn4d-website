@@ -469,8 +469,8 @@ def editItem(request, pk):
 
         if size_id:
             selected_size = get_object_or_404(ProductSize, id=size_id)
-            item.size.name = selected_size
-
+            item.size = selected_size
+            
         item.save()
 
         messages.success(request, f"{item} is edited successfully!")
