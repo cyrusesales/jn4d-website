@@ -11,6 +11,7 @@ from django.db.models import Q, F, Sum, OuterRef, Subquery, Value
 from django.core.paginator import Paginator
 from itertools import groupby
 from django.db.models.functions import Coalesce
+from django.db import transaction
 
 @login_required
 def adminBase(request):
@@ -1019,6 +1020,17 @@ def manageOrders(request):
     }
     return render(request, 'manage_orders.html', context)
 
+def deleteOrders(request, pk):
+    try:
+        with transaction.atomic():
+            Order.objects.filter(id=pk).delete()
+            Cart.objects.filter(order_id=pk).delete()
+
+            messages.success(request, f'Order Number {pk} has been deleted!')
+            return redirect('manage-orders')
+    except Exception as e:
+            messages.warning(request, f'An error occurred, transaction rolled back: {e}')
+            return redirect('manage-orders')
 
 def manageInventory(request):
     headers = Header.objects.all()

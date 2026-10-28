@@ -81,7 +81,43 @@
                 
                   <td>₱{{ order.total }}</td>
                   {% if user.is_superuser %}
-                  <td></td>
+                  <!--Action Button-->
+                  <td>
+                    <button type="button" class="btn btn-danger px-0 py-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ order.id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Order">
+                      <svg class="bi m-2" width="16" height="16">
+                        <use xlink:href="#delete"></use>
+                      </svg>
+                      
+                    </button>
+                    <!--Modal-->
+                    <div class="modal fade" id="staticBackdrop-{{ order.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel-{{ order.id }}" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel-{{ order.id }}">Delete</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <p>Are you sure you want to delete?</p>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">
+                              <svg class="bi m-1" width="15" height="15">
+                                <use xlink:href="#close"></use>
+                              </svg>
+                              Close
+                            </button>
+                            <a href="{% url "delete-orders" order.id %}" class="btn btn-danger">
+                              <svg class="bi m-1" width="15" height="15">
+                                <use xlink:href="#delete"></use>
+                              </svg>
+                              Delete
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
                   {% endif %}
                 </tr>
                 {% endfor %}
