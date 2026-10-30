@@ -61,7 +61,7 @@
                   <td>{{ cart.id }}</td>
                   <td>{{ cart.size}}</td>
                   <td>{{ cart.quantity }}</td>
-                  <td>{{ cart.created_at }}</td>
+                  <td>{{ cart.created_at|date:"Y-m-d H:i:s" }}</td>
                   <td style="width: 300px;">{{ cart.item.itemName }}</td>
                   <td>{{ cart.user.username }}</td>
                 </tr>

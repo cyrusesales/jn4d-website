@@ -60,7 +60,7 @@
                 {% for wish in page_obj %}
                 <tr>
                   <td>{{ wish.id }}</td>
-                  <td>{{ wish.created_at }}</td>
+                  <td>{{ wish.created_at|date:"Y-m-d H:i:s" }}</td>
                   <td style="width: 300px;">{{ wish.item.itemName }}</td>
                   <td>₱{{ wish.item.original_price}}</td>
                   <td>₱{{ wish.item.selling_price }}</td>

@@ -75,7 +75,7 @@
                   <td>{{ order.firstName }} {{ order.lastName }}</td>
                   <td>{{ order.address }} {{order.district}}, {{order.city}}, {{order.province}} {{order.postalcode|stringformat:"d"}}</td>
                   <td>{{ order.payment_method }}</td>
-                  <td>{{ order.created_at }}</td>
+                  <td>{{ order.created_at|date:"Y-m-d H:i:s" }}</td>
             
                   <td>{{ order.cart_status }}</td>
                 
