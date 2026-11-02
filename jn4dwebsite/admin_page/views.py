@@ -2,7 +2,7 @@ from django.template import loader
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from homepage.forms import HeaderForm
-from homepage.models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, User, ProductSize, SizeTerm, Voucher, Role, Cart, Wishlist, Order
+from homepage.models import Header, Carousel, Category, Product, Item, Placeholder, UserProfile, User, ProductSize, SizeTerm, Voucher, Role, Cart, Wishlist, Order, Supply
 from django.contrib import messages
 import os
 from decimal import Decimal
@@ -1071,3 +1071,101 @@ def manageInventory(request):
     }
 
     return render(request, 'manage_inventory.html', context)
+
+
+def manageSupplies(request):
+    headers = Header.objects.all()
+    supplies = Supply.objects.all()
+
+    paginator = Paginator(supplies, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'headers': headers,
+        'supplies': supplies,
+        'page_obj': page_obj,
+    }
+
+    return render(request, 'manage_supplies.html', context)
+
+
+def addSupplies(request):
+    headers = Header.objects.all()
+    categories = Category.objects.all()
+
+    if request.method == "POST":
+        print(request.POST)
+        user = get_object_or_404(User, id=request.user.id)
+        category_id = request.GET.get("category_id")
+        product_id = request.GET.get("product_id")
+        item_id = request.GET.get("item_id")
+        # sizeTerm_id = request.GET.get("sizeTerm_id")
+        location = request.POST.get("location", "").strip()
+        quantity = int(request.POST.get('quantity',1))
+
+        errors = []
+        if not category_id:
+            errors.append("Please select a category.")
+        if not product_id:
+            errors.append("Please select a product.")
+        if not item_id:
+            errors.append("Please select a item.")
+        if not location:
+            errors.append("Location is required.")
+
+        # Server-side check of the whole chain: item -> product -> category
+        if category_id and product_id and item_id and not Item.objects.filter(
+            id=item_id,
+            product_id=product_id,
+            product__category_id=category_id,
+        ).exists():
+            errors.append("Selected item/product/category do not match.")
+
+        if errors:
+            for e in errors:
+                messages.error(request, e)
+            return render(request, "add_supplies.html", {
+                "categories": categories,
+                "products": Product.objects.filter(category_id=category_id) if category_id else Product.objects.none(),
+                "items": Item.objects.filter(product_id=product_id) if product_id else Item.objects.none(),
+                # "size": SizeTerm.objects.filter(productSize_id=items__size_id) if sizeTerm_id else SizeTerm.objects.none(),
+                "selected_category": category_id,
+                "selected_product": product_id,
+                "selected_item": item_id,
+                "location": location,
+            })
+
+
+        Supply.objects.create(
+            user=user,
+            category_id=category_id,
+            product_id=product_id,
+            item_id=item_id,
+            # sizeTerm_id=sizeTerm_id,
+            quantity=quantity,
+            location=location,
+        )
+        messages.success(request, "Saved successfully.")
+        return redirect("manage-supplies")
+
+    context = {
+        'headers': headers,
+        'categories': categories,
+        'products': Product.objects.none(),
+        'items': Item.objects.none(),
+        # 'sizeTerm': SizeTerm.objects.none(),
+    }
+
+    return render(request, 'add_supplies.html', context)
+
+def get_products(request):
+    category_id = request.GET.get("category_id")
+    products = Product.objects.filter(category_id=category_id).values("id", "name")
+    return JsonResponse(list(products), safe=False)
+
+def get_items(request):
+    product_id = request.GET.get("product_id")
+    items = Item.objects.filter(product_id=product_id).values("id", name=F("itemName"))
+    return JsonResponse(list(items), safe=False)
+

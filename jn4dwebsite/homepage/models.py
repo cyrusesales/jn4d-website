@@ -235,13 +235,15 @@ class Role(models.Model):
     def __str__(self):
         return str(self.name)
 
-class Inventory(models.Model):
-    item = models.ForeignKey(Item, on_delete=models.CASCADE, blank=True, null=True)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
-    quantity = models.PositiveIntegerField(default=0)
+class Supply(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.PROTECT, blank=True, null=True)
+    product = models.ForeignKey(Product, on_delete=models.PROTECT, blank=True, null=True)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, blank=True, null=True)
+    quantity = models.PositiveIntegerField(default=1)
     location = models.CharField(max_length=200, blank=True, null=True)
     status = models.CharField(max_length=20, default='In Stock', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __str__(self):
         return str(self.item.itemName)

@@ -66,4 +66,9 @@ urlpatterns = [
     path('delete-orders/<str:pk>', views.deleteOrders, name='delete-orders'),
 
     path('manage-inventory/', views.manageInventory, name='manage-inventory'),
+
+    path('manage-supplies/', views.manageSupplies, name='manage-supplies'),
+    path('add-supplies/', views.addSupplies, name='add-supplies'),
+    path('ajax/get-products/', views.get_products, name='get-products'),
+    path('ajax/get-items/', views.get_items, name='get-items'),
 ]

@@ -305,7 +305,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{% url "manage-inventory" %}" class="nav-link text-white" aria-current="page">
+              <a href="{% url "manage-supplies" %}" class="nav-link text-white" aria-current="page">
                 <svg class="bi me-2" width="16" height="16">
                   <use xlink:href="#supplies"></use>
                 </svg>
@@ -332,6 +332,7 @@
         <!--Content-->
         <div class="col-12" style="padding-left: 200px;">
           {% block content %} 
+          
           {% endblock %}
         </div>
         <!--Content-->
@@ -345,8 +346,8 @@
         {% for message in messages %}
             <div class="toast-container position-fixed bottom-0 end-0 p-3 ">
               <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="toast-header {% if message.tags == 'warning' %}bg-danger bg-opacity-25{% else %}bg-success bg-opacity-25{% endif %}">
-                  {% if message.tags == 'warning' %}
+                <div class="toast-header {% if message.tags == 'warning' or message.tags == 'error' %}bg-danger bg-opacity-25{% else %}bg-success bg-opacity-25{% endif %}">
+                  {% if message.tags == 'warning' or message.tags == 'error' %}
                   <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:" width="20" height="20" >
                     <use xlink:href="#warning" />
                   </svg>
@@ -355,11 +356,11 @@
                     <use xlink:href="#success" />
                   </svg>
                   {% endif %}
-                  <strong class="me-auto">{% if message.tags == 'warning' %}Warning{% else %}Success{% endif %}</strong>
+                  <strong class="me-auto">{% if message.tags == 'warning' or message.tags == 'error' %}Warning{% else %}Success{% endif %}</strong>
                   {% comment %} <small>11 mins ago</small> {% endcomment %}
                   <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
-                <div class="toast-body {% if message.tags == 'warning' %}bg-danger bg-opacity-25{% else %}bg-success bg-opacity-25{% endif %}">
+                <div class="toast-body {% if message.tags == 'warning' or message.tags == 'error' %}bg-danger bg-opacity-25{% else %}bg-success bg-opacity-25{% endif %}">
                   {{ message }}
                 </div>
               </div>
