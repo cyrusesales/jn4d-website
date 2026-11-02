@@ -56,7 +56,7 @@
             <table class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Supply ID</th>
+                  <th>ID</th>
                   <th>Category</th>
                   <th>Product</th>
                   <th>Item</th>
@@ -75,7 +75,7 @@
               <tbody>
                 {% for supply in page_obj %}
                   
-                <tr>
+                <tr style="font-size: 14px;">
                   <td>{{ supply.id }}</td>
                   <td>{{ supply.category.name }}</td>
                   <td>{{ supply.product.name}}</td>
@@ -90,9 +90,11 @@
                   </td>
                   {% endif %}
                   <td>{{ supply.term_acronym|default_if_none:"" }}</td>
+                  <td>{{ supply.quantity }}</td>
+                  <td>{{ supply.location }}</td>
                   <td>{{ supply.status }}</td>
                   <td>{{ supply.user }}</td>
-                  <td>{{ supply.created_at }}</td>
+                  <td>{{ supply.created_at|date:"Y-m-d H:i:s"  }}</td>
                   {% if user.is_superuser %}
                   <td></td>
                   {% endif %}

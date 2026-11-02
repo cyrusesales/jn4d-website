@@ -1097,9 +1097,9 @@ def addSupplies(request):
     if request.method == "POST":
         print(request.POST)
         user = get_object_or_404(User, id=request.user.id)
-        category_id = request.GET.get("category_id")
-        product_id = request.GET.get("product_id")
-        item_id = request.GET.get("item_id")
+        category_id = request.POST.get("category_id")
+        product_id = request.POST.get("product_id")
+        item_id = request.POST.get("item_id")
         # sizeTerm_id = request.GET.get("sizeTerm_id")
         location = request.POST.get("location", "").strip()
         quantity = int(request.POST.get('quantity',1))

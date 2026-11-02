@@ -70,7 +70,7 @@
               </thead>
               <tbody>
                 {% for order in page_obj %}
-                <tr>
+                <tr style="font-size: 14px;">
                   <td>{{ order.id }}</td>
                   <td>{{ order.firstName }} {{ order.lastName }}</td>
                   <td>{{ order.address }} {{order.district}}, {{order.city}}, {{order.province}} {{order.postalcode|stringformat:"d"}}</td>
