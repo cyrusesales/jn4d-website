@@ -1075,7 +1075,14 @@ def manageInventory(request):
 
 def manageSupplies(request):
     headers = Header.objects.all()
-    supplies = Supply.objects.all()
+    supplies = (
+        Supply.objects
+        .select_related('sizeTerm')
+        .annotate(
+            sizeterm_pk=F('sizeTerm__id'),
+            term_acronym=F('sizeTerm__acronym'),
+        )
+    ).order_by('-created_at')
 
     paginator = Paginator(supplies, 10)
     page_number = request.GET.get('page')

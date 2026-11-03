@@ -239,6 +239,7 @@ class Supply(models.Model):
     item = models.ForeignKey(Item, on_delete=models.PROTECT, blank=True, null=True)
     product = models.ForeignKey(Product, on_delete=models.PROTECT, blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, blank=True, null=True)
+    sizeTerm = models.ForeignKey(SizeTerm, on_delete=models.PROTECT, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, blank=True, null=True)
     quantity = models.PositiveIntegerField(default=1)
     location = models.CharField(max_length=200, blank=True, null=True)
