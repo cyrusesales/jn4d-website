@@ -71,4 +71,5 @@ urlpatterns = [
     path('add-supplies/', views.addSupplies, name='add-supplies'),
     path('ajax/get-products/', views.get_products, name='get-products'),
     path('ajax/get-items/', views.get_items, name='get-items'),
+    path('ajax/get-size/', views.get_size, name='get-size'),
 ]

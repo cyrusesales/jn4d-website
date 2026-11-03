@@ -92,6 +92,22 @@ select {
                   </select>
                 </div>
               </div>
+              <!--SizeTerm-->
+              <div class="mb-3 col">
+                <div class="row">
+                  <label for="sizeTerm" class="form-label">Size</label>
+                </div>
+                <div class="row" class="form-control ms-2" style="width: 685px;" >
+                  <select name="sizeTerm_id" id="sizeTerm" style="width: 685px; margin-left: 10px;">
+                    <option value="" >--Select Size--</option>
+                    {% for size in sizes %}
+                      <option value="{{ size.id }}" {% if size.id|stringformat:"s" == selected_size %}selected{% endif %}>
+                        {{ size.name }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
 
               <div class="mb-3">
                 <label for="" class="form-label">Quantity</label>
@@ -130,36 +146,51 @@ select {
   const categorySel = document.getElementById("category2");
   const productSel  = document.getElementById("product");
   const itemSel     = document.getElementById("item");
+  const sizeTermSel = document.getElementById("sizeTerm");
 
   function resetSelect(select, placeholder) {
     select.innerHTML = `<option value="">${placeholder}</option>`;
   }
 
   function loadOptions(url, param, value, select, placeholder) {
-    resetSelect(select, placeholder);
-    if (!value) return Promise.resolve();
+  resetSelect(select, placeholder);
+  if (!value) return Promise.resolve();
 
-    return fetch(`${url}?${param}=${encodeURIComponent(value)}`)
-      .then(res => res.json())
-      .then(data => {
-        data.forEach(row => {
-          const opt = document.createElement("option");
-          opt.value = row.id;
-          opt.textContent = row.name;
-          select.appendChild(opt);
-        });
+  const fullUrl = `${url}?${param}=${encodeURIComponent(value)}`;
+  console.log("Fetching:", fullUrl);
+
+  return fetch(fullUrl)
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    })
+    .then(data => {
+      console.log("Received:", data);
+      data.forEach(row => {
+        const opt = document.createElement("option");
+        opt.value = row.id;
+        opt.textContent = row.name;
+        select.appendChild(opt);
       });
-  }
+    })
+    .catch(err => console.error("Dropdown load failed:", err));
+}
 
   categorySel.addEventListener("change", function () {
     resetSelect(itemSel, "-- Select Item --");   // clear the lowest level too
+    resetSelect(sizeTermSel, "-- Select Size --");   // clear the lowest level too
     loadOptions("{% url 'get-products' %}", "category_id", this.value,
                 productSel, "-- Select Product --");
   });
 
   productSel.addEventListener("change", function () {
+    resetSelect(sizeTermSel, "-- Select Size --"); 
     loadOptions("{% url 'get-items' %}", "product_id", this.value,
                 itemSel, "-- Select Item --");
+  });
+  itemSel.addEventListener("change", function () {
+    loadOptions("{% url 'get-size' %}", "item_id", this.value,
+                sizeTermSel, "-- Select Size --");
   });
 </script>
 

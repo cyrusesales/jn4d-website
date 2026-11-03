@@ -1100,9 +1100,10 @@ def addSupplies(request):
         category_id = request.POST.get("category_id")
         product_id = request.POST.get("product_id")
         item_id = request.POST.get("item_id")
-        # sizeTerm_id = request.GET.get("sizeTerm_id")
+        sizeTerm_id = request.POST.get("sizeTerm_id")
         location = request.POST.get("location", "").strip()
         quantity = int(request.POST.get('quantity',1))
+        
 
         errors = []
         if not category_id:
@@ -1111,6 +1112,8 @@ def addSupplies(request):
             errors.append("Please select a product.")
         if not item_id:
             errors.append("Please select a item.")
+        if not sizeTerm_id:
+            errors.append("Please select a size.")
         if not location:
             errors.append("Location is required.")
 
@@ -1121,6 +1124,11 @@ def addSupplies(request):
             product__category_id=category_id,
         ).exists():
             errors.append("Selected item/product/category do not match.")
+        item = Item.objects.filter(id=item_id).first()
+        if item and sizeTerm_id and not SizeTerm.objects.filter(
+            id=sizeTerm_id, productSize_id=item.size_id
+        ).exists():
+            errors.append("Selected size does not match the item.")
 
         if errors:
             for e in errors:
@@ -1129,10 +1137,11 @@ def addSupplies(request):
                 "categories": categories,
                 "products": Product.objects.filter(category_id=category_id) if category_id else Product.objects.none(),
                 "items": Item.objects.filter(product_id=product_id) if product_id else Item.objects.none(),
-                # "size": SizeTerm.objects.filter(productSize_id=items__size_id) if sizeTerm_id else SizeTerm.objects.none(),
+                "sizes": SizeTerm.objects.filter(productSize_id=item.size_id) if item_id else SizeTerm.objects.none(),
                 "selected_category": category_id,
                 "selected_product": product_id,
                 "selected_item": item_id,
+                "selected_size": sizeTerm_id,
                 "location": location,
             })
 
@@ -1142,7 +1151,7 @@ def addSupplies(request):
             category_id=category_id,
             product_id=product_id,
             item_id=item_id,
-            # sizeTerm_id=sizeTerm_id,
+            sizeTerm_id=sizeTerm_id,
             quantity=quantity,
             location=location,
         )
@@ -1154,7 +1163,7 @@ def addSupplies(request):
         'categories': categories,
         'products': Product.objects.none(),
         'items': Item.objects.none(),
-        # 'sizeTerm': SizeTerm.objects.none(),
+        'sizes': SizeTerm.objects.none(),
     }
 
     return render(request, 'add_supplies.html', context)
@@ -1168,4 +1177,33 @@ def get_items(request):
     product_id = request.GET.get("product_id")
     items = Item.objects.filter(product_id=product_id).values("id", name=F("itemName"))
     return JsonResponse(list(items), safe=False)
+
+def get_size(request):
+    item_id = request.GET.get("item_id")
+    
+    if not item_id:
+        return JsonResponse([], safe=False)
+
+    item = Item.objects.filter(id=item_id).first()
+
+    if not item:
+        return JsonResponse([], safe=False)
+
+    sizes = SizeTerm.objects.filter(
+        productSize_id=item.size_id
+    ).values(
+        "id", 
+        "acronym"
+    )
+
+    # Convert acronym into the "name" property expected by JavaScript
+    size_data = [
+        {
+            "id": size["id"],
+            "name": size["acronym"]
+        }
+        for size in sizes
+    ]
+    
+    return JsonResponse(size_data, safe=False)
 
