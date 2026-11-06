@@ -1047,15 +1047,27 @@ def manageInventory(request):
         .annotate(total=Sum('quantity'))
         .values('total')
     )
+
+    supply_qty = (
+        Supply.objects
+        .filter(
+            sizeTerm_id=OuterRef('sizeterm_pk'),
+            sizeTerm__isnull=False,
+        )
+        .values('sizeTerm_id')
+        .annotate(total=Sum('quantity'))
+        .values('total')
+    )
     
     item = (
         Item.objects
         .select_related('size', 'product', 'category')
         .annotate(
             sizeterm_pk=F('size__sizeterm__id'),
-            term_acronym=F('size__sizeterm__acronym'),  
+            term_acronym=F('size__sizeterm__acronym'), 
         )
         .annotate(ordered=Coalesce(Subquery(ordered_qty), Value(0)))
+        .annotate(supplied=Coalesce(Subquery(supply_qty), Value(0)))
         .order_by('id', 'sizeterm_pk')
     )
 

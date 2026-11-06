@@ -92,11 +92,11 @@
                   {% endif %}
                   <td>{{ order.size.name}}</td>
                   <td>{{ order.term_acronym|default_if_none:"" }}</td>
-                  <td></td>
+                  <td>{{ order.supplied }}</td>
                   <td>{{ order.ordered }}</td>
                   <td>{{ order.cart_status }}</td>
                 
-                  <td>{{ order.total }}</td>
+                  <td></td>
                   {% if user.is_superuser %}
                   <td></td>
                   {% endif %}
