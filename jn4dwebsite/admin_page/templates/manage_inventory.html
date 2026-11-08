@@ -93,8 +93,12 @@
                   <td>{{ order.term_acronym|default_if_none:"" }}</td>
                   <td>{{ order.supplied }}</td>
                   <td>{{ order.ordered }}</td>
-                  <td></td>
-                  <td>{{ order.supplystatus }}</td>
+                  
+                  <td>
+                    {{ order.supplylocation }}
+                  </td>
+                  
+                  <td>{{ order.supplystatus}}</td>
                 
                   <td></td>
                   {% if user.is_superuser %}

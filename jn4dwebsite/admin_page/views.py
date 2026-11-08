@@ -7,11 +7,12 @@ from django.contrib import messages
 import os
 from decimal import Decimal
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q, F, Sum, OuterRef, Subquery, Value
+from django.db.models import Q, F, Sum, OuterRef, Subquery, Value, Count, TextField
 from django.core.paginator import Paginator
 from itertools import groupby
 from django.db.models.functions import Coalesce
 from django.db import transaction
+from django.contrib.postgres.aggregates import StringAgg
 
 @login_required
 def adminBase(request):
@@ -1052,6 +1053,7 @@ def manageInventory(request):
         Supply.objects
         .filter(
             sizeTerm_id=OuterRef('sizeterm_pk'),
+            product_id=OuterRef('product_id'),
             sizeTerm__isnull=False,
         )
         .values('sizeTerm_id')
@@ -1063,10 +1065,29 @@ def manageInventory(request):
         Supply.objects
         .filter(
             sizeTerm_id=OuterRef('sizeterm_pk'),
+            product_id=OuterRef('product_id'),
             sizeTerm__isnull=False,
         )
         .values('status')[:1]
+    )
 
+    supply_location = (
+        Supply.objects
+        .filter(
+            sizeTerm_id=OuterRef('sizeterm_pk'),
+            product_id=OuterRef('product_id'),
+            sizeTerm__isnull=False,
+        )
+        .order_by()
+        .values('product_id', 'sizeTerm_id')
+        .annotate(
+            locations=StringAgg(
+                'location',
+                delimiter=' || ',
+                distinct=True
+            )
+        )
+        .values('locations')[:1]
     )
     
     item = (
@@ -1079,6 +1100,12 @@ def manageInventory(request):
         .annotate(ordered=Coalesce(Subquery(ordered_qty), Value(0)))
         .annotate(supplied=Coalesce(Subquery(supply_qty), Value(0)))
         .annotate(supplystatus=Coalesce(Subquery(supply_status), Value("N/A")))
+        .annotate(supplylocation=Coalesce(
+            Subquery(supply_location, output_field=TextField()), 
+            Value("N/A", output_field=TextField()),
+            output_field=TextField()
+            )
+        )
         .order_by('id', 'sizeterm_pk')
     )
 
