@@ -85,12 +85,9 @@ def userpro(request):
         ).first()}
     return {'userpro': None}
 
-# def supply_officer(request):
-#     if request.user.is_authenticated:
-#         supply_user=Supply.objects.all()
-#         return {
-#             'supply_officer': UserProfile.objects.filter(
-#                 user_id=supply_user.user.id
-#             )
-#         }
-#     return {'supply_officer': None}
+def all_userprofile(request):
+    userprofiles = UserProfile.objects.all()
+
+    return {
+        'userprofiles': userprofiles,
+    }

@@ -69,7 +69,7 @@ TEMPLATES = [
                 'homepage.context_processors.topay_item_count',
                 'homepage.context_processors.toship_item_count',
                 'homepage.context_processors.userpro',
-                # 'homepage.context_processors.supply_officer',
+                'homepage.context_processors.all_userprofile',
             ],
         },
     },
