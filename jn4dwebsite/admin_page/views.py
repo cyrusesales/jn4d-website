@@ -1058,6 +1058,16 @@ def manageInventory(request):
         .annotate(total=Sum('quantity'))
         .values('total')
     )
+
+    supply_status = (
+        Supply.objects
+        .filter(
+            sizeTerm_id=OuterRef('sizeterm_pk'),
+            sizeTerm__isnull=False,
+        )
+        .values('status')[:1]
+
+    )
     
     item = (
         Item.objects
@@ -1068,6 +1078,7 @@ def manageInventory(request):
         )
         .annotate(ordered=Coalesce(Subquery(ordered_qty), Value(0)))
         .annotate(supplied=Coalesce(Subquery(supply_qty), Value(0)))
+        .annotate(supplystatus=Coalesce(Subquery(supply_status), Value("N/A")))
         .order_by('id', 'sizeterm_pk')
     )
 

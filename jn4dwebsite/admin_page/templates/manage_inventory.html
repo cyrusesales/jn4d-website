@@ -65,7 +65,6 @@
                   <th>Size Term</th>
                   <th>Stocks</th>
                   <th>Ordered</th>
-                  <th>Total Quantity</th>
                   <th>Location</th>
                   <th>Status</th>
                   {% if user.is_superuser %}
@@ -76,7 +75,7 @@
               <tbody>
                 {% for order in page_obj %}
                   
-                <tr>
+                <tr style="font-size: 14px;">
                   <td>{{ order.id }}</td>
                   <td>{{ order.category.name }}</td>
                   <td>{{ order.product.name}}</td>
@@ -94,7 +93,8 @@
                   <td>{{ order.term_acronym|default_if_none:"" }}</td>
                   <td>{{ order.supplied }}</td>
                   <td>{{ order.ordered }}</td>
-                  <td>{{ order.cart_status }}</td>
+                  <td></td>
+                  <td>{{ order.supplystatus }}</td>
                 
                   <td></td>
                   {% if user.is_superuser %}
